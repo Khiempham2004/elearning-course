@@ -1,0 +1,12 @@
+<nz-tabset>
+    <nz-tab nzTitle="Cấp tỉnh">
+        <ng-container *ngIf="indexTab == 0" >
+            <app-cpnCon></app-cpnCon>
+        </ng-container>
+    </nz-tab>
+    <nz-tab nzTitle="Cấp huyện">
+        <ng-container *ngIf="indexTab == 0">
+            <app-area-con></app-area-con>
+        </ng-container>
+    </nz-tab>
+</nz-tabset>

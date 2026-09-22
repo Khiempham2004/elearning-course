@@ -1,0 +1,126 @@
+:host {
+    display: block;
+    min-height: 100vh;
+}
+
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+    background: #f7f8fc;
+    color: #172033;
+}
+
+.sidebar {
+    width: 246px;
+    background: #fff;
+    border-right: 1px solid #e9ecf3;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 15px 17px;
+    flex-shrink: 0;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 21px;
+    font-weight: 750;
+    padding: 0 15px 37px;
+}
+
+.brand-mark {
+    width: 31px;
+    height: 31px;
+    border-radius: 9px;
+    background: #5367e9;
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+}
+
+.workspace-label {
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    color: #a4acbb;
+    font-weight: 700;
+    padding: 0 15px 14px;
+}
+
+nav,
+.sidebar-bottom {
+    display: grid;
+    gap: 5px;
+}
+
+nav a,
+.sidebar-bottom a {
+    color: #748096;
+    text-decoration: none;
+    font-size: 13px;
+    padding: 12px 15px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+nav a.active,
+.sidebar-bottom a.active {
+    background: #eef0ff;
+    color: #5367e9;
+    font-weight: 650;
+}
+
+.nav-icon {
+    font-size: 18px;
+    width: 18px;
+    text-align: center;
+    line-height: 1;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid #eff1f5;
+    padding-top: 18px;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.topbar {
+    height: 74px;
+    background: #fff;
+    border-bottom: 1px solid #e9ecf3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 42px;
+    color: #5367e9;
+    font-size: 13px;
+}
+
+.mini-avatar {
+    width: 31px;
+    height: 31px;
+    border-radius: 50%;
+    background: #f9c5ac;
+    color: #9d5645;
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    font-weight: 750;
+}
+
+@media (max-width: 700px) {
+    .sidebar {
+        width: 190px;
+    }
+
+    .topbar {
+        padding: 0 20px;
+    }
+}

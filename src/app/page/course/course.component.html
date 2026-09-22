@@ -1,0 +1,187 @@
+<span class="course-header">QUẢN LÝ KHÓA HỌC</span>
+
+<div style="display: flex;gap: 10px;margin-top: 20px;">
+  <input (keyup.enter)="handleFiterSearch()" type="text" nz-input placeholder="Tìm kiếm dữ liệu">
+  <button nz-button nzType="primary" (click)="openModalCourse()">Tạo khóa học</button>
+</div>
+
+<nz-table #basicTable [nzData]="listOfCourse" class="class-table-coruse" [nzScroll]="{x:'700px' , y:'500px'}"
+  [nzFrontPagination]="false">
+  <!-- [nzPageSize]="pageSize" [nzTotal]="total" [nzPageIndex]="page"
+  [nzPageSize]="pageSize" (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" [nzShowPagination]="true"  -->
+  <thead>
+    <tr>
+      <th nzWidth="120px">CourseCode</th>
+      <th nzWidth="120px">CourseName</th>
+      <th nzWidth="100px">Category</th>
+      <th nzWidth="120px">teacherId</th>
+      <th nzWidth="150px">teacherName</th>
+      <th nzWidth="100px">duration</th>
+      <th nzWidth="120px">maxStudents</th>
+      <th nzWidth="80px">price</th>
+      <th nzWidth="120px">startDate</th>
+      <th nzWidth="120px">endDate</th>
+      <th nzWidth="100px">Status</th>
+      <th nzWidth="150px">Trạng thái</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let course of basicTable.data">
+      <td>{{course.courseCode}}</td>
+      <td>{{course.courseName}}</td>
+      <td>{{course.category}}</td>
+      <td>{{course.teacherId}}</td>
+      <td>{{course.teacherName}}</td>
+      <td>{{course.duration}}</td>
+      <td>{{course.maxStudents}}</td>
+      <td>{{course.price}}</td>
+      <td>{{course.startDate | date:'dd-MM-yyyy'}}</td>
+      <td>{{course.endDate | date : 'dd-MM-yyyy'}}</td>
+      <td>{{course.status}}</td>
+      <td style="display: flex;gap: 10px;">
+        <button nz-button nzType="primary" (click)="handlleEdit(course)">Edit</button>
+        <button nz-button nzType="primary" (click)="handleDelete(course)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<div style="display: flex;justify-content: space-between;align-items: start;">
+  <div>
+    Tổng số : <span style="font-weight: bold;font-size: 16px;"> {{courses.length}} </span> bản ghi
+  </div>
+  <nz-pagination [nzPageIndex]="page" (nzPageSizeChange)="pageSize" [nzTotal]="total"
+    (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
+</div>
+
+
+<nz-modal [(nzVisible)]="isCourse" [nzTitle]="modalTitleCourse" [nzFooter]="null" nzWidth="800px"
+  (nzOnCancel)="cancelModalCourse()">
+  <ng-container *nzModalContent>
+    <form [formGroup]="form" nz-form nzLayout="vertical">
+      <div nz-row [nzGutter]="[24, 8]">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Mã khóa học</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="courseCode" placeholder="Nhập mã khóa học" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Tên khóa học</nz-form-label>
+            <nz-form-control nzErrorTip="Tên khóa học là bắt buộc">
+              <input nz-input formControlName="courseName" placeholder="Nhập tên khóa học" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Danh mục</nz-form-label>
+
+            <nz-form-control>
+              <input nz-input formControlName="category" placeholder="Frontend / Backend / Database" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Mã giáo viên</nz-form-label>
+
+            <nz-form-control>
+              <input nz-input formControlName="teacherId" placeholder="Nhập mã giáo viên" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Giáo viên</nz-form-label>
+
+            <nz-form-control nzErrorTip="Tên giáo viên là bắt buộc">
+              <input nz-input formControlName="teacherName" placeholder="Nhập tên giáo viên" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Số buổi / giờ học</nz-form-label>
+
+            <nz-form-control nzErrorTip="Số buổi giờ học là bắt buộc">
+              <input nz-input formControlName="duration" placeholder="VD: 30 buổi" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Số học viên tối đa</nz-form-label>
+            <nz-form-control nzErrorTip="Số học viên là bắt buộc">
+              <input nz-input formControlName="maxStudents" placeholder="Nhập số lượng" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Học phí</nz-form-label>
+
+            <nz-form-control>
+              <input nz-input formControlName="price" placeholder="Nhập học phí" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Ngày bắt đầu</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker class="w-100" formControlName="startDate" nzFormat="dd-MM-yyyy"
+                nzPlaceHolder="Chọn ngày bắt đầu">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Ngày kết thúc</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker class="w-100" formControlName="endDate" nzFormat="dd-MM-yyyy"
+                nzPlaceHolder="Chọn ngày kết thúc">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Trạng thái</nz-form-label>
+            <nz-form-control>
+              <nz-select class="w-100" formControlName="status" nzPlaceHolder="Chọn trạng thái">
+                <nz-option [nzValue]="true" nzLabel="true">
+                </nz-option>
+                <nz-option [nzValue]="false" nzLabel="false">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button nz-button type="button" (click)="cancelModalCourse()">
+          Hủy
+        </button>
+        <button nz-button nzType="primary" type="button" (click)="handleSubmit()">
+          {{ status === 'CREATE' ? 'Lưu' : 'Cập nhật' }}
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

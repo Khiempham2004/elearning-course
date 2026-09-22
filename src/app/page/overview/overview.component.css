@@ -1,0 +1,19 @@
+ .page {
+     padding: 42px;
+ }
+
+ .eyebrow {
+     color: #5367e9;
+     font-size: 11px;
+     font-weight: 700;
+     letter-spacing: 1px;
+ }
+
+ h1 {
+     margin: 8px 0;
+     font-size: 28px;
+ }
+
+ p {
+     color: #748096;
+ }

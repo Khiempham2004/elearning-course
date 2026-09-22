@@ -1,0 +1,54 @@
+.course-header {
+    font-size: 22px;
+    color: #087EED;
+    font-weight: bold;
+}
+
+.class-table-coruse {
+    margin-top: 20px;
+}
+
+input {
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+button {
+    border-radius: 8px;
+    font-size: 16px;
+    height: auto;
+    font-weight: bold;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,td {
+    padding: 10px 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+th {
+    background: #f5f5f5;
+    font-weight: bold;
+}
+
+tr:hover {
+    background: #fafafa;
+}
