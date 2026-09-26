@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -19,10 +20,13 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { CorusesService } from '../../component/services/coruses.service';
 import { finalize } from 'rxjs';
 import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.css'],
+  standalone: true,
   imports: [
     NzTableModule,
     NzInputModule,
@@ -38,13 +42,17 @@ import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
     NzDatePickerModule,
     NzPaginationComponent,
     DatePipe,
+    FormsModule,
+    NzIconModule
   ],
 })
 export class CourseComponent implements OnInit {
   form: FormGroup;
   courses: any[] = [];
   listOfCourse: any[] = [];
-  fiterSearch = '';
+  searchKeyword: any = [];
+  filterSearch: string = '';
+  filterCourseSearch: any[] = [];
   courseId: any;
   isCourse = false;
   startDate: Date | null = null;
@@ -58,6 +66,7 @@ export class CourseComponent implements OnInit {
     private fb: FormBuilder,
     private courseService: CorusesService,
     private nzModal: NzModalService,
+    private nzMessage: NzMessageService,
   ) {
     this.form = this.fb.group({
       courseCode: [''],
@@ -111,17 +120,32 @@ export class CourseComponent implements OnInit {
     this.getAllCourses();
   }
 
-  handleFiterSearch() {
-    const filterSearch = this.fiterSearch.trim().toLowerCase();
+  updatePagination() {
+    const start = (this.page - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.listOfCourse = this.filterCourseSearch.slice(start, end);
+  }
 
-    if (filterSearch) {
-      this.listOfCourse = [...this.courses];
-      return;
+  handleFiterSearch(): void {
+    const keyword = this.filterSearch.trim().toLowerCase();
+
+    this.page = 1;
+
+    if (!keyword) {
+      this.filterCourseSearch = [...this.courses];
+    } else {
+      //cos keyword moi filter
+      this.filterCourseSearch = this.courses.filter((course: any) => {
+        return (
+          course.teacherName?.toLowerCase().includes(keyword) ||
+          course.teacherName?.toLowerCase().includes(keyword)
+        );
+      });
     }
+    //tong sau khi search
+    this.total = this.filterCourseSearch.length;
 
-    this.listOfCourse = this.courses.filter((user: any) =>
-      user.courseName?.toLowerCase().includes(filterSearch),
-    );
+    this.updatePagination();
   }
 
   getAllCourses() {
@@ -140,6 +164,9 @@ export class CourseComponent implements OnInit {
   }
 
   handleSubmit() {
+    if (this.form.invalid) {
+      this.nzMessage.warning('Vui lòng chọn đầy đủ bản ghi');
+    }
     if (this.form.invalid) {
       Object.values(this.form.controls).forEach((control) => {
         if (control.invalid) {
@@ -163,22 +190,22 @@ export class CourseComponent implements OnInit {
         )
         .subscribe({
           next: (res: any) => {
-            alert('Tạo mới thành công');
+            this.nzMessage.success('Tạo mới thành công', res);
             this.getAllCourses();
           },
           error: (err: any) => {
             console.log('Create you error : ', err);
-            alert('Tạo mới thất bại');
+            this.nzMessage.error('Tạo mới thất bại');
           },
         });
     } else {
       this.courseService.putCourse(this.courseId, payload).subscribe({
         next: (res: any) => {
-          alert('Cập nhật thành công');
+          this.nzMessage.success('Cập nhật thành công');
         },
         error: (err: any) => {
+          this.nzMessage.error('Cập nhật thất bại');
           console.log('Update your errror : ', err);
-          alert('Cập nhật thất bại');
         },
       });
       this.getAllCourses();
@@ -226,7 +253,12 @@ export class CourseComponent implements OnInit {
       nzOkDanger: true,
       nzOnOk: () => {
         this.courseService.deleteCourse(item.id).subscribe({
-          next: (res: any) => {},
+          next: (res: any) => {
+            this.nzMessage.success('Xóa khóa học thành công', res);
+          },
+          error: (err: any) => {
+            this.nzMessage.error('Xóa khóa học thất bại', err);
+          },
         });
         this.form.reset();
         this.getAllCourses();
@@ -234,6 +266,20 @@ export class CourseComponent implements OnInit {
       },
       nzCancelText: 'No',
       nzOnCancel: () => console.log('Cancel'),
+    });
+  }
+
+  handleRowClick(item: any) {
+    this.status = 'EDIT';
+    this.courseId = item.id;
+    this.isCourse = true;
+    this.courseService.getCourseById(item.id).subscribe({
+      next: (res: any) => {
+        this.form.patchValue(res);
+      },
+      error: (err: any) => {
+        console.log('Lấy chi tiết khóa học thất bại', err);
+      },
     });
   }
 }

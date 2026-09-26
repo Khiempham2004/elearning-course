@@ -38,7 +38,8 @@ table {
     border-collapse: collapse;
 }
 
-th,td {
+th,
+td {
     padding: 10px 12px;
     text-align: center;
     vertical-align: middle;
@@ -51,4 +52,9 @@ th {
 
 tr:hover {
     background: #fafafa;
+}
+
+::ng-deep .ant-modal-content {
+    border-radius: 16px !important;
+    overflow: hidden;
 }

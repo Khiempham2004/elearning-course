@@ -1,22 +1,27 @@
 <div class="app-shell">
   <aside class="sidebar">
-    <div class="brand"><span class="brand-mark">L</span><span>Learnify</span></div>
+    <a routerLink="/admin" routerLinkActive="active">
+      <div class="brand">
+        <span class="brand-mark">L</span><span>Learnify</span>
+      </div>
+    </a>
     <div class="workspace-label">QUẢN TRỊ HỆ THỐNG</div>
     <nav>
-      <a routerLink="/overview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><span
+      <a routerLink="/admin/overview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><span
           class="nav-icon">⌂</span>Tổng quan</a>
-      <a routerLink="/courses" routerLinkActive="active"><span class="nav-icon">▣</span>Khóa học</a>
-      <a routerLink="/students" routerLinkActive="active"><span class="nav-icon">♙</span>Học viên</a>
-      <a routerLink="/teachers" routerLinkActive="active"><span class="nav-icon">♧</span>Giảng viên</a>
-      <a routerLink="/reports" routerLinkActive="active"><span class="nav-icon">◒</span>Báo cáo</a>
+      <a routerLink="/admin/courses" routerLinkActive="active"><span class="nav-icon">▣</span>Khóa học</a>
+      <a routerLink="/admin/students" routerLinkActive="active"><span class="nav-icon">♙</span>Học viên</a>
+      <a routerLink="/admin/teachers" routerLinkActive="active"><span class="nav-icon">♧</span>Giảng viên</a>
+      <a routerLink="/admin/reports" routerLinkActive="active"><span class="nav-icon">◒</span>Báo cáo</a>
     </nav>
     <div class="sidebar-bottom">
-      <a routerLink="/settings" routerLinkActive="active"><span class="nav-icon">⚙</span>Cài đặt</a>
-      <a routerLink="/help" routerLinkActive="active"><span class="nav-icon">?</span>Trung tâm trợ giúp</a>
+      <a routerLink="/admin/settings" routerLinkActive="active"><span class="nav-icon">⚙</span>Cài đặt</a>
+      <a routerLink="/admin/help" routerLinkActive="active"><span class="nav-icon">?</span>Trung tâm trợ giúp</a>
     </div>
   </aside>
   <main class="main-content">
-    <header class="topbar"><span>Learnify Admin</span>
+    <header class="topbar">
+      <span>Learnify Admin</span>
       <div class="mini-avatar">MA</div>
     </header>
     <br>

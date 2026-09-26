@@ -1,7 +1,7 @@
 <span class="course-header">QUẢN LÝ KHÓA HỌC</span>
 
 <div style="display: flex;gap: 10px;margin-top: 20px;">
-  <input (keyup.enter)="handleFiterSearch()" type="text" nz-input placeholder="Tìm kiếm dữ liệu">
+  <input nz-input [(ngModel)]="filterSearch" (keyup.enter)="handleFiterSearch()" placeholder="Tìm kiếm dữ liệu" />
   <button nz-button nzType="primary" (click)="openModalCourse()">Tạo khóa học</button>
 </div>
 
@@ -21,13 +21,13 @@
       <th nzWidth="80px">price</th>
       <th nzWidth="120px">startDate</th>
       <th nzWidth="120px">endDate</th>
-      <th nzWidth="100px">Status</th>
-      <th nzWidth="150px">Trạng thái</th>
+      <th nzWidth="100px">Trạng thái</th>
+      <th nzWidth="150px">Hành động</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let course of basicTable.data">
-      <td>{{course.courseCode}}</td>
+    <tr *ngFor="let course of listOfCourse">
+      <td (click)="handleRowClick(course)" style="cursor: pointer;font-weight: bold;">{{course.courseCode}}</td>
       <td>{{course.courseName}}</td>
       <td>{{course.category}}</td>
       <td>{{course.teacherId}}</td>
@@ -38,9 +38,13 @@
       <td>{{course.startDate | date:'dd-MM-yyyy'}}</td>
       <td>{{course.endDate | date : 'dd-MM-yyyy'}}</td>
       <td>{{course.status}}</td>
-      <td style="display: flex;gap: 10px;">
-        <button nz-button nzType="primary" (click)="handlleEdit(course)">Edit</button>
-        <button nz-button nzType="primary" (click)="handleDelete(course)">Delete</button>
+      <td style="width: 100%;height: 65px ;border-radius: 8px;gap: 10px;display: flex;">
+        <button nz-button nzType="primary" (click)="handlleEdit(course)">
+          <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button nz-button nzType="primary" (click)="handleDelete(course)">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
       </td>
     </tr>
   </tbody>
@@ -48,7 +52,7 @@
 
 <div style="display: flex;justify-content: space-between;align-items: start;">
   <div>
-    Tổng số : <span style="font-weight: bold;font-size: 16px;"> {{courses.length}} </span> bản ghi
+    Tổng số : <span style="font-weight: bold;font-size: 16px;"> {{total}} </span> bản ghi
   </div>
   <nz-pagination [nzPageIndex]="page" (nzPageSizeChange)="pageSize" [nzTotal]="total"
     (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
@@ -56,7 +60,7 @@
 
 
 <nz-modal [(nzVisible)]="isCourse" [nzTitle]="modalTitleCourse" [nzFooter]="null" nzWidth="800px"
-  (nzOnCancel)="cancelModalCourse()">
+  class="ant-modal-content" (nzOnCancel)="cancelModalCourse()">
   <ng-container *nzModalContent>
     <form [formGroup]="form" nz-form nzLayout="vertical">
       <div nz-row [nzGutter]="[24, 8]">

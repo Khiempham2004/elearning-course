@@ -1,4 +1,154 @@
-<section class="page">
-    <h1>Học viên</h1>
-    <p>Quản lý thông tin và tiến độ học tập của học viên.</p>
-  </section>
+<span class="student-header">QUẢN LÝ HỌC VIÊN</span>
+
+<div class="header">
+  <input nz-input type="text" (keyup.enter)="handleSearch()" [(ngModel)]="filterSearch"
+    placeholder="Tìm kiếm dữ liệu" />
+  <button nz-button nzType="primary" (click)="handleCreate()">Tạo học viên</button>
+</div>
+
+<nz-table class="studentTable" #basicTable [nzData]="listOfStudent" [nzFrontPagination]="false">
+  <thead>
+    <tr>
+      <th>Mã học viên</th>
+      <th>Họ tên</th>
+      <th>SĐT</th>
+      <th style="justify-content: center;text-align: center;">Email</th>
+      <th>Giới tính</th>
+      <th>Ngày sinh</th>
+      <th>Lớp</th>
+      <th>Trạng thái</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let student of listOfStudent">
+      <td style="cursor: pointer;font-weight: bold;" (click)="handleRowClick(student)">{{ student.studentCode }}</td>
+      <td>{{student.studentName}}</td>
+      <td>{{student.phone}}</td>
+      <td>{{student.email}}</td>
+      <td>{{student.gender}}</td>
+      <td>{{student.dob | date : 'dd-MM-yyyy'}}</td>
+      <td>{{student.class}}</td>
+      <td>{{student.status}}</td>
+      <td style="width: 100%;height: 65px ;border-radius: 8px;gap: 10px;display: flex;">
+        <button nz-button nzType="primary" (click)="handleEdit(student)">
+          <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button nz-button nzType="primary" (click)="handleDelete(student)">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<div class="student-pagination">
+  <p style="font-size: 16px;">Tổng : <span class="span-total"> {{total}} </span>bản ghi</p>
+  <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total" (nzPageIndexChange)="pageChange($event)"
+    (nzPageSizeChange)="pageSizeChange($event)">
+  </nz-pagination>
+</div>
+
+<nz-modal [(nzVisible)]="isStudent" nzClassName="form-modal-students" [nzFooter]="null" [nzTitle]="modalTitle"
+  (nzOnCancel)="handleCancel()" nzWidth="700px">
+  <ng-container *nzModalContent>
+    <form [formGroup]="formStudent" nz-form nzLayout="vertical">
+      <div nz-row [nzGutter]="[24, 8]">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Mã học viên</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="studentCode" placeholder="Nhập mã khóa học" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Họ và tên</nz-form-label>
+            <nz-form-control nzErrorTip="Tên khóa học là bắt buộc">
+              <input nz-input formControlName="studentName" placeholder="Nhập họ và tên" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Số điện thoại</nz-form-label>
+
+            <nz-form-control>
+              <input nz-input formControlName="phone" placeholder="Số điện thoại..." />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Email</nz-form-label>
+
+            <nz-form-control>
+              <input nz-input formControlName="email" placeholder="Nhập email..." />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Giới tính</nz-form-label>
+
+            <nz-form-control nzErrorTip="Tên giáo viên là bắt buộc">
+              <nz-select class="w-100" formControlName="gender" nzPlaceHolder="Chọn giới tính">
+                <nz-option [nzValue]="'Nam'" [nzLabel]="'nam'" />
+                <nz-option [nzValue]="'nữ'" [nzLabel]="'nữ'" />
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Ngày sinh</nz-form-label>
+
+            <nz-form-control nzErrorTip="Ngày sinh là bắt buộc">
+              <nz-date-picker class="w-100" style="width: 100%;" formControlName="dob" nzPlaceHolder="Chọn ngày sinh..."
+                nzFormat="dd-MM-yyyy"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Lớp học</nz-form-label>
+
+            <nz-form-control nzErrorTip="">
+              <input nz-input formControlName="class" placeholder="Chọn lớp học" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label>Trạng thái</nz-form-label>
+            <nz-form-control>
+              <nz-select class="w-100" formControlName="status" nzPlaceHolder="Chọn trạng thái">
+                <nz-option [nzValue]="true" nzLabel="true">
+                </nz-option>
+                <nz-option [nzValue]="false" nzLabel="false">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="form-actions-student">
+        <button nz-button type="button" (click)="handleCancel()">
+          Hủy
+        </button>
+        <button nz-button nzType="primary" type="button" (click)="handleSubmit()">
+          {{ status === 'CREATE' ? 'Lưu' : 'Cập nhật' }}
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

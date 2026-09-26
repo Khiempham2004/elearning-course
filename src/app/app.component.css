@@ -124,3 +124,9 @@ nav a.active,
         padding: 0 20px;
     }
 }
+
+.course-header {
+    font-size: 22px;
+    color: #087EED;
+    font-weight: bold;
+}

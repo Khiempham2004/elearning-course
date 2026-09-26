@@ -1,9 +1,84 @@
-.page{
+table {
+    width: 100%;
+    border-collapse: collapse;
+    justify-content: center;
+    display: flex;
+}
+
+th,
+td {
+    padding: 10px 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+th {
+    align-items: center;
+    background: #f5f5f5;
+    font-weight: bold;
+}
+
+tr:hover {
+    background: #fafafa;
+}
+
+.page {
     padding-left: 40px;
     padding-top: 20px;
 }
 
-h1{
+h1 {
     font-weight: bold;
-    
+
+}
+
+.student-header {
+    font-size: 22px;
+    color: #087EED;
+    font-weight: bold;
+}
+
+.header {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+input {
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+button {
+    border-radius: 8px;
+    font-size: 16px;
+    height: auto;
+    font-weight: bold;
+}
+
+.studentTable {
+    margin-top: 20px;
+}
+
+
+.form-actions-student {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+::ng-deep .form-modal-students .ant-modal-content {
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+.student-pagination {
+    display: flex;
+    justify-content: space-between
+}
+
+.span-total {
+    font-weight: bold;
+    font-size: 16px;
 }

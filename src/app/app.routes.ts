@@ -10,17 +10,18 @@ import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'admin',
     component: AdminLayoutComponent,
-    children: [],
+    children: [
+      { path: 'admin', redirectTo: 'overview', pathMatch: 'full' },
+      { path: 'overview', component: OverviewComponent, title: 'Tổng quan' },
+      { path: 'courses', component: CourseComponent, title: 'Khóa học' },
+      { path: 'students', component: StudentsComponent, title: 'Học viên' },
+      { path: 'teachers', component: TeachersComponent, title: 'Giảng viên' },
+      { path: 'reports', component: ReportsComponent, title: 'Báo cáo' },
+      { path: 'settings', component: SettingsComponent, title: 'Cài đặt' },
+      { path: 'help', component: HelpComponent, title: 'Trung tâm trợ giúp' },
+      { path: '**', redirectTo: 'overview' },
+    ],
   },
-  { path: '', redirectTo: 'overview', pathMatch: 'full' },
-  { path: 'overview', component: OverviewComponent, title: 'Tổng quan' },
-  { path: 'courses', component: CourseComponent, title: 'Khóa học' },
-  { path: 'students', component: StudentsComponent, title: 'Học viên' },
-  { path: 'teachers', component: TeachersComponent, title: 'Giảng viên' },
-  { path: 'reports', component: ReportsComponent, title: 'Báo cáo' },
-  { path: 'settings', component: SettingsComponent, title: 'Cài đặt' },
-  { path: 'help', component: HelpComponent, title: 'Trung tâm trợ giúp' },
-  { path: '**', redirectTo: '' },
 ];
