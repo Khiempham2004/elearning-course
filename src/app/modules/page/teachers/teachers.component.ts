@@ -23,7 +23,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { TeachersService } from '../../component/services/teachers.service';
+import { TeachersService } from '../../../core/services/teachers.service';
 import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
 @Component({
   selector: 'app-teachers',
@@ -61,7 +61,7 @@ export class TeachersComponent implements OnInit {
   teacherId: any = null;
 
   page = 1;
-  pageSize = 5;
+  pageSize = 10;
   total = 0;
 
   constructor(

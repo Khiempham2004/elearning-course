@@ -1,0 +1,91 @@
+.header {
+    display: flex;
+    background-color: #FFFEFC;
+    border-radius: 12px;
+    padding: 40px 80px;
+    margin-top: 100px;
+}
+
+h3 {
+    display: flex;
+    justify-content: center;
+}
+
+img {
+    border-radius: 8px;
+}
+
+.main-content {
+    padding: 20px 50px;
+}
+
+.sidebar {
+    padding: 8px 25px;
+    width: 250px;
+    border-radius: 50px;
+    background-color: #92D6D6;
+    margin-left: 180px;
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+
+.nzLogin {
+    padding: 5px 10px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: #92D6D6;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.nzRegister {
+    padding: 5px 25px;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px !important;
+    background-color: #49BBBD;
+    border: none;
+    cursor: pointer;
+    color: #FFFFFF;
+}
+
+input {
+    border-radius: 50px;
+    padding: 10px 20px;
+}
+
+.input-password {
+    border-radius: 50px;
+    padding: 10px 20px;
+}
+
+.login-form-margin {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-form-forgot {
+    color: #000000;
+}
+
+.nzIcon {
+    cursor: pointer;
+}
+
+.main-btn {
+    display: flex;
+    justify-content: end;
+    margin-top: 20px;
+}
+
+.btn-login {
+    padding: 10px 20px;
+    background-color: #49BBBD;
+    border-radius: 50px;
+    width: 140px;
+    height: 40px;
+    color: #FFFFFF;
+}

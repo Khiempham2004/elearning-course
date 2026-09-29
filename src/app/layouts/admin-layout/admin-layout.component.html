@@ -1,0 +1,30 @@
+<div class="app-shell">
+    <aside class="sidebar">
+        <a routerLink="/admin" routerLinkActive="active">
+            <div class="brand">
+                <span class="brand-mark">L</span><span>Learnify</span>
+            </div>
+        </a>
+        <div class="workspace-label">QUẢN TRỊ HỆ THỐNG</div>
+        <nav>
+            <a routerLink="/admin/overview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><span
+                    class="nav-icon">⌂</span>Tổng quan</a>
+            <a routerLink="/admin/courses" routerLinkActive="active"><span class="nav-icon">▣</span>Khóa học</a>
+            <a routerLink="/admin/students" routerLinkActive="active"><span class="nav-icon">♙</span>Học viên</a>
+            <a routerLink="/admin/teachers" routerLinkActive="active"><span class="nav-icon">♧</span>Giảng viên</a>
+            <a routerLink="/admin/reports" routerLinkActive="active"><span class="nav-icon">◒</span>Báo cáo</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a routerLink="/admin/settings" routerLinkActive="active"><span class="nav-icon">⚙</span>Cài đặt</a>
+            <a routerLink="/admin/signOut" routerLinkActive="active" (click)="singout()"><span class="nav-icon">↪</span>Đăng xuất</a>
+        </div>
+    </aside>
+    <main class="main-content">
+        <header class="topbar">
+            <span>Learnify Admin</span>
+            <div class="mini-avatar">MA</div>
+        </header>
+        <br>
+        <router-outlet></router-outlet>
+    </main>
+</div>

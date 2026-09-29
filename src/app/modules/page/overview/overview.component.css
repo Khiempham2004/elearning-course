@@ -1,0 +1,12 @@
+.sidebar{
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 80px;
+    background-color:aqua;
+}
+
+.sidebar-length{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}

@@ -17,7 +17,7 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { DatePipe, NgFor } from '@angular/common';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { CorusesService } from '../../component/services/coruses.service';
+import { CorusesService } from '../../../core/services/coruses.service';
 import { finalize } from 'rxjs';
 import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
 import { NzMessageService } from 'ng-zorro-antd/message';

@@ -27,4 +27,8 @@ export class StudentsService {
   deleteStudent(id: any): Observable<any> {
     return this.http.delete<any[]>(`${this.studentApi}/${id}`);
   }
+
+  getAllClass() : Observable<any>{
+    return this.http.get<any[]>(this.studentApi);
+  }
 }

@@ -1,4 +1,4 @@
-/* :host {
+:host {
     display: block;
     min-height: 100vh;
 }
@@ -129,4 +129,4 @@ nav a.active,
     font-size: 22px;
     color: #087EED;
     font-weight: bold;
-} */
+}

@@ -19,7 +19,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { StudentsService } from '../../component/services/students.service';
+import { StudentsService } from '../../../core/services/students.service';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 
 @Component({
