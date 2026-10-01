@@ -58,3 +58,41 @@ tr:hover {
     border-radius: 16px !important;
     overflow: hidden;
 }
+
+::ng-deep .ant-input {
+    font-size: 15px;
+    color: #222 !important;
+}
+
+::ng-deep .ant-input:disabled {
+    color: #222 !important;
+    -webkit-text-fill-color: #222 !important;
+    background-color: #f5f5f5 !important;
+    font-size: 15px;
+    opacity: 1 !important;
+}
+
+::ng-deep .ant-select-disabled .ant-select-selector {
+    color: #222 !important;
+    font-weight: 500;
+    opacity: 1 !important;
+    font-size: 15px;
+}
+
+::ng-deep .ant-picker-disabled {
+    font-size: 15px;
+    color: #222 !important;
+    -webkit-text-fill-color: #222 !important;
+    font-weight: 500;
+}
+
+::ng-deep .ant-modal-title {
+    justify-content: center;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+::ng-deep .ant-form-item-label>label {
+    font-weight: bold;
+}

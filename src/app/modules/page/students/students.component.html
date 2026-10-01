@@ -141,7 +141,7 @@
         </div>
       </div>
 
-      <div class="form-actions-student">
+      <div class="form-actions-student" *ngIf="status !== 'DETAIL'">
         <button nz-button type="button" (click)="handleCancel()">
           Hủy
         </button>

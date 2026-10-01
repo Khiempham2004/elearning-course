@@ -11,12 +11,12 @@
 }
 
 .sidebar {
-    width: 246px;
+    width: 270px;
     background: #fff;
     border-right: 1px solid #e9ecf3;
     display: flex;
     flex-direction: column;
-    padding: 25px 15px 17px;
+    padding: 25px 40px 17px;
     flex-shrink: 0;
 }
 
@@ -63,7 +63,7 @@ nav a,
     border-radius: 9px;
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 15px;
 }
 
 nav a.active,

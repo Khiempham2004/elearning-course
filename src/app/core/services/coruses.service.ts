@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -8,24 +8,37 @@ import { Observable } from 'rxjs';
 export class CorusesService {
   constructor(private http: HttpClient) {}
   private readonly coursesApi = 'http://localhost:9000/courses';
+  private readonly apiCourse = 'http://localhost:3001/api/course';
 
-  getAllCourses(): Observable<any> {
-    return this.http.get<any[]>(this.coursesApi);
+  getAllCourses(
+    keyword: string = '',
+    page: number = 1,
+    pageSize: number = 10,
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', pageSize.toString());
+    if (keyword.trim()) {
+      params = params.set('q', keyword.trim());
+    }
+    return this.http.get<any[]>(this.apiCourse, { params });
   }
 
   getCourseById(id: any): Observable<any> {
-    return this.http.get<any[]>(`${this.coursesApi}/${id}`);
+    return this.http.get<any>(`${this.apiCourse}/${id}`);
   }
 
   createCourse(data: any): Observable<any> {
-    return this.http.post<any[]>(this.coursesApi, data);
+    return this.http.post<any[]>(this.apiCourse, data);
   }
 
   putCourse(id: any, data: any): Observable<any> {
-    return this.http.put<any[]>(`${this.coursesApi}/${id}`, data);
+    return this.http.put<any>(`${this.apiCourse}/${id}`, data);
   }
 
   deleteCourse(id: any): Observable<any> {
-    return this.http.delete<any[]>(`${this.coursesApi}/${id}`);
+    return this.http.delete<any>(`${this.apiCourse}/${id}`);
   }
+
+  //search
 }

@@ -1,11 +1,12 @@
-.page {
-    padding: 42px;
+.sidebar{
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 80px;
+    background-color:aqua;
 }
 
-h1 {
-    font-size: 28px;
-}
-
-p {
-    color: #748096;
+.sidebar-length{
+    display: flex;
+    text-align: center;
+    justify-content: center;
 }

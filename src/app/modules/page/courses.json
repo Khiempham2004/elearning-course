@@ -11,7 +11,7 @@
       "price": "15000000",
       "startDate": "2026-10-01",
       "endDate": "2027-10-30T09:40:19.939Z",
-      "status": true,
+      "status": false,
       "id": "1"
     },
     {
@@ -29,7 +29,6 @@
       "id": "2"
     },
     {
-      "id": "3",
       "courseCode": "REACT001",
       "courseName": "ReactJS Cơ Bản",
       "category": "Frontend",
@@ -40,7 +39,8 @@
       "price": 1800000,
       "startDate": "2026-09-25",
       "endDate": "2026-11-10",
-      "status": true
+      "status": true,
+      "id": "3"
     },
     {
       "id": "4",

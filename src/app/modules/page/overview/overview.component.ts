@@ -9,56 +9,51 @@ import { TeachersService } from '../../../core/services/teachers.service';
   styleUrls: ['./overview.component.css'],
 })
 export class OverviewComponent implements OnInit {
-  statistics = {
-    totalCourses: 0,
-    totalStudents: 0,
-    totalTeachers: 0,
-    activeClass: 0,
-  };
+  totalStudents: any[] = [];
+  totalCourses: any[] = [];
+  totalTeachers: any[] = [];
+  totalActiveClasses: any[] = [];
 
-  courses: any[] = [];
-  students: any[] = [];
-  teachers: any[] = [];
-  classActive : any[]=[];
+  filterSearch: string = '';
+  page = 1;
+  pageSize = 10;
+  toal = 0;
   constructor(
     private studentService: StudentsService,
     private courseService: CorusesService,
     private teacherService: TeachersService,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getAllCourse();
+    this.getAllStudent();
+    this.getAllTeacher();
+  }
 
   getAllCourse() {
-    this.courseService.getAllCourses().subscribe({
-      next: (res: any) => {
-        this.courses = res || [];
-        console.log('tong khoa hoc', this.courses.length);
-      },
-    });
+    this.courseService
+      .getAllCourses(this.filterSearch, this.page, this.pageSize)
+      .subscribe({
+        next: (res: any) => {
+          this.totalCourses = res || [];
+          console.log('Tong cac khoa hoc :', this.totalCourses.length);
+        },
+      });
   }
   getAllStudent() {
     this.studentService.getAllStudents().subscribe({
       next: (res: any) => {
-        this.students = res || [];
-        console.log('tong  hoc vien', this.courses.length);
+        this.totalStudents = res || [];
+        console.log('Tong cac khoa hoc :', this.totalStudents.length);
       },
     });
   }
   getAllTeacher() {
     this.teacherService.getAllTeachers().subscribe({
       next: (res: any) => {
-        this.teachers = res || [];
-        console.log('tong giao vien', this.courses.length);
+        this.totalTeachers = res || [];
+        console.log('Tong cac khoa hoc :', this.totalTeachers.length);
       },
     });
-  }
-
-  getAllClass(){
-    this.studentService.getAllClass().subscribe({
-      next : (res:any) => {
-        this.classActive = res || [];
-        console.log('tong lop hoc ', this.classActive.length);
-      }
-    })
   }
 }

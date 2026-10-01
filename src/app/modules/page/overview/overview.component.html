@@ -1,21 +1,69 @@
-<div class="header">
-  <h1>BÁO CÁO</h1>
-  <div class="sidebar">
+<div class="overview">
+  <div class="page-header">
     <div>
-      <span>[ Tổng khóa học ]</span><br>
-      <span class="sidebar-length">{{courses.length}}</span>
+      <h1>Tổng quan</h1>
+      <p>
+        Chào mừng bạn quay lại hệ thống quản lý đào tạo
+      </p>
     </div>
-    <div>
-      <span>[ Tổng học viên ]</span><br>
-      <span class="sidebar-length">{{students.length}}</span>
+  </div>
+
+
+  <div class="statistics">
+    <div class="stat-card">
+      <div class="stat-icon">
+        👨‍🎓
+      </div>
+      <div class="stat-content">
+        <span class="stat-title">
+          Tổng học viên
+        </span>
+        <h2>
+          {{ totalStudents.length }}
+        </h2>
+      </div>
     </div>
-    <div>
-      <span>[ Tổng giảng viên ]</span><br>
-      <span class="sidebar-length">{{courses.length}}</span>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        📚
+      </div>
+      <div class="stat-content">
+        <span class="stat-title">
+          Tổng khóa học
+        </span>
+        <h2>
+          {{ totalCourses.length }}
+        </h2>
+      </div>
     </div>
-    <div>
-      <span>[ Lớp đang học ]</span><br>
-      <span class="sidebar-length">{{classActive.length}}</span>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        👨‍🏫
+      </div>
+      <div class="stat-content">
+        <span class="stat-title">
+          Tổng giảng viên
+        </span>
+        <h2>
+          {{ totalTeachers.length }}
+        </h2>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        🏫
+      </div>
+      <div class="stat-content">
+        <span class="stat-title">
+          Lớp đang học
+        </span>
+        <h2>
+          {{ totalActiveClasses.length }}
+        </h2>
+      </div>
     </div>
   </div>
 </div>

@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 
-import { DatePipe, NgFor } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
@@ -42,12 +42,13 @@ import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
     NzPaginationModule,
     NzDatePickerComponent,
     DatePipe,
+    NgIf
   ],
 })
 export class StudentsComponent implements OnInit {
   filterSearch: string = '';
   isStudent = false;
-  status: 'CREATE' | 'EDIT' = 'CREATE';
+  status: 'CREATE' | 'EDIT' | 'DETAIL' = 'CREATE';
   listOfStudent: any[] = [];
   students: any[] = [];
   filterSearchStudent: any[] = [];
@@ -82,6 +83,7 @@ export class StudentsComponent implements OnInit {
   handleCreate() {
     this.status = 'CREATE';
     this.isStudent = true;
+    this.formStudent.enable();
     this.formStudent.reset();
   }
 
@@ -101,6 +103,9 @@ export class StudentsComponent implements OnInit {
     }
     if (this.status === 'EDIT') {
       return 'Chỉnh sửa học viên';
+    }
+    if(this.status === 'DETAIL'){
+      return 'Chi tiết học viên'
     }
     return '';
   }
@@ -209,6 +214,8 @@ export class StudentsComponent implements OnInit {
         this.isStudent = true;
       },
     });
+    this.formStudent.enable();
+    this.formStudent.reset();
   }
 
   handleDelete(item: any) {
@@ -237,13 +244,14 @@ export class StudentsComponent implements OnInit {
   }
 
   handleRowClick(item: any) {
-    this.status = 'EDIT';
+    this.status = 'DETAIL';
     this.studentId = item.id;
     this.isStudent = true;
 
     this.studentService.getStudentById(item.id).subscribe({
       next: (res: any) => {
         this.formStudent.patchValue(res);
+        this.formStudent.disable();
       },
       error: (err: any) => {
         console.log(err);

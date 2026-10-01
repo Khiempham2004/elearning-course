@@ -14,7 +14,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
-import { DatePipe, NgFor } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { CorusesService } from '../../../core/services/coruses.service';
@@ -40,10 +40,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NgFor,
     NzInputNumberModule,
     NzDatePickerModule,
-    NzPaginationComponent,
     DatePipe,
     FormsModule,
-    NzIconModule
+    NzIconModule,
+    NgIf,
   ],
 })
 export class CourseComponent implements OnInit {
@@ -56,7 +56,7 @@ export class CourseComponent implements OnInit {
   courseId: any;
   isCourse = false;
   startDate: Date | null = null;
-  status: 'CREATE' | 'EDIT' = 'CREATE';
+  status: 'CREATE' | 'EDIT' | 'DETAIL' = 'CREATE';
 
   page = 1;
   pageSize = 10;
@@ -93,6 +93,8 @@ export class CourseComponent implements OnInit {
   openModalCourse() {
     this.status = 'CREATE';
     this.isCourse = true;
+    this.form.enable();
+    this.form.reset();
   }
   cancelModalCourse() {
     this.isCourse = false;
@@ -101,10 +103,13 @@ export class CourseComponent implements OnInit {
 
   get modalTitleCourse(): string {
     if (this.status === 'CREATE') {
-      return 'Tạo mới khóa học';
+      return 'Thêm mới Khóa học';
     }
     if (this.status === 'EDIT') {
-      return 'Chỉnh sửa khóa học';
+      return 'Chỉnh sửa Khóa học';
+    }
+    if (this.status === 'DETAIL') {
+      return 'Chi tiết Khóa học';
     }
     return '';
   }
@@ -127,40 +132,26 @@ export class CourseComponent implements OnInit {
   }
 
   handleFiterSearch(): void {
-    const keyword = this.filterSearch.trim().toLowerCase();
-
     this.page = 1;
-
-    if (!keyword) {
-      this.filterCourseSearch = [...this.courses];
-    } else {
-      //cos keyword moi filter
-      this.filterCourseSearch = this.courses.filter((course: any) => {
-        return (
-          course.teacherName?.toLowerCase().includes(keyword) ||
-          course.teacherName?.toLowerCase().includes(keyword)
-        );
-      });
-    }
-    //tong sau khi search
-    this.total = this.filterCourseSearch.length;
-
-    this.updatePagination();
+    this.getAllCourses();
   }
 
   getAllCourses() {
-    this.courseService.getAllCourses().subscribe({
-      next: (res: any) => {
-        this.courses = res;
-        this.listOfCourse = [
-          ...this.courses.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        this.total = this.courses.length;
-      },
-    });
+    this.courseService
+      .getAllCourses(this.filterSearch, this.page, this.pageSize)
+      .subscribe({
+        next: (res: any) => {
+          this.courses = res?.data || [];
+          this.listOfCourse = [...this.courses];
+          console.log('list of course', this.listOfCourse);
+
+          //phan trang lay data
+          this.total = res?.pagination?.totalCourses || 0;
+        },
+        error: (err) => {
+          this.nzMessage.error('Không thể tải danh sách khóa học');
+        },
+      });
   }
 
   handleSubmit() {
@@ -192,6 +183,7 @@ export class CourseComponent implements OnInit {
           next: (res: any) => {
             this.nzMessage.success('Tạo mới thành công', res);
             this.getAllCourses();
+            this.form.enable();
           },
           error: (err: any) => {
             console.log('Create you error : ', err);
@@ -215,32 +207,49 @@ export class CourseComponent implements OnInit {
     this.courseId = null;
     this.isCourse = false;
     this.getAllCourses();
+    this.form.enable();
     this.form.reset();
   }
 
-  handlleEdit(item: any) {
+  handleEdit(item: any) {
     console.log('item edit :', item);
     this.status = 'EDIT';
-    this.courseId = item.id;
-    this.courseService.getCourseById(item.id).subscribe({
+    this.courseId = item._id ?? item.id;
+    this.isCourse = true;
+
+    this.form.enable();
+    this.form.reset();
+
+    this.courseService.getCourseById(this.courseId).subscribe({
       next: (res: any) => {
-        this.form.patchValue({
-          courseCode: res?.courseCode,
-          courseName: res?.courseName,
-          category: res?.category,
-          teacherId: res?.teacherId,
-          teacherName: res?.teacherName,
-          duration: res?.duration,
-          maxStudents: res?.maxStudents,
-          price: res?.price,
-          startDate: res?.startDate,
-          endDate: res?.endDate,
-          status: res?.status,
-        });
-        this.getAllCourses();
-        this.isCourse = true;
+        const courseData = res.data;
+        if (!courseData) {
+          console.log('Khong co du lieu khoa hoc');
+          return;
+        }
+        console.log('course data :', courseData);
+
+        if (courseData) {
+          this.form.patchValue({
+            courseCode: courseData.courseCode,
+            courseName: courseData.courseName,
+            category: courseData.category,
+            teacherId: courseData.teacherId,
+            teacherName: courseData.teacherName,
+            duration: courseData.duration,
+            maxStudents: courseData.maxStudents,
+            price: courseData.price,
+            startDate: courseData.startDate,
+            endDate: courseData.endDate,
+            status: courseData.status,
+          });
+        }
+      },
+      error: (err: any) => {
+        console.log('Lỗi khi lấy thông tin khóa học', err);
       },
     });
+    this.getAllCourses();
   }
 
   handleDelete(item: any) {
@@ -252,34 +261,37 @@ export class CourseComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.courseService.deleteCourse(item.id).subscribe({
+        this.courseService.deleteCourse(item._id).subscribe({
           next: (res: any) => {
             this.nzMessage.success('Xóa khóa học thành công', res);
+            this.getAllCourses();
           },
           error: (err: any) => {
             this.nzMessage.error('Xóa khóa học thất bại', err);
           },
         });
-        this.form.reset();
-        this.getAllCourses();
-        this.isCourse = false;
       },
       nzCancelText: 'No',
       nzOnCancel: () => console.log('Cancel'),
     });
+    this.form.reset();
+    this.isCourse = false;
   }
 
   handleRowClick(item: any) {
-    this.status = 'EDIT';
-    this.courseId = item.id;
+    this.status = 'DETAIL';
+    this.courseId = item._id ?? item.id;
     this.isCourse = true;
-    this.courseService.getCourseById(item.id).subscribe({
+    this.courseService.getCourseById(this.courseId).subscribe({
       next: (res: any) => {
-        this.form.patchValue(res);
+        const courseData = res?.data || res;
+        this.form.patchValue(courseData);
+        this.form.disable();
       },
       error: (err: any) => {
         console.log('Lấy chi tiết khóa học thất bại', err);
       },
     });
+    this.getAllCourses();
   }
 }

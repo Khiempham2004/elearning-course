@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, DatePipe, NgFor } from '@angular/common';
+import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
@@ -47,12 +47,13 @@ import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
     NzIconModule,
     NzTagModule,
     NzPaginationComponent,
-    FormsModule
+    FormsModule,
+    NgIf,
   ],
 })
 export class TeachersComponent implements OnInit {
   isTeacher = false;
-  status: 'CREATE' | 'EDIT' = 'CREATE';
+  status: 'CREATE' | 'EDIT' | 'DETAIL' = 'CREATE';
   formTeacher!: FormGroup;
   teachers: any = [];
   listOfTeacher: any = [];
@@ -97,6 +98,9 @@ export class TeachersComponent implements OnInit {
     if (this.status === 'EDIT') {
       return 'Chỉnh sửa giảng viên';
     }
+    if (this.status === 'DETAIL') {
+      return 'Chi tiết giảng viên';
+    }
     return '';
   }
 
@@ -113,6 +117,7 @@ export class TeachersComponent implements OnInit {
   handleCreate() {
     this.isTeacher = true;
     this.status = 'CREATE';
+    this.formTeacher.enable();
     this.formTeacher.reset();
   }
 
@@ -208,6 +213,7 @@ export class TeachersComponent implements OnInit {
     this.teacherService.getTeacherById(item.id).subscribe({
       next: (res: any) => {
         this.formTeacher.patchValue(res);
+        this.formTeacher.enable();
       },
       error: (err: any) => {
         this.nzMessage.error('Lấy chi tiết giảng viên thất bại', err);
@@ -242,13 +248,14 @@ export class TeachersComponent implements OnInit {
   }
 
   handleRowClick(item: any) {
-    this.status = 'EDIT';
+    this.status = 'DETAIL';
     this.teacherId = item.id;
     this.isTeacher = true;
-
+    
     this.teacherService.getTeacherById(item.id).subscribe({
       next: (res: any) => {
         this.formTeacher.patchValue(res);
+        this.formTeacher.disable();
       },
       error: (err: any) => {
         console.log(err);
