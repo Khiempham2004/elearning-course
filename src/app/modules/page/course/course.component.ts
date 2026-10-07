@@ -19,7 +19,10 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { CorusesService } from '../../../core/services/coruses.service';
 import { finalize } from 'rxjs';
-import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
+import {
+  NzPaginationComponent,
+  NzPaginationModule,
+} from 'ng-zorro-antd/pagination';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 @Component({
@@ -44,6 +47,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     FormsModule,
     NzIconModule,
     NgIf,
+    NzPaginationModule,
   ],
 })
 export class CourseComponent implements OnInit {
@@ -59,7 +63,7 @@ export class CourseComponent implements OnInit {
   status: 'CREATE' | 'EDIT' | 'DETAIL' = 'CREATE';
 
   page = 1;
-  pageSize = 10;
+  pageSize = 5;
   total = 0;
 
   constructor(
@@ -294,4 +298,11 @@ export class CourseComponent implements OnInit {
     });
     this.getAllCourses();
   }
+
+  handlePageSize = [
+    { label: '5', value: 5 },
+    { label: '10', value: 10 },
+    { label: '15', value: 15 },
+    { label: '20', value: 20 },
+  ];
 }

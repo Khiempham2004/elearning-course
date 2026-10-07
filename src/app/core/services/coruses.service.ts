@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CorusesService {
   constructor(private http: HttpClient) {}
-  private readonly coursesApi = 'http://localhost:9000/courses';
+  // private readonly coursesApi = 'http://localhost:9000/courses';
   private readonly apiCourse = 'http://localhost:3001/api/course';
 
   getAllCourses(

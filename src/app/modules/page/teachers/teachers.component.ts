@@ -46,7 +46,6 @@ import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
     NzDatePickerModule,
     NzIconModule,
     NzTagModule,
-    NzPaginationComponent,
     FormsModule,
     NgIf,
   ],
@@ -57,7 +56,7 @@ export class TeachersComponent implements OnInit {
   formTeacher!: FormGroup;
   teachers: any = [];
   listOfTeacher: any = [];
-  filterSearch: any;
+  filterSearch: string = '';
   fitlerTeacherSearch: any;
   teacherId: any = null;
 
@@ -130,8 +129,6 @@ export class TeachersComponent implements OnInit {
 
   handleSearch() {
     const keyword = this.filterSearch.trim().toLowerCase();
-    console.log('keyword search : ', keyword);
-
     this.page = 1;
 
     if (!keyword) {
@@ -146,18 +143,15 @@ export class TeachersComponent implements OnInit {
   }
 
   getAllTeacher() {
-    this.teacherService.getAllTeachers().subscribe({
-      next: (res: any) => {
-        this.teachers = res || [];
-        this.listOfTeacher = [
-          ...this.teachers.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        this.total = this.teachers.length;
-      },
-    });
+    this.teacherService
+      .getAllTeachers(this.filterSearch, this.page, this.pageSize)
+      .subscribe({
+        next: (res: any) => {
+          this.teachers = res?.data || [];
+          this.listOfTeacher = [...this.teachers];
+          this.total = res?.pagination?.totalTeachers;
+        },
+      });
   }
   handleSubmit() {
     if (this.formTeacher.invalid) {
@@ -208,11 +202,12 @@ export class TeachersComponent implements OnInit {
 
   handleEdit(item: any) {
     this.status = 'EDIT';
-    this.teacherId = item.id;
+    this.teacherId = item._id ?? item.id;
     this.isTeacher = true;
-    this.teacherService.getTeacherById(item.id).subscribe({
+    this.teacherService.getTeacherById(this.teacherId).subscribe({
       next: (res: any) => {
-        this.formTeacher.patchValue(res);
+        const teacherData = res?.data || res;
+        this.formTeacher.patchValue(teacherData);
         this.formTeacher.enable();
       },
       error: (err: any) => {
@@ -231,7 +226,7 @@ export class TeachersComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.teacherService.deleteTeacher(item.id).subscribe({
+        this.teacherService.deleteTeacher(item._id).subscribe({
           next: (res: any) => {
             this.nzMessage.success('Xóa khóa học thành công', res);
             this.formTeacher.reset();
@@ -249,12 +244,13 @@ export class TeachersComponent implements OnInit {
 
   handleRowClick(item: any) {
     this.status = 'DETAIL';
-    this.teacherId = item.id;
+    this.teacherId = item._id ?? item.id;
     this.isTeacher = true;
-    
-    this.teacherService.getTeacherById(item.id).subscribe({
+
+    this.teacherService.getTeacherById(this.teacherId).subscribe({
       next: (res: any) => {
-        this.formTeacher.patchValue(res);
+        const teacherData = res?.data || res;
+        this.formTeacher.patchValue(teacherData);
         this.formTeacher.disable();
       },
       error: (err: any) => {

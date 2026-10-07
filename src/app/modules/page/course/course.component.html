@@ -6,8 +6,7 @@
 </div>
 
 <nz-table #basicTable [nzData]="listOfCourse" class="class-table-coruse" [nzScroll]="{ x: '700px', y: '500px' }"
-  [nzFrontPagination]="false" [nzPageSize]="pageSize" [nzTotal]="total" [nzPageIndex]="page" [nzShowSizeChanger]="true"
-  (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" [nzShowPagination]="true">
+  [nzShowPagination]="false" [nzShowPagination]="false">
   <thead>
     <tr>
       <th nzWidth="120px">CourseCode</th>
@@ -49,9 +48,17 @@
   </tbody>
 </nz-table>
 
-<div style="display: flex;justify-content: space-between;align-items: start;">
+<div style="display: flex;justify-content: space-between;align-items: start;margin-top: 20px;">
   <div>
     Tổng số : <span style="font-weight: bold;font-size: 16px;"> {{total}} </span> bản ghi
+  </div>
+  <div style="display: flex; justify-content: center;align-items: center;gap: 10px; margin-right: 20px;">
+    <div style="display: flex;align-items: center; gap: 10px">
+      <span>Hiển thị</span>
+      <nz-select class="select-pagination" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="handlePageSize" />
+    </div>
+    <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
+      (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
   </div>
 </div>
 

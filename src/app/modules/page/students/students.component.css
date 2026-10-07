@@ -82,3 +82,32 @@ button {
     font-weight: bold;
     font-size: 16px;
 }
+
+::ng-deep .ant-form-item-label>label {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+::ng-deep .ant-modal-title {
+    justify-content: center;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+::ng-deep .ant-select-selector {
+    border-radius: 8px !important;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+::ng-deep .ant-select-selection-item {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+::ng-deep .ant-picker-disabled {
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px !important;
+}

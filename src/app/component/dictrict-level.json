@@ -1,0 +1,139 @@
+{
+  "dictrict": [
+    {
+      "id": 1,
+      "districtCode": "001",
+      "districtName": "Ba Đình",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 2,
+      "districtCode": "002",
+      "districtName": "Hoàn Kiếm",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 3,
+      "districtCode": "003",
+      "districtName": "Đống Đa",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 4,
+      "districtCode": "004",
+      "districtName": "Hai Bà Trưng",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 5,
+      "districtCode": "005",
+      "districtName": "Cầu Giấy",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 6,
+      "districtCode": "006",
+      "districtName": "Thanh Xuân",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 7,
+      "districtCode": "007",
+      "districtName": "Hà Đông",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 8,
+      "districtCode": "008",
+      "districtName": "Tây Hồ",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 9,
+      "districtCode": "009",
+      "districtName": "Long Biên",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 10,
+      "districtCode": "010",
+      "districtName": "Nam Từ Liêm",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 11,
+      "districtCode": "011",
+      "districtName": "Bắc Từ Liêm",
+      "districtType": "Quận",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 12,
+      "districtCode": "012",
+      "districtName": "Thanh Trì",
+      "districtType": "Huyện",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 13,
+      "districtCode": "013",
+      "districtName": "Gia Lâm",
+      "districtType": "Huyện",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 14,
+      "districtCode": "014",
+      "districtName": "Đông Anh",
+      "districtType": "Huyện",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": true
+    },
+    {
+      "id": 15,
+      "districtCode": "015",
+      "districtName": "Sóc Sơn",
+      "districtType": "Huyện",
+      "provinceId": 1,
+      "provinceName": "Hà Nội",
+      "status": false
+    }
+  ]
+}

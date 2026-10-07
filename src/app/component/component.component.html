@@ -1,11 +1,11 @@
-<nz-tabset>
+<nz-tabset style="margin-left: 30px;" [nzSelectedIndex]="indexTab" (nzSelectedIndexChange)="handleIndexTab($event)">
     <nz-tab nzTitle="Cấp tỉnh">
-        <ng-container *ngIf="indexTab == 0" >
+        <ng-container *ngIf="indexTab == 0">
             <app-cpnCon></app-cpnCon>
         </ng-container>
     </nz-tab>
     <nz-tab nzTitle="Cấp huyện">
-        <ng-container *ngIf="indexTab == 0">
+        <ng-container *ngIf="indexTab == 1">
             <app-area-con></app-area-con>
         </ng-container>
     </nz-tab>

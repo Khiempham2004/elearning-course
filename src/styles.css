@@ -3,3 +3,88 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; font-family: 'DM Sans', Arial, sans-serif; }
 button, input, select { font-family: inherit; }
+
+/* Province create/edit modal is rendered in the CDK overlay, outside component styles. */
+.province-form-modal .ant-modal-content {
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid #e7edf5;
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(15, 35, 65, 0.2);
+}
+
+.province-form-modal .ant-modal-header {
+  margin: 0;
+  padding: 22px 28px;
+  border-bottom: 1px solid #edf1f6;
+  background: linear-gradient(135deg, #f5f9ff, #fff);
+}
+
+.province-form-modal .ant-modal-title {
+  color: #183b66;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.province-form-modal .ant-modal-body {
+  padding: 24px 28px 26px;
+}
+
+.province-form-modal .province-form .ant-form-item {
+  margin-bottom: 18px;
+}
+
+.province-form-modal .province-form .ant-form-item-label > label {
+  color: #34445a;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.province-form-modal .province-form input.ant-input,
+.province-form-modal .province-form .ant-select-selector {
+  min-height: 42px;
+  border-color: #d8e1ed;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.province-form-modal .province-form input.ant-input {
+  padding: 9px 12px;
+}
+
+.province-form-modal .province-form input.ant-input:hover,
+.province-form-modal .province-form .ant-select-selector:hover {
+  border-color: #7aa9e8;
+}
+
+.province-form-modal .province-form input.ant-input:focus,
+.province-form-modal .province-form .ant-select-focused .ant-select-selector {
+  border-color: #3478d4;
+  box-shadow: 0 0 0 3px rgba(52, 120, 212, 0.12);
+}
+
+.province-form-modal .province-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.province-form-modal .province-form__actions .ant-btn {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.province-form-modal .province-form__actions .ant-btn-primary {
+  border-color: #2469c7;
+  background: #2469c7;
+  box-shadow: 0 4px 10px rgba(36, 105, 199, 0.2);
+}
+
+@media (max-width: 575px) {
+  .province-form-modal { max-width: calc(100vw - 24px); }
+  .province-form-modal .ant-modal-header { padding: 18px 20px; }
+  .province-form-modal .ant-modal-body { padding: 20px; }
+}

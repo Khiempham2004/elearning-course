@@ -1,2 +1,120 @@
-<span style="font-size: 22px;color: #087EED;font-family: Inter Bold;">QUẢN LÝ KHÓA HỌC</span>
+<span class="dictrict-title">QUẢN LÝ DANH MỤC CẤP HUYỆN</span>
+<div style="display: flex; gap: 20px; margin-top: 10px">
+    <input nz-input type="text" placeholder="Tìm kiếm dữ liệu..." />
+    <button nz-button nzType="primary" (click)="openModal()">
+        Tạo mới cấp huyện
+    </button>
+</div>
 
+<nz-table class="table-wrapper" #basicTable [nzData]="listOfDictrict" [nzShowPagination]="false"
+    [nzFrontPagination]="false" [nzBordered]="true" [nzScroll]="{x:'1000px',y:'500px'}">
+    <thead>
+        <tr>
+            <th>Mã huyện</th>
+            <th>Tên huyện</th>
+            <th>Loại</th>
+            <th>Thuộc</th>
+            <th>Tên tỉnh/thành phố</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let dictrict of listOfDictrict">
+            <td>{{ dictrict.districtCode }}</td>
+            <td>{{ dictrict.districtName }}</td>
+            <td>{{ dictrict.districtType }}</td>
+            <td>{{ dictrict.provinceId }}</td>
+            <td>{{ dictrict.provinceName }}</td>
+            <td>{{ dictrict.status }}</td>
+            <td class="dictrict-icon">
+                <button nz-button nzType="primary" (click)="handleClickDictrictEdit(dictrict)">
+                    <span nz-icon nzType="edit" nzTheme="outline"></span>
+                </button>
+                <button nz-button nzType="primary" (click)="handleClickDictrictDelete(dictrict)">
+                    <span nz-icon nzType="delete" nzTheme="outline"></span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<div class="pagination-header">
+    <div>
+        Tổng số : <span style="font-weight: 600;"> {{ total }} </span> bản ghi
+    </div>
+    <div class="pagination-wrapper">
+        <span>Hiển thị</span>
+        <nz-select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="handleOptionDictrict" />
+        <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
+            (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
+    </div>
+</div>
+
+<nz-modal [(nzVisible)]="isDictrict" [nzTitle]="modalTitle" [nzFooter]="null" nzWidth="800px"
+    (nzOnCancel)="closeCancel()">
+    <ng-container *nzModalContent>
+        <form [formGroup]="form" nz-form nzLayout="vertical">
+            <nz-form-item>
+                <nz-form-label>
+                    <span>Mã huyện</span>
+                </nz-form-label>
+                <nz-form-control nzErrorTip="Mã huyện là bắt buộc phải nhập">
+                    <input nz-input formControlName="dictrictCode" placeholder="Mã huyện..." />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>
+                    <span>Tên huyện</span>
+                </nz-form-label>
+                <nz-form-control nzErrorTip="Tên huyện là bắt buộc phải nhập">
+                    <input nz-input formControlName="dictrictName" placeholder="Tên huyện..." />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>
+                    <span>Loại</span>
+                </nz-form-label>
+                <nz-form-control nzErrorTip="Loại là bắt buộc phải nhập">
+                    <input nz-input formControlName="districtType" placeholder="Loại:Quận/Huyện/Thị xã/TP..." />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>
+                    <span>Thuộc cấp tỉnh</span>
+                </nz-form-label>
+                <nz-form-control nzErrorTip="Thuộc tỉnh là bắt buộc phải nhập">
+                    <input nz-input formControlName="provinceId" placeholder="Thuộc tỉnh/thành phố nào..." />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>
+                    <span>Tên tỉnh/tp</span>
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="provinceName" placeholder="Tên tỉnh/tp..." />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>
+                    <span>Trạng thái</span>
+                </nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="status" nzPlaceHolder="Chọn trạng thái">
+                        <nz-option [nzValue]="true" nzLabel="true" />
+                        <nz-option [nzValue]="false" nzLabel="false" />
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <div class="form-modal-icon">
+                <button nz-button type="button" (click)="closeCancel()">Hủy</button>
+                <button nz-button nzType="primary" type="submit" (click)="handleSubmitDictrict()">Lưu</button>
+            </div>
+        </form>
+    </ng-container>
+</nz-modal>

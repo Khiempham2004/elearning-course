@@ -42,7 +42,7 @@ import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
     NzPaginationModule,
     NzDatePickerComponent,
     DatePipe,
-    NgIf
+    NgIf,
   ],
 })
 export class StudentsComponent implements OnInit {
@@ -104,27 +104,15 @@ export class StudentsComponent implements OnInit {
     if (this.status === 'EDIT') {
       return 'Chỉnh sửa học viên';
     }
-    if(this.status === 'DETAIL'){
-      return 'Chi tiết học viên'
+    if (this.status === 'DETAIL') {
+      return 'Chi tiết học viên';
     }
     return '';
   }
 
   handleSearch() {
-    const keyword = this.filterSearch.trim().toLowerCase();
-    console.log('keyword search : ', keyword);
-
     this.page = 1;
-
-    if (!keyword) {
-      this.filterSearchStudent = [...this.students];
-    } else {
-      this.filterSearchStudent = this.students.filter((item: any) => {
-        return item.studentName.toLowerCase().includes(keyword);
-      });
-    }
-    this.total = this.filterSearchStudent.length;
-    this.updatePagition();
+    this.getAllStudent();
   }
 
   pageChange(page: any) {
@@ -139,18 +127,15 @@ export class StudentsComponent implements OnInit {
   }
 
   getAllStudent() {
-    this.studentService.getAllStudents().subscribe({
-      next: (res: any) => {
-        this.students = res || [];
-        this.listOfStudent = [
-          ...this.students.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        this.total = this.students.length;
-      },
-    });
+    this.studentService
+      .getAllStudents(this.filterSearch, this.page, this.pageSize)
+      .subscribe({
+        next: (res: any) => {
+          this.students = res?.data || [];
+          this.listOfStudent = [...this.students];
+          this.total = res?.pagination?.totalStudents;
+        },
+      });
   }
 
   handleSubmit() {
@@ -197,25 +182,27 @@ export class StudentsComponent implements OnInit {
   handleEdit(item: any) {
     console.log('item edit : ', item);
     this.status = 'EDIT';
-    this.studentId = item.id;
-    this.studentService.getStudentById(item.id).subscribe({
-      next: (res: any) => {
-        this.formStudent.patchValue({
-          studentCode: res?.studentCode ?? '',
-          studentName: res?.studentName ?? '',
-          phone: res?.phone ?? '',
-          email: res?.email ?? '',
-          gender: res?.gender ?? '',
-          dob: res?.dob ?? '',
-          class: res?.class ?? '',
-          status: res?.status ?? '',
-        });
-        this.getAllStudent();
-        this.isStudent = true;
-      },
-    });
+    this.studentId = item._id ?? item.id;
     this.formStudent.enable();
     this.formStudent.reset();
+
+    this.isStudent = true;
+    this.studentService.getStudentById(this.studentId).subscribe({
+      next: (res: any) => {
+        const studentData = res?.data;
+        this.formStudent.patchValue({
+          studentCode: studentData.studentCode ?? '',
+          studentName: studentData.studentName ?? '',
+          phone: studentData.phone ?? '',
+          email: studentData.email ?? '',
+          gender: studentData.gender ?? '',
+          dob: studentData.dob ?? '',
+          class: studentData.class ?? '',
+          status: studentData.status ?? '',
+        });
+      },
+    });
+    this.getAllStudent();
   }
 
   handleDelete(item: any) {
@@ -227,10 +214,9 @@ export class StudentsComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.studentService.deleteStudent(item.id).subscribe({
+        this.studentService.deleteStudent(item._id).subscribe({
           next: (res: any) => {
             this.nzMessage.success('Xóa khóa học thành công', res);
-            this.formStudent.reset();
             this.getAllStudent();
           },
           error: (err: any) => {
@@ -241,16 +227,19 @@ export class StudentsComponent implements OnInit {
       nzCancelText: 'No',
       nzOnCancel: () => console.log('Cancel'),
     });
+    this.formStudent.reset();
+    this.isStudent = false;
   }
 
   handleRowClick(item: any) {
     this.status = 'DETAIL';
-    this.studentId = item.id;
+    this.studentId = item._id ?? item.id;
     this.isStudent = true;
 
-    this.studentService.getStudentById(item.id).subscribe({
+    this.studentService.getStudentById(this.studentId).subscribe({
       next: (res: any) => {
-        this.formStudent.patchValue(res);
+        const studentData = res?.data || res;
+        this.formStudent.patchValue(studentData);
         this.formStudent.disable();
       },
       error: (err: any) => {

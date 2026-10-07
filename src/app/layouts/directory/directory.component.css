@@ -16,7 +16,7 @@
     border-right: 1px solid #e9ecf3;
     display: flex;
     flex-direction: column;
-    padding: 25px 40px 17px;
+    padding: 25px 20px 17px;
     flex-shrink: 0;
 }
 
@@ -24,13 +24,13 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 750;
-    padding: 0 10px 37px;
+    padding: 10px 10px 37px;
 }
 
 .brand-mark {
-    width: 31px;
+    width: 41px;
     height: 31px;
     border-radius: 9px;
     background: #5367e9;
@@ -71,6 +71,8 @@ nav a.active,
     background: #eef0ff;
     color: #5367e9;
     font-weight: 650;
+    width: 220px;
+    font-size: 14px;
 }
 
 .nav-icon {
@@ -100,7 +102,7 @@ nav a.active,
     justify-content: space-between;
     padding: 0 42px;
     color: #5367e9;
-    font-size: 13px;
+    font-size: 23px;
 }
 
 .mini-avatar {

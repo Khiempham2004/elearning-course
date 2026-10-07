@@ -6,7 +6,9 @@
   <button nz-button nzType="primary" (click)="handleCreate()">Tạo học viên</button>
 </div>
 
-<nz-table class="studentTable" #basicTable [nzData]="listOfStudent" [nzFrontPagination]="false">
+<nz-table class="studentTable" #basicTable [nzData]="listOfStudent" [nzFrontPagination]="false"
+  [nzShowPagination]="true" [nzShowSizeChanger]="true" [nzBordered]="true" (nzPageIndexChange)="pageChange($event)"
+  (nzPageSizeChange)="pageSizeChange($event)" [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total">
   <thead>
     <tr>
       <th>Mã học viên</th>
@@ -44,9 +46,6 @@
 
 <div class="student-pagination">
   <p style="font-size: 16px;">Tổng : <span class="span-total"> {{total}} </span>bản ghi</p>
-  <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total" (nzPageIndexChange)="pageChange($event)"
-    (nzPageSizeChange)="pageSizeChange($event)">
-  </nz-pagination>
 </div>
 
 <nz-modal [(nzVisible)]="isStudent" nzClassName="form-modal-students" [nzFooter]="null" [nzTitle]="modalTitle"

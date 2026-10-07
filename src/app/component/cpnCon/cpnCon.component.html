@@ -1,3 +1,97 @@
-<p>
-  cpnCon works!
-</p>
+<span class="header-title">QUẢN LÝ DANH MỤC CẤP TỈNH</span>
+<div style="display: flex; justify-content: space-between; margin-top: 10px; gap: 20px;">
+  <input nz-input placeholder="Nhập mã tỉnh..." (ngModel)="filterSearch" />
+  <button nz-button nzType="primary" (click)="createNewProvince()">Tạo mới cấp tỉnh</button>
+</div>
+
+<nz-table class="modal-province" #basicTable [nzData]="listOfProvince" class="modal-province" [nzBordered]="true"
+  [nzFrontPagination]="false" [nzScroll]="{x:'1000px',y:'500px'}">
+  <thead>
+    <tr>
+      <th nzWidth="150px">Mã tỉnh</th>
+      <th nzWidth="200px">Tên tỉnh</th>
+      <th nzWidth="150px">Loại đơn vị</th>
+      <th nzWidth="100px">Trạng thái</th>
+      <th nzWidth="150px">Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let province of listOfProvince">
+      <td style="font-weight: 600;cursor: pointer;" (click)="handleRowClick(province)">{{ province.provinceCode }}</td>
+      <td>{{ province.provinceName }}</td>
+      <td>{{ province.provinceType }}</td>
+      <td>{{ province.status }}</td>
+      <td class="table-wrapper">
+        <button nz-button nzType="primary" (click)="editProvince(province)">
+          <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button nz-button nzType="primary" (click)="deleteProvince(province)">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<div style="display: flex;justify-content: space-between;text-align: center;">
+  <div>
+    Tổng số : <span style="font-weight: bold;">{{total}}</span> bản ghi
+  </div>
+  <div class="pagination-wrapper-head">
+    <div class="pagination-header">
+      <span class="table-page-size">Hiển thị</span>
+      <nz-select class="select-pagination" style="font-size: 15px;" [(ngModel)]="pageSize"
+        (ngModelChange)="pageSizeChange($event)" [nzOptions]="handlePageSizeOption" />
+    </div>
+    <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
+      (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageChange($event)" />
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="isProvince" nzWidth="650px" [nzTitle]="modalTitle" (nzOnCancel)="handleCancel()"
+  [nzFooter]="null" class="ant-modal-content">
+  <ng-container *nzModalContent>
+    <form [formGroup]="form" (ngSubmit)="handleSubmit()" nz-form nzLayout="vertical" class="province-form">
+      <nz-form-item>
+        <nz-form-label>
+          <span style="font-weight: bold;font-size: 15px;">Mã tỉnh</span>
+        </nz-form-label>
+        <nz-form-control nzErrorTip="Mã tỉnh không được để trống">
+          <input nz-input formControlName="provinceCode" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>
+          <span style="font-weight: bold;font-size: 15px;">Tên tỉnh</span>
+        </nz-form-label>
+        <nz-form-control nzErrorTip="Tên tỉnh không được để trống">
+          <input nz-input formControlName="provinceName" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>
+          <span style="font-weight: bold;font-size: 15px;">Loại đơn vị</span>
+        </nz-form-label>
+        <nz-form-control nzErrorTip="Loại đơn vị không được để trống">
+          <input nz-input formControlName="provinceType" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>
+          <span style="font-weight: bold;font-size: 15px;">Trạng thái</span>
+        </nz-form-label>
+        <nz-form-control >
+          <nz-select formControlName="status">
+            <nz-option [nzValue]="true" nzLabel="true"></nz-option>
+            <nz-option [nzValue]="false" nzLabel="false"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <div style="display: flex;justify-content: end;gap: 10px;" *ngIf="status !== 'DETAIL'">
+        <button nz-button type="button" (click)="handleCancel()">Hủy</button>
+        <button nz-button nzType="primary" type="submit">{{status === 'CREATE' ? ('Lưu') : ('Cập nhật')}}</button>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

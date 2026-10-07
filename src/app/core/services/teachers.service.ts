@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -8,24 +8,36 @@ import { Observable } from 'rxjs';
 export class TeachersService {
   constructor(private http: HttpClient) {}
 
-  private readonly teacherApi = 'http://localhost:8000/lecturer';
-  getAllTeachers(): Observable<any> {
-    return this.http.get<any[]>(this.teacherApi);
+  // private readonly teacherApi = 'http://localhost:8000/lecturer';
+  private readonly apiTeacher = 'http://localhost:3001/api/teacher';
+
+  getAllTeachers(
+    keyword: string = '',
+    page: number = 1,
+    pageSize: number = 10,
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', pageSize.toString());
+    if (keyword.trim()) {
+      params = params.set('q', keyword.trim());
+    }
+    return this.http.get<any[]>(this.apiTeacher, { params });
   }
 
   getTeacherById(id: any): Observable<any> {
-    return this.http.get<any[]>(`${this.teacherApi}/${id}`);
+    return this.http.get<any>(`${this.apiTeacher}/${id}`);
   }
 
   createTeacher(data: any): Observable<any> {
-    return this.http.post<any[]>(this.teacherApi, data);
+    return this.http.post<any[]>(this.apiTeacher, data);
   }
 
   putTeacher(id: any, data: any): Observable<any> {
-    return this.http.put<any[]>(`${this.teacherApi}/${id}`, data);
+    return this.http.put<any>(`${this.apiTeacher}/${id}`, data);
   }
 
   deleteTeacher(id: any): Observable<any> {
-    return this.http.delete<any[]>(`${this.teacherApi}/${id}`);
+    return this.http.delete<any>(`${this.apiTeacher}/${id}`);
   }
 }

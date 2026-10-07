@@ -1,0 +1,103 @@
+{
+  "data": [
+    {
+      "provinceCode": "01",
+      "provinceName": "Hà Nội",
+      "provinceType": "Thành phố",
+      "status": true,
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "provinceCode": "02",
+      "provinceName": "Hồ Chí Minh",
+      "provinceType": "Thành phố",
+      "status": true
+    },
+    {
+      "id": "3",
+      "provinceCode": "04",
+      "provinceName": "Hải Phòng",
+      "provinceType": "Thành phố",
+      "status": true
+    },
+    {
+      "id": "4",
+      "provinceCode": "48",
+      "provinceName": "Đà Nẵng",
+      "provinceType": "Thành phố",
+      "status": true
+    },
+    {
+      "id": "5",
+      "provinceCode": "92",
+      "provinceName": "Cần Thơ",
+      "provinceType": "Thành phố",
+      "status": true
+    },
+    {
+      "id": "6",
+      "provinceCode": "96",
+      "provinceName": "Cà Mau",
+      "provinceType": "Tỉnh",
+      "status": true
+    },
+    {
+      "id": "7",
+      "provinceCode": "91",
+      "provinceName": "An Giang",
+      "provinceType": "Tỉnh",
+      "status": true
+    },
+    {
+      "id": "8",
+      "provinceCode": "37",
+      "provinceName": "Nghệ An",
+      "provinceType": "Tỉnh",
+      "status": true
+    },
+    {
+      "id": "9",
+      "provinceCode": "38",
+      "provinceName": "Hà Tĩnh",
+      "provinceType": "Tỉnh",
+      "status": true
+    },
+    {
+      "id": "10",
+      "provinceCode": "86",
+      "provinceName": "Đồng Nai",
+      "provinceType": "Tỉnh",
+      "status": true
+    },
+    {
+      "id": "11",
+      "provinceCode": "79",
+      "provinceName": "Bình Dương",
+      "provinceType": "Tỉnh",
+      "status": false
+    },
+    {
+      "id": "12",
+      "provinceCode": "77",
+      "provinceName": "Bà Rịa - Vũng Tàu",
+      "provinceType": "Tỉnh",
+      "status": false
+    },
+    {
+      "provinceCode": "29",
+      "provinceName": "Hà Nội",
+      "provinceType": "tỉnh",
+      "status": true,
+      "id": "n5UlX4xLVYE"
+    },
+    {
+      "provinceCode": "89",
+      "provinceName": "Hưng Yên",
+      "provinceType": "Tỉnh",
+      "status": true,
+      "id": "m1J1rw_G2N0"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

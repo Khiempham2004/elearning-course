@@ -1,0 +1,84 @@
+.dictrict-title {
+    font-size: 22px;
+    color: #087eed;
+}
+
+.table-wrapper {
+    margin-top: 20px;
+}
+
+tr th {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 15px;
+    height: 50px;
+    background-color: #f5f5f5;
+}
+
+tr td {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 15px;
+    height: 80px;
+}
+
+input {
+    width: 100%;
+    border-radius: 8px !important;
+    font-size: 16px;
+}
+
+button {
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.pagination-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-right: 30px;
+}
+
+.dictrict-icon {
+    display: flex;
+    gap: 10px;
+}
+
+.form-modal-icon {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+::ng-deep .ant-modal-title {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+::ng-deep .ant-form-item-label {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+::ng-deep .ant-form-label {
+    font-size: 20px;
+}
+
+::ng-deep .ant-modal-content {
+    border-radius: 8px !important;
+    overflow: hidden;
+}

@@ -1,0 +1,25 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <a routerLink="/directory" routerLinkActive="active" >
+      <div class="brand" (click)="isCollapsed = !isCollapsed">
+        <span class="brand-mark">L</span><span>QUẢN TRỊ HỆ THỐNG</span>
+      </div>
+    </a>
+    <nav>
+      <a routerLink="/directory/portfolio-management" routerLinkActive="active">Quản lý danh mục các cấp</a>
+      <a routerLink="/directory/multi-level-management" routerLinkActive="active">Quản lý danh mục các phòng</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a routerLink="/directory/signOut" routerLinkActive="active" (click)="signOut()"><span class="nav-icon">↪</span>Đăng
+        xuất</a>
+    </div>
+  </aside>
+  <main class="main-content">
+    <header class="topbar">
+      <span>Hệ thống quản lí danh mục </span>
+      <div class="mini-avatar">MA</div>
+    </header>
+    <br>
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -9,6 +9,10 @@ import { HelpComponent } from './modules/page/help/help.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './modules/auth/login/login.component';
 import { RegisterComponent } from './modules/auth/register/register.component';
+import { AreaConComponent } from './component/area-con/area-con.component';
+import { CpnConComponent } from './component/cpnCon/cpnCon.component';
+import { ComponentComponent } from './component/component.component';
+import { DirectoryComponent } from './layouts/directory/directory.component';
 
 export const routes: Routes = [
   {
@@ -24,13 +28,39 @@ export const routes: Routes = [
     component: AdminLayoutComponent,
     children: [
       { path: '', redirectTo: 'overview', pathMatch: 'full' },
-      { path: 'overview', component: OverviewComponent, title: 'Tổng quan' },
-      { path: 'courses', component: CourseComponent, title: 'Khóa học' },
-      { path: 'students', component: StudentsComponent, title: 'Học viên' },
-      { path: 'teachers', component: TeachersComponent, title: 'Giảng viên' },
-      { path: 'reports', component: ReportsComponent, title: 'Báo cáo' },
-      { path: 'settings', component: SettingsComponent, title: 'Cài đặt' },
-      { path: 'signOut', component: HelpComponent, title: 'Đăng xuất' },
+      { path: 'overview', component: OverviewComponent },
+      { path: 'courses', component: CourseComponent },
+      { path: 'students', component: StudentsComponent },
+      { path: 'teachers', component: TeachersComponent },
+      { path: 'reports', component: ReportsComponent },
+      { path: 'settings', component: SettingsComponent },
+      { path: 'signOut', component: HelpComponent },
+    ],
+  },
+  {
+    path: 'directory',
+    component: DirectoryComponent,
+    data: { breadcrumb: 'Quản lý danh mục' },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'portfolio-management',
+      },
+      {
+        path: 'portfolio-management',
+        data: { breadcrumb: 'Quản lý danh mục các cấp' },
+        loadChildren: () =>
+          import('./component/component.module').then((m) => m.ComponentModule),
+      },
+      {
+        path: 'multi-level-management',
+        data: { breadcrumb: 'Quản lý danh mục các phòng' },
+        loadChildren: () =>
+          import('./directoryRoom/directoryRoom.module').then(
+            (m) => m.DirectoryRoomModule,
+          ),
+      },
     ],
   },
   {

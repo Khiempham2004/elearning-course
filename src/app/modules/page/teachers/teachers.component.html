@@ -6,7 +6,9 @@
 </div>
 
 <nz-table style="margin-top: 20px;" #basicTable [nzData]="listOfTeacher" [nzFrontPagination]="false"
-  [nzScroll]="{x:'2000px',y:'500px'}">
+  [nzShowPagination]="true" [nzShowSizeChanger]="true" [nzBordered]="true" [nzTotal]="total"
+  (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" [nzPageIndex]="page"
+  [nzPageSize]="pageSize" [nzScroll]="{x:'2000px',y:'500px'}">
   <thead>
     <tr>
       <th nzWidth="130px">Mã giảng viên</th>
@@ -52,8 +54,6 @@
 
 <div style="display: flex;justify-content: space-between;">
   <p style="font-size: 16px;">Tổng : <span style="font-weight: bold;">{{total}}</span> bản ghi</p>
-  <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total" (nzPageIndexChange)="pageChange($event)"
-    (nzPageSizeChange)="pageSizeChange($event)" />
 </div>
 
 <nz-modal [(nzVisible)]="isTeacher" [nzFooter]="null" (nzOnCancel)="handleCancel()" [nzTitle]="modalTitle"
@@ -179,8 +179,8 @@
             </nz-form-label>
             <nz-form-control>
               <nz-select class="nzSelect" formControlName="status" nzPlaceHolder="Chọn trạng thái">
-                <nz-option [nzValue]="'true'" [nzLabel]="'true'" />
-                <nz-option [nzValue]="'false'" [nzLabel]="'false'" />
+                <nz-option [nzValue]="true" nzLabel="true" />
+                <nz-option [nzValue]="false" nzLabel="false" />
               </nz-select>
             </nz-form-control>
           </nz-form-item>
