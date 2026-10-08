@@ -1,6 +1,6 @@
 <div class="app-shell">
   <aside class="sidebar">
-    <a routerLink="/directory" routerLinkActive="active" >
+    <a routerLink="/directory" routerLinkActive="active">
       <div class="brand" (click)="isCollapsed = !isCollapsed">
         <span class="brand-mark">L</span><span>QUẢN TRỊ HỆ THỐNG</span>
       </div>
@@ -8,9 +8,17 @@
     <nav>
       <a routerLink="/directory/portfolio-management" routerLinkActive="active">Quản lý danh mục các cấp</a>
       <a routerLink="/directory/multi-level-management" routerLinkActive="active">Quản lý danh mục các phòng</a>
+      <a routerLink="/directory/user-management" routerLinkActive="active">Quản lý người dùng</a>
+      <a routerLink="/directory/role-management">Quản lý vai trò / phân quyền</a>
+      <a routerLink="/directory/system-managemnet"> Quản lý chức năng hệ thống</a>
+      <a routerLink="/directory/user-group-management">Quản lý nhóm người dùng</a>
+      <a routerLink="/directory/configuration-management">Quản lý cấu hình hệ thống</a>
+      <a routerLink="/directory/system-log-management">Quản lý nhật ký hệ thống</a>
+      <a routerLink="/directory/notification-management">Quản lý thông báo</a>
     </nav>
     <div class="sidebar-bottom">
-      <a routerLink="/directory/signOut" routerLinkActive="active" (click)="signOut()"><span class="nav-icon">↪</span>Đăng
+      <a routerLink="/directory/signOut" routerLinkActive="active" (click)="signOut()"><span
+          class="nav-icon">↪</span>Đăng
         xuất</a>
     </div>
   </aside>

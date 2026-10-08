@@ -18,6 +18,7 @@ export class CpnConComponent implements OnInit {
   isProvince = false;
   province: any = [];
   listOfProvince: any = [];
+  filteredProvinces: any[] = [];
   status: 'CREATE' | 'EDIT' | 'DETAIL' = 'CREATE';
   provinceId: any = null;
   page = 1;
@@ -58,13 +59,29 @@ export class CpnConComponent implements OnInit {
 
   pageChange(event: any) {
     this.page = event;
-    this.getAllProvince();
+    this.updateProvincePage();
   }
 
   pageSizeChange(event: any) {
     this.pageSize = event;
     this.page = 1;
-    this.getAllProvince();
+    this.updateProvincePage();
+  }
+
+  handleSearch(): void {
+    const keyword = this.filterSearch.trim().toLocaleLowerCase();
+    this.filteredProvinces = this.province.filter((item: any) =>
+      [item.provinceCode, item.provinceName]
+        .some((value) => String(value ?? '').toLocaleLowerCase().includes(keyword)),
+    );
+    this.page = 1;
+    this.updateProvincePage();
+  }
+
+  private updateProvincePage(): void {
+    const start = (this.page - 1) * this.pageSize;
+    this.total = this.filteredProvinces.length;
+    this.listOfProvince = this.filteredProvinces.slice(start, start + this.pageSize);
   }
 
   createNewProvince(): void {
@@ -85,14 +102,8 @@ export class CpnConComponent implements OnInit {
   getAllProvince(): void {
     this.provinceService.getAllProvinces().subscribe({
       next: (res: any) => {
-        this.province = res;
-        this.listOfProvince = [
-          ...this.province.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        this.total = this.province.length;
+        this.province = Array.isArray(res) ? res : [];
+        this.handleSearch();
       },
     });
   }

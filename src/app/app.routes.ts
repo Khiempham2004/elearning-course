@@ -57,8 +57,16 @@ export const routes: Routes = [
         path: 'multi-level-management',
         data: { breadcrumb: 'Quản lý danh mục các phòng' },
         loadChildren: () =>
-          import('./directoryRoom/directoryRoom.module').then(
+          import('./modules/directoryRoom/directoryRoom.module').then(
             (m) => m.DirectoryRoomModule,
+          ),
+      },
+      {
+        path: 'user-management',
+        data: { breadcrumb: 'Quản lý người dùng' },
+        loadChildren: () =>
+          import('./modules/user-management/user-management.module').then(
+            (m) => m.UserManagementModule,
           ),
       },
     ],

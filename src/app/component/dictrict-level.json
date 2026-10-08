@@ -1,16 +1,16 @@
 {
   "dictrict": [
     {
-      "id": 1,
       "districtCode": "001",
       "districtName": "Ba Đình",
       "districtType": "Quận",
       "provinceId": 1,
       "provinceName": "Hà Nội",
-      "status": true
+      "status": true,
+      "id": "1"
     },
     {
-      "id": 2,
+      "id": "2",
       "districtCode": "002",
       "districtName": "Hoàn Kiếm",
       "districtType": "Quận",
@@ -19,7 +19,7 @@
       "status": true
     },
     {
-      "id": 3,
+      "id": "3",
       "districtCode": "003",
       "districtName": "Đống Đa",
       "districtType": "Quận",
@@ -28,7 +28,7 @@
       "status": true
     },
     {
-      "id": 4,
+      "id": "4",
       "districtCode": "004",
       "districtName": "Hai Bà Trưng",
       "districtType": "Quận",
@@ -37,7 +37,7 @@
       "status": true
     },
     {
-      "id": 5,
+      "id": "5",
       "districtCode": "005",
       "districtName": "Cầu Giấy",
       "districtType": "Quận",
@@ -46,7 +46,7 @@
       "status": true
     },
     {
-      "id": 6,
+      "id": "6",
       "districtCode": "006",
       "districtName": "Thanh Xuân",
       "districtType": "Quận",
@@ -55,7 +55,7 @@
       "status": true
     },
     {
-      "id": 7,
+      "id": "7",
       "districtCode": "007",
       "districtName": "Hà Đông",
       "districtType": "Quận",
@@ -64,7 +64,7 @@
       "status": true
     },
     {
-      "id": 8,
+      "id": "8",
       "districtCode": "008",
       "districtName": "Tây Hồ",
       "districtType": "Quận",
@@ -73,7 +73,7 @@
       "status": true
     },
     {
-      "id": 9,
+      "id": "9",
       "districtCode": "009",
       "districtName": "Long Biên",
       "districtType": "Quận",
@@ -82,7 +82,7 @@
       "status": true
     },
     {
-      "id": 10,
+      "id": "10",
       "districtCode": "010",
       "districtName": "Nam Từ Liêm",
       "districtType": "Quận",
@@ -91,7 +91,7 @@
       "status": true
     },
     {
-      "id": 11,
+      "id": "11",
       "districtCode": "011",
       "districtName": "Bắc Từ Liêm",
       "districtType": "Quận",
@@ -100,7 +100,7 @@
       "status": true
     },
     {
-      "id": 12,
+      "id": "12",
       "districtCode": "012",
       "districtName": "Thanh Trì",
       "districtType": "Huyện",
@@ -109,7 +109,7 @@
       "status": true
     },
     {
-      "id": 13,
+      "id": "13",
       "districtCode": "013",
       "districtName": "Gia Lâm",
       "districtType": "Huyện",
@@ -118,7 +118,7 @@
       "status": true
     },
     {
-      "id": 14,
+      "id": "14",
       "districtCode": "014",
       "districtName": "Đông Anh",
       "districtType": "Huyện",
@@ -127,13 +127,23 @@
       "status": true
     },
     {
-      "id": 15,
+      "id": "15",
       "districtCode": "015",
       "districtName": "Sóc Sơn",
       "districtType": "Huyện",
       "provinceId": 1,
       "provinceName": "Hà Nội",
       "status": false
+    },
+    {
+      "districtCode": "97",
+      "districtName": "Bắc kạn",
+      "districtType": "tỉnh",
+      "provinceId": "Thái Nguyên",
+      "provinceName": "tỉnh Thái Nguyên",
+      "status": true,
+      "id": "KGQmVa4X2pk"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

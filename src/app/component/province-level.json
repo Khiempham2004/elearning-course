@@ -4,22 +4,22 @@
       "provinceCode": "01",
       "provinceName": "Hà Nội",
       "provinceType": "Thành phố",
-      "status": true,
+      "status": false,
       "id": "1"
     },
     {
-      "id": "2",
       "provinceCode": "02",
       "provinceName": "Hồ Chí Minh",
       "provinceType": "Thành phố",
-      "status": true
+      "status": false,
+      "id": "2"
     },
     {
-      "id": "3",
       "provinceCode": "04",
       "provinceName": "Hải Phòng",
       "provinceType": "Thành phố",
-      "status": true
+      "status": false,
+      "id": "3"
     },
     {
       "id": "4",

@@ -1,6 +1,6 @@
 <span class="dictrict-title">QUẢN LÝ DANH MỤC CẤP HUYỆN</span>
 <div style="display: flex; gap: 20px; margin-top: 10px">
-    <input nz-input type="text" placeholder="Tìm kiếm dữ liệu..." />
+    <input nz-input type="text" placeholder="Tìm kiếm dữ liệu..." [(ngModel)]="filter" (keyup.enter)="filterSearch()" />
     <button nz-button nzType="primary" (click)="openModal()">
         Tạo mới cấp huyện
     </button>
@@ -21,7 +21,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let dictrict of listOfDictrict">
-            <td>{{ dictrict.districtCode }}</td>
+            <td style="font-weight: 600;cursor: pointer;" (click)="handleRowClick(dictrict)">{{ dictrict.districtCode }}</td>
             <td>{{ dictrict.districtName }}</td>
             <td>{{ dictrict.districtType }}</td>
             <td>{{ dictrict.provinceId }}</td>
@@ -44,7 +44,7 @@
         Tổng số : <span style="font-weight: 600;"> {{ total }} </span> bản ghi
     </div>
     <div class="pagination-wrapper">
-        <span>Hiển thị</span>
+        <span style="font-size: 15px;">Hiển thị</span>
         <nz-select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="handleOptionDictrict" />
         <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
             (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
@@ -60,7 +60,7 @@
                     <span>Mã huyện</span>
                 </nz-form-label>
                 <nz-form-control nzErrorTip="Mã huyện là bắt buộc phải nhập">
-                    <input nz-input formControlName="dictrictCode" placeholder="Mã huyện..." />
+                    <input nz-input formControlName="districtCode" placeholder="Mã huyện..." />
                 </nz-form-control>
             </nz-form-item>
 
@@ -69,7 +69,7 @@
                     <span>Tên huyện</span>
                 </nz-form-label>
                 <nz-form-control nzErrorTip="Tên huyện là bắt buộc phải nhập">
-                    <input nz-input formControlName="dictrictName" placeholder="Tên huyện..." />
+                    <input nz-input formControlName="districtName" placeholder="Tên huyện..." />
                 </nz-form-control>
             </nz-form-item>
 
@@ -113,7 +113,8 @@
             </nz-form-item>
             <div class="form-modal-icon">
                 <button nz-button type="button" (click)="closeCancel()">Hủy</button>
-                <button nz-button nzType="primary" type="submit" (click)="handleSubmitDictrict()">Lưu</button>
+                <button nz-button nzType="primary" type="submit" (click)="handleSubmitDictrict()">{{status === 'CREATE'
+                    ? ('Lưu') : ('Cập nhật')}}</button>
             </div>
         </form>
     </ng-container>

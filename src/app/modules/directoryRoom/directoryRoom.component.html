@@ -1,0 +1,90 @@
+<span style="color:#087EED;font-size: 20px;margin-left: 20px;">QUẢN LÝ DANH MỤC CÁC PHÒNG</span>
+<div class="room-header">
+    <input type="text" nz-input placeholder="Tìm kiếm dữ liệu">
+    <button nz-button nzType="primary" (click)="openModal()">Tạo mới phòng</button>
+</div>
+
+<nz-table class="table-room" #basicTable [nzFrontPagination]="false"
+    [nzData]="listOfDirectory" [nzBordered]="true">
+    <thead>
+        <tr>
+            <th>Mã phòng</th>
+            <th>Tên phòng</th>
+            <th>Loại phòng</th>
+            <th>Trạng thái</th>
+            <th>Hoạt động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let room of listOfDirectory">
+            <td>{{ room.roomCode }}</td>
+            <td>{{ room.roomName }}</td>
+            <td>{{ room.roomType }}</td>
+            <td>{{ room.status }}</td>
+            <td class="footer-wrapper">
+                <button nz-button nzType="primary" (click)="handleEditRoom(room)">
+                    <span nz-icon nzType="edit" nzTheme="outline"></span>
+                </button>
+                <button nz-button nzType="primary" (click)="handleDeleteRoom(room)">
+                    <span nz-icon nzType="delete" nzTheme="outline"></span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<div style="display: flex;justify-content: space-between;">
+    <div>
+        Tổng : <span style="font-weight: 600;">{{total}}</span> bản ghi
+    </div>
+    <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
+        (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" nzShowSizeChanger />
+</div>
+
+<nz-modal [(nzVisible)]="isRoom" [nzFooter]="null" (nzOnCancel)="closeCancel()" nzWidth="700px">
+    <ng-container *nzModalContent>
+        <form [formGroup]="form" nz-form nzLayout="vertical">
+            <nz-form-item>
+                <nz-form-label>
+                    <span>Mã phòng</span>
+                </nz-form-label>
+                <nz-form-control nzErrorTip="Mã phòng là bắt buộc">
+                    <input nz-input formControlName="roomCode">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>
+                    <span>Tên phòng</span>
+                </nz-form-label>
+                <nz-form-control nzErrorTip="Tên phòng là bắt buộc">
+                    <input nz-input formControlName="roomName">
+                </nz-form-control>
+            </nz-form-item><nz-form-item>
+                <nz-form-label>
+                    <span>Loại phòng</span>
+                </nz-form-label>
+                <nz-form-control nzErrorTip="Loại phòng là bắt buộc">
+                    <input nz-input formControlName="roomType">
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>
+                    <span>Trạng thái</span>
+                </nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="status">
+                        <nz-option [nzValue]="true" nzLabel="true" />
+                        <nz-option [nzValue]="false" nzLabel="false" />
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <div class="room-footer">
+                <button nz-button nzType="primary" (click)="closeCancel()">Hủy</button>
+                <button nz-button nzType="primary" (click)="handleSubmitRoom()">{{status === 'CREATE' ? ('Lưu'): ('Cập
+                    nhật')}}</button>
+            </div>
+        </form>
+    </ng-container>
+</nz-modal>

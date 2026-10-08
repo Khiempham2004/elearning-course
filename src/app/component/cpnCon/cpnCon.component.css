@@ -24,14 +24,28 @@
     }
 
     ::ng-deep .select-pagination .ant-select-selector {
-        height: 35px !important;
-        width: 100%;
         border-radius: 8px !important;
         font-size: 15px !important;
         display: flex !important;
         align-items: center !important;
     }
 
+    ::ng-deep .ant-pagination-item {
+        border-radius: 16px !important;
+    }
+
+    ::ng-deep .ant-pagination-prev .ant-pagination-item-link,
+    ::ng-deep .ant-pagination-next .ant-pagination-item-link {
+        border-radius: 16px !important;
+        border: 1px solid #d9d9d9;
+        margin: 0 2px;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .table-page-size {
+        font-size: 15px;
+    }
 
     .header-title {
         color: #087EED;

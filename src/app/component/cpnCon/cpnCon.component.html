@@ -1,6 +1,6 @@
 <span class="header-title">QUẢN LÝ DANH MỤC CẤP TỈNH</span>
 <div style="display: flex; justify-content: space-between; margin-top: 10px; gap: 20px;">
-  <input nz-input placeholder="Nhập mã tỉnh..." (ngModel)="filterSearch" />
+  <input nz-input placeholder="Nhập mã hoặc tên tỉnh..." [(ngModel)]="filterSearch" (ngModelChange)="handleSearch()" />
   <button nz-button nzType="primary" (click)="createNewProvince()">Tạo mới cấp tỉnh</button>
 </div>
 
@@ -81,7 +81,7 @@
         <nz-form-label>
           <span style="font-weight: bold;font-size: 15px;">Trạng thái</span>
         </nz-form-label>
-        <nz-form-control >
+        <nz-form-control>
           <nz-select formControlName="status">
             <nz-option [nzValue]="true" nzLabel="true"></nz-option>
             <nz-option [nzValue]="false" nzLabel="false"></nz-option>

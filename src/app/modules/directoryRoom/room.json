@@ -1,0 +1,75 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "roomCode": "P001",
+      "roomName": "Phòng Công nghệ thông tin",
+      "roomType": "Phòng ban",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 2,
+      "roomCode": "P002",
+      "roomName": "Phòng Hành chính",
+      "roomType": "Phòng ban",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 3,
+      "roomCode": "P003",
+      "roomName": "Phòng Đào tạo",
+      "roomType": "Phòng ban",
+      "email": "daotao@example.cm",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 4,
+      "roomCode": "P004",
+      "roomName": "Phòng Kế toán",
+      "roomType": "Phòng ban",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 5,
+      "roomCode": "P005",
+      "roomName": "Phòng Nhân sự",
+      "roomType": "Phòng ban",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 6,
+      "roomCode": "P006",
+      "roomName": "Phòng Kinh doanh",
+      "roomType": "Phòng ban",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 7,
+      "roomCode": "P007",
+      "roomName": "Phòng Truyền thông",
+      "roomType": "Phòng ban",
+      "status": "INACTIVE"
+    },
+    {
+      "id": 8,
+      "roomCode": "P008",
+      "roomName": "Phòng Pháp chế",
+      "roomType": "Phòng ban",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 9,
+      "roomCode": "P009",
+      "roomName": "Phòng Kiểm tra",
+      "roomType": "Phòng ban",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 10,
+      "roomCode": "P010",
+      "roomName": "Phòng Quản trị",
+      "roomType": "Phòng ban",
+      "status": "ACTIVE"
+    }
+  ]
+}
