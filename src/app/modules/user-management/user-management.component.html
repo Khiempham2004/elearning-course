@@ -1,3 +1,166 @@
-<p>
-  user-management works!
-</p>
+<span style="font-weight: 600; color: #087eed; font-size: 20px; margin-left: 20px">QUẢN LÝ NGƯỜI DÙNG</span>
+<div style="
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
+  ">
+    <input type="text" nz-input placeholder="Tìm kiếm dữ liệu..."[(ngModel)]="filterUser" (keyup.enter)="handleClickSearch()" />
+    <button nz-button nzType="primary" (click)="openModal()">Tạo mới</button>
+</div>
+
+<nz-table #basicTable [nzFrontPagination]="false" [nzBordered]="true" [nzData]="listOfUser"
+    style="margin-left: 20px; margin-top: 20px">
+    <thead>
+        <tr>
+            <th>Mã người dùng</th>
+            <th>Họ và tên</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th>Vai trò</th>
+            <th>Mã phòng ban</th>
+            <th>Trạng thái</th>
+            <th>Hoạt động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let users of listOfUser">
+            <td>{{ users.userCode }}</td>
+            <td>{{ users.fullName }}</td>
+            <td>{{ users.email }}</td>
+            <td>{{ users.phone }}</td>
+            <td>{{ users.role }}</td>
+            <td>{{ users.departmentId }}</td>
+            <td>{{ users.status }}</td>
+            <td style="display: flex; gap: 10px; align-items: center">
+                <button nz-button nzType="primary" (click)="handleEditUser(users)">
+                    <span nz-icon nzType="edit" nzTheme="outline"></span>
+                </button>
+                <button nz-button nzType="primary" (click)="handleDeleteUser(users)">
+                    <span nz-icon nzType="delete" nzTheme="outline"></span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<div class="table-pagination-total">
+    <div style="margin-left: 20px;">
+        Tổng số : <span class="total-table">{{ total }}</span> bản ghi
+    </div>
+    <div style="display: flex;align-items: center;gap: 10px;margin-right: 20px;margin-top: 20px;">
+        <div style="display: flex;align-items: center; gap: 10px;">
+            <span>Hiển thị</span>
+            <nz-select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="optionSelects" />
+        </div>
+        <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
+            (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
+    </div>
+</div>
+
+<nz-modal [(nzVisible)]="isUser" [nzTitle]="modalTitle" [nzFooter]="null" (nzOnCancel)="closeModal()" nzWidth="750px">
+    <ng-container *nzModalContent>
+        <form [formGroup]="form" nz-form nzLayout="vertical">
+            <div nz-row [nzGutter]="12">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span>Mã người dùng</span>
+                        </nz-form-label>
+                        <nz-form-control nzErrorTip="Mã người dùng là bắt buộc">
+                            <input nz-input formControlName="userCode" placeholder="Nhập mã người dùng..." />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span>Họ và tên</span>
+                        </nz-form-label>
+                        <nz-form-control nzErrorTip="Họ và tên là bắt buộc">
+                            <input nz-input formControlName="fullName" placeholder="Nhập họ và tên..." />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span>Email</span>
+                        </nz-form-label>
+                        <nz-form-control nzErrorTip="Email là bắt buộc">
+                            <input nz-input formControlName="email" placeholder="Nhập mã người dùng..." />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span>Số điện thoại</span>
+                        </nz-form-label>
+                        <nz-form-control nzErrorTip="Số điện thoại là bắt buộc">
+                            <input nz-input formControlName="phone" placeholder="Nhập mã người dùng..." />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span>Vai trò</span>
+                        </nz-form-label>
+                        <nz-form-control nzErrorTip="Vai trò là bắt buộc">
+                            <input nz-input formControlName="role" placeholder="Nhập mã người dùng..." />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span>Mã phòng ban</span>
+                        </nz-form-label>
+                        <nz-form-control nzErrorTip="Mã phòng ban là bắt buộc">
+                            <input nz-input formControlName="departmentId" placeholder="Nhập mã người dùng..." />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span>Trạng thái</span>
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="status" nzPlaceHolder="Chọn trạng thái">
+                                <nz-option nzValue="true" nzLabel="true" />
+                                <nz-option nzValue="false" nzLabel="false" />
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: end; gap: 10px">
+                <button nz-button nzType="primary" (click)="closeModal()">Hủy</button>
+                <button nz-button nzType="primary" (click)="handleSubmit()">
+                    {{ status === "CREATE" ? "Lưu" : "Cập nhật" }}
+                </button>
+            </div>
+        </form>
+    </ng-container>
+
+    <ng-template #modalTitle>
+        <div class="user-modal-title">
+            <div class="user-modal-icon">
+                <span nz-icon nzType="user" nzTheme="outline"></span>
+            </div>
+            <div class="user-modal-heading">
+                <div class="user-modal-user">
+                    {{ modalTitleUser }}
+                </div>
+                <div class="user-modal">
+                    {{
+                    status === "CREATE"
+                    ? "Vui lòng nhập đầy đủ thông tin để tạo mới người dùng"
+                    : "Cập nhật đầy đủ thông tin"
+                    }}
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</nz-modal>

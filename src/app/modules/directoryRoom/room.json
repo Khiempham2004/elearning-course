@@ -1,75 +1,90 @@
 {
   "data": [
     {
-      "id": 1,
       "roomCode": "P001",
       "roomName": "Phòng Công nghệ thông tin",
       "roomType": "Phòng ban",
-      "status": "ACTIVE"
+      "status": false,
+      "id": "1"
     },
     {
-      "id": 2,
+      "id": "2",
       "roomCode": "P002",
       "roomName": "Phòng Hành chính",
       "roomType": "Phòng ban",
-      "status": "ACTIVE"
+      "status": "true"
     },
     {
-      "id": 3,
+      "id": "3",
       "roomCode": "P003",
       "roomName": "Phòng Đào tạo",
       "roomType": "Phòng ban",
       "email": "daotao@example.cm",
-      "status": "ACTIVE"
+      "status": "true"
     },
     {
-      "id": 4,
+      "id": "4",
       "roomCode": "P004",
       "roomName": "Phòng Kế toán",
       "roomType": "Phòng ban",
-      "status": "ACTIVE"
+      "status": "true"
     },
     {
-      "id": 5,
       "roomCode": "P005",
       "roomName": "Phòng Nhân sự",
       "roomType": "Phòng ban",
-      "status": "ACTIVE"
+      "status": true,
+      "id": "5"
     },
     {
-      "id": 6,
+      "id": "6",
       "roomCode": "P006",
       "roomName": "Phòng Kinh doanh",
       "roomType": "Phòng ban",
-      "status": "ACTIVE"
+      "status": "true"
     },
     {
-      "id": 7,
+      "id": "7",
       "roomCode": "P007",
       "roomName": "Phòng Truyền thông",
       "roomType": "Phòng ban",
-      "status": "INACTIVE"
+      "status": "false"
     },
     {
-      "id": 8,
+      "id": "8",
       "roomCode": "P008",
       "roomName": "Phòng Pháp chế",
       "roomType": "Phòng ban",
-      "status": "ACTIVE"
+      "status": "true"
     },
     {
-      "id": 9,
+      "id": "9",
       "roomCode": "P009",
       "roomName": "Phòng Kiểm tra",
       "roomType": "Phòng ban",
-      "status": "ACTIVE"
+      "status": "true"
     },
     {
-      "id": 10,
+      "id": "10",
       "roomCode": "P010",
       "roomName": "Phòng Quản trị",
       "roomType": "Phòng ban",
-      "status": "ACTIVE"
+      "status": "false"
+    },
+    {
+      "roomCode": "P0010",
+      "roomName": "Hành chính nhân sự",
+      "roomType": "Phòng hành chính",
+      "status": true,
+      "id": "DHckI3YKL9o"
+    },
+    {
+      "roomCode": "P0102",
+      "roomName": "Quản lí hành chính",
+      "roomType": "Phòng quản lí",
+      "status": true,
+      "id": "Q4GMsra05Kg"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

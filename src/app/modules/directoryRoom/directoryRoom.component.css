@@ -4,6 +4,7 @@
     text-align: center;
     gap: 20px;
     margin-left: 20px;
+    margin-top: 10px;
 }
 
 input {
@@ -20,28 +21,45 @@ tr th {
     justify-content: center;
     text-align: center;
     font-size: 15px;
-    height: 50px;
+    height: 80px;
     background-color: #F5F5F5;
 }
+
 tr td {
     justify-content: center;
     text-align: center;
-    height: 50px;
+    height: 80px;
 }
 
 .table-room {
     margin: 20px 20px 20px;
 }
-.footer-wrapper{
+
+.footer-wrapper {
     display: flex;
     gap: 10px;
     align-items: center;
 }
+
 .room-footer {
     display: flex;
     justify-content: end;
     text-align: center;
     gap: 10px;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 20px;
+}
+
+.pagination-page {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    gap: 20px;
+    margin-right: 10px;
 }
 
 ::ng-deep .ant-form-item-label>label {
@@ -51,4 +69,25 @@ tr td {
 ::ng-deep .ant-modal-content {
     border-radius: 16px;
     margin-top: 50px;
+}
+
+::ng-deep .ant-modal-title {
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+}
+
+::ng-deep .ant-select-selector {
+    border-radius: 8px !important;
+}
+
+::ng-deep .ant-pagination-item {
+    border-radius: 16px !important;
+}
+
+::ng-deep .ant-pagination-prev .ant-pagination-item-link,
+::ng-deep .ant-pagination-next .ant-pagination-item-link {
+    border-radius: 16px !important;
+    text-align: center;
+    align-items: center;
 }

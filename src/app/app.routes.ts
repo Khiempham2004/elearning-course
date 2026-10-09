@@ -69,6 +69,38 @@ export const routes: Routes = [
             (m) => m.UserManagementModule,
           ),
       },
+      {
+        path: 'role-management',
+        data: { breadcrumb: 'Quản lý vai trò / phân quyền' },
+        loadChildren: () =>
+          import('./modules/role-management/role-management.module').then(
+            (m) => m.RoleManagementModule,
+          ),
+      },
+      {
+        path: 'system-management',
+        data: { breadcrumb: 'Quản lý chức năng hệ thống' },
+        loadChildren: () =>
+          import('./modules/system-management/system-management.module').then(
+            (m) => m.SystemManagementModule,
+          ),
+      },
+      {
+        path: 'user-group-management',
+        data: { breadcrumb: 'Quản lý nhóm người dùng' },
+        loadChildren: () =>
+          import('./modules/user-group-management/user-group-management.module').then(
+            (m) => m.UserGroupManagementModule,
+          ),
+      },
+      {
+        path: 'configuration-management',
+        data: { breadcrumb: 'Quản lý cấu hình hệ thống' },
+        loadChildren: () =>
+          import('./modules/configuration-management/configuration-management.module').then(
+            (m) => m.ConfigurationManagementModule,
+          ),
+      },
     ],
   },
   {

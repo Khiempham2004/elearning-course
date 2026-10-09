@@ -6,7 +6,7 @@ import { NzInputDirective } from 'ng-zorro-antd/input';
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
 import { NzTableComponent } from 'ng-zorro-antd/table';
 import { NzModalComponent, NzModalContentDirective, NzModalService } from 'ng-zorro-antd/modal';
-import {  ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectComponent, NzOptionComponent } from 'ng-zorro-antd/select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -33,8 +33,9 @@ const routes: Routes = [
     NzSelectComponent,
     NzOptionComponent,
     NzIconModule,
-    NzPaginationModule
-  ],
+    NzPaginationModule,
+    FormsModule
+],
   providers: [NzModalService],
   declarations: [DirectoryRoomComponent],
 })

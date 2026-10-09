@@ -1,11 +1,11 @@
 <span style="color:#087EED;font-size: 20px;margin-left: 20px;">QUẢN LÝ DANH MỤC CÁC PHÒNG</span>
 <div class="room-header">
-    <input type="text" nz-input placeholder="Tìm kiếm dữ liệu">
+    <input type="text" nz-input placeholder="Tìm kiếm dữ liệu" [(ngModel)]="filterSearch" (keyup.enter)="handleFilter()">
     <button nz-button nzType="primary" (click)="openModal()">Tạo mới phòng</button>
 </div>
 
-<nz-table class="table-room" #basicTable [nzFrontPagination]="false"
-    [nzData]="listOfDirectory" [nzBordered]="true">
+<nz-table class="table-room" #basicTable [nzFrontPagination]="false" [nzData]="listOfDirectory" [nzBordered]="true"
+    [nzScroll]="{x:'1000px',y:'500px'}">
     <thead>
         <tr>
             <th>Mã phòng</th>
@@ -17,7 +17,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let room of listOfDirectory">
-            <td>{{ room.roomCode }}</td>
+            <td style="font-weight: 600;cursor: pointer;" (click)="handleRowClick(room)">{{ room.roomCode }}</td>
             <td>{{ room.roomName }}</td>
             <td>{{ room.roomType }}</td>
             <td>{{ room.status }}</td>
@@ -33,15 +33,23 @@
     </tbody>
 </nz-table>
 
-<div style="display: flex;justify-content: space-between;">
+<div class="pagination-wrapper">
     <div>
         Tổng : <span style="font-weight: 600;">{{total}}</span> bản ghi
     </div>
-    <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
-        (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" nzShowSizeChanger />
+    <div class="pagination-page" >
+        <div style="display: flex;gap: 10px;align-items: center;">
+            <span style="font-size: 15px;">Hiển thị</span>
+            <nz-select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="optionSelect" />
+        </div>
+
+        <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
+            (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
+    </div>
 </div>
 
-<nz-modal [(nzVisible)]="isRoom" [nzFooter]="null" (nzOnCancel)="closeCancel()" nzWidth="700px">
+<nz-modal [(nzVisible)]="isRoom" [nzFooter]="null" (nzOnCancel)="closeCancel()" nzWidth="700px"
+    [nzTitle]="modalTitleRoom">
     <ng-container *nzModalContent>
         <form [formGroup]="form" nz-form nzLayout="vertical">
             <nz-form-item>
@@ -82,8 +90,7 @@
 
             <div class="room-footer">
                 <button nz-button nzType="primary" (click)="closeCancel()">Hủy</button>
-                <button nz-button nzType="primary" (click)="handleSubmitRoom()">{{status === 'CREATE' ? ('Lưu'): ('Cập
-                    nhật')}}</button>
+                <button nz-button nzType="primary" (click)="handleSubmitRoom()">{{status === 'CREATE' ? ('Lưu'): ('Cập nhật')}}</button>
             </div>
         </form>
     </ng-container>

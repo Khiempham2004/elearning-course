@@ -1,0 +1,94 @@
+{
+  "users": [
+    {
+      "userCode": "ND001",
+      "fullName": "Nguyễn Văn An",
+      "email": "nguyenvanan@gmail.com",
+      "phone": "0987654321",
+      "role": "ADMIN",
+      "departmentId": 1,
+      "status": "true"
+    },
+    {
+      "userCode": "ND002",
+      "fullName": "Trần Thị Lan",
+      "email": "tranthilan@gmail.com",
+      "phone": "0912345678",
+      "role": "STAFF",
+      "departmentId": 2,
+      "status": "true"
+    },
+    {
+      "userCode": "ND003",
+      "fullName": "Lê Văn Minh",
+      "email": "levanminh@gmail.com",
+      "phone": "0909123456",
+      "role": "USER",
+      "departmentId": 1,
+      "status": "false"
+    },
+    {
+      "userCode": "ND004",
+      "fullName": "Phạm Thu Hương",
+      "email": "phamthuhuong@gmail.com",
+      "phone": "0978123456",
+      "role": "STAFF",
+      "departmentId": 3,
+      "status": "true"
+    },
+    {
+      "userCode": "ND005",
+      "fullName": "Đỗ Đức Anh",
+      "email": "doducanh@gmail.com",
+      "phone": "0965432109",
+      "role": "USER",
+      "departmentId": 4,
+      "status": "true"
+    },
+    {
+      "userCode": "ND006",
+      "fullName": "Nguyễn Thị Mai",
+      "email": "nguyenthimai@gmail.com",
+      "phone": "0988123456",
+      "role": "USER",
+      "departmentId": 2,
+      "status": "false"
+    },
+    {
+      "userCode": "ND007",
+      "fullName": "Hoàng Văn Nam",
+      "email": "hoangvannam@gmail.com",
+      "phone": "0934567890",
+      "role": "STAFF",
+      "departmentId": 3,
+      "status": "false"
+    },
+    {
+      "userCode": "ND008",
+      "fullName": "Vũ Minh Tuấn",
+      "email": "vuminhtuan@gmail.com",
+      "phone": "0911223344",
+      "role": "USER",
+      "departmentId": 4,
+      "status": "true"
+    },
+    {
+      "userCode": "ND009",
+      "fullName": "Đặng Thị Hạnh",
+      "email": "dangthihanh@gmail.com",
+      "phone": "0945678901",
+      "role": "STAFF",
+      "departmentId": 1,
+      "status": "true"
+    },
+    {
+      "userCode": "ND010",
+      "fullName": "Phạm Quốc Khánh",
+      "email": "phamquockhanh@gmail.com",
+      "phone": "0966778899",
+      "role": "USER",
+      "departmentId": 2,
+      "status": "false"
+    }
+  ]
+}
