@@ -1,0 +1,44 @@
+{
+  "system": [
+    {
+      "functionCode": "USER_VIEW",
+      "functionName": "Xem danh sách người dùng",
+      "directoryId": 1,
+      "functionType": "PAGE",
+      "functionUrl": "/system/users",
+      "description": "Hiển thị danh sách người dùng",
+      "sortOrder": 1,
+      "status": "true"
+    },
+    {
+      "functionCode": "USER_CREATE",
+      "functionName": "Thêm người dùng",
+      "directoryId": 1,
+      "functionType": "ACTION",
+      "functionUrl": null,
+      "description": "Thêm tài khoản người dùng mới",
+      "sortOrder": 2,
+      "status": "true"
+    },
+    {
+      "functionCode": "USER_UPDATE",
+      "functionName": "Cập nhật người dùng",
+      "directoryId": 1,
+      "functionType": "ACTION",
+      "functionUrl": null,
+      "description": "Chỉnh sửa thông tin người dùng",
+      "sortOrder": 3,
+      "status": "true"
+    },
+    {
+      "functionCode": "USER_DELETE",
+      "functionName": "Xóa người dùng",
+      "directoryId": 1,
+      "functionType": "ACTION",
+      "functionUrl": null,
+      "description": "Xóa tài khoản người dùng",
+      "sortOrder": 4,
+      "status": "true"
+    }
+  ]
+}

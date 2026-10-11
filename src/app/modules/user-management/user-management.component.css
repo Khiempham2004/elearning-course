@@ -76,17 +76,29 @@ tr td {
     font-size: 14px;
 }
 
+::ng-deep .ant-pagination-item {
+    border-radius: 16px !important;
+}
+
+::ng-deep .ant-pagination-prev .ant-pagination-item-link,
+::ng-deep .ant-pagination-next .ant-pagination-item-link {
+    border-radius: 16px !important;
+    text-align: center;
+    align-items: center;
+}
+
 
 input {
     font-size: 16px;
 }
 
-.table-pagination-total{
+.table-pagination-total {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.total-table{
+
+.total-table {
     font-weight: 600;
     font-size: 15px;
 }

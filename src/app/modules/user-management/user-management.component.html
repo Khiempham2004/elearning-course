@@ -7,12 +7,13 @@
     margin-left: 20px;
     margin-top: 20px;
   ">
-    <input type="text" nz-input placeholder="Tìm kiếm dữ liệu..."[(ngModel)]="filterUser" (keyup.enter)="handleClickSearch()" />
+    <input type="text" nz-input placeholder="Tìm kiếm dữ liệu..." [(ngModel)]="filterUser"
+        (keyup.enter)="handleClickSearch()" />
     <button nz-button nzType="primary" (click)="openModal()">Tạo mới</button>
 </div>
 
 <nz-table #basicTable [nzFrontPagination]="false" [nzBordered]="true" [nzData]="listOfUser"
-    style="margin-left: 20px; margin-top: 20px">
+    [nzScroll]="{x:'1000px',y:'535px'}" style="margin-left: 20px; margin-top: 20px">
     <thead>
         <tr>
             <th>Mã người dùng</th>
@@ -27,7 +28,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let users of listOfUser">
-            <td>{{ users.userCode }}</td>
+            <td style="font-weight: 600;cursor: pointer;" (click)="handleRowClick(users)">{{ users.userCode }}</td>
             <td>{{ users.fullName }}</td>
             <td>{{ users.email }}</td>
             <td>{{ users.phone }}</td>
@@ -75,7 +76,7 @@
                     </nz-form-item>
                     <nz-form-item>
                         <nz-form-label>
-                            <span>Họ và tên</span>
+                            <span>Họ và tên <span style="color: red;">*</span> </span>
                         </nz-form-label>
                         <nz-form-control nzErrorTip="Họ và tên là bắt buộc">
                             <input nz-input formControlName="fullName" placeholder="Nhập họ và tên..." />
@@ -86,7 +87,7 @@
                 <div nz-col [nzSpan]="12">
                     <nz-form-item>
                         <nz-form-label>
-                            <span>Email</span>
+                            <span>Email <span style="color: red;">*</span></span>
                         </nz-form-label>
                         <nz-form-control nzErrorTip="Email là bắt buộc">
                             <input nz-input formControlName="email" placeholder="Nhập mã người dùng..." />
@@ -94,7 +95,7 @@
                     </nz-form-item>
                     <nz-form-item>
                         <nz-form-label>
-                            <span>Số điện thoại</span>
+                            <span>Số điện thoại <span style="color: red;">*</span></span>
                         </nz-form-label>
                         <nz-form-control nzErrorTip="Số điện thoại là bắt buộc">
                             <input nz-input formControlName="phone" placeholder="Nhập mã người dùng..." />

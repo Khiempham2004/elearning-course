@@ -7,7 +7,8 @@
       "phone": "0987654321",
       "role": "ADMIN",
       "departmentId": 1,
-      "status": "true"
+      "status": "true",
+      "id": "NvpzZtSdTIY"
     },
     {
       "userCode": "ND002",
@@ -16,7 +17,8 @@
       "phone": "0912345678",
       "role": "STAFF",
       "departmentId": 2,
-      "status": "true"
+      "status": "true",
+      "id": "K32tUibDJCo"
     },
     {
       "userCode": "ND003",
@@ -25,7 +27,8 @@
       "phone": "0909123456",
       "role": "USER",
       "departmentId": 1,
-      "status": "false"
+      "status": "false",
+      "id": "LCJHCrT1x50"
     },
     {
       "userCode": "ND004",
@@ -34,7 +37,8 @@
       "phone": "0978123456",
       "role": "STAFF",
       "departmentId": 3,
-      "status": "true"
+      "status": "true",
+      "id": "4acSm3MMITI"
     },
     {
       "userCode": "ND005",
@@ -43,7 +47,8 @@
       "phone": "0965432109",
       "role": "USER",
       "departmentId": 4,
-      "status": "true"
+      "status": "true",
+      "id": "-s8djcdvcKs"
     },
     {
       "userCode": "ND006",
@@ -52,7 +57,8 @@
       "phone": "0988123456",
       "role": "USER",
       "departmentId": 2,
-      "status": "false"
+      "status": "false",
+      "id": "Xb7Gk-fMIVo"
     },
     {
       "userCode": "ND007",
@@ -61,7 +67,8 @@
       "phone": "0934567890",
       "role": "STAFF",
       "departmentId": 3,
-      "status": "false"
+      "status": "false",
+      "id": "8fICwGJz9Xk"
     },
     {
       "userCode": "ND008",
@@ -70,7 +77,8 @@
       "phone": "0911223344",
       "role": "USER",
       "departmentId": 4,
-      "status": "true"
+      "status": "true",
+      "id": "kLH_JrusgTE"
     },
     {
       "userCode": "ND009",
@@ -79,7 +87,8 @@
       "phone": "0945678901",
       "role": "STAFF",
       "departmentId": 1,
-      "status": "true"
+      "status": "true",
+      "id": "Rf1PuSIp6Ys"
     },
     {
       "userCode": "ND010",
@@ -88,7 +97,29 @@
       "phone": "0966778899",
       "role": "USER",
       "departmentId": 2,
-      "status": "false"
+      "status": "false",
+      "id": "Qg9nj-3MYvE"
+    },
+    {
+      "userCode": "ND00120",
+      "fullName": "Pham Ngoc Khiem",
+      "email": "phamkhiem@gmail.com",
+      "phone": "0223412341",
+      "role": "USER",
+      "departmentId": "3",
+      "status": "true",
+      "id": "QNbRQBLPxow"
+    },
+    {
+      "userCode": "ND01",
+      "fullName": "phamngockhiem",
+      "email": "ngockhiem@gmail.com",
+      "phone": "0322312312",
+      "role": "Staff",
+      "departmentId": "2",
+      "status": "true",
+      "id": "phn8kJ5Kev4"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

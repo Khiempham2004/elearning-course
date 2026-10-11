@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from './users.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-user-management',
@@ -26,6 +27,7 @@ export class UserManagementComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UsersService,
     private nzMessage: NzMessageService,
+    private nzModal: NzModalService,
   ) {
     this.form = this.fb.group({
       userCode: [null],
@@ -81,7 +83,7 @@ export class UserManagementComponent implements OnInit {
   handleClickSearch() {
     const keywords = this.filterUser.trim().toLowerCase();
     console.log(keywords);
-    
+
     if (!keywords) {
       this.filterSearch = [...this.users];
       this.total = this.filterSearch.length;
@@ -115,7 +117,47 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  handleSubmit() {}
+  handleSubmit() {
+    if (this.form.invalid) {
+      Object.values(this.form.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+          this.form.markAllAsTouched();
+        }
+      });
+      return;
+    }
+
+    const payload = this.form.getRawValue();
+
+    if (this.status === 'CREATE') {
+      this.userService.createUsers(payload).subscribe({
+        next: (res: any) => {
+          this.nzMessage.success('Tạo mới người dùng thành công', res);
+          this.getAllUsers();
+        },
+        error: (err: any) => {
+          this.nzMessage.error('Tạo mới thất bại', err);
+        },
+      });
+    } else {
+      this.userService.updateUser(this.userId, payload).subscribe({
+        next: (res: any) => {
+          this.nzMessage.success('Cập nhật người dùng thành công', res);
+          this.getAllUsers();
+        },
+        error: (err: any) => {
+          this.nzMessage.error('Cập nhật thất bại', err);
+        },
+      });
+    }
+
+    this.isUser = false;
+    this.userId = null;
+    this.getAllUsers();
+    this.form.reset();
+  }
 
   handleEditUser(item: any) {
     this.status = 'EDIT';
@@ -138,7 +180,35 @@ export class UserManagementComponent implements OnInit {
       },
     });
   }
-  handleDeleteUser(item: any) {}
+  handleDeleteUser(item: any) {
+    this.page = 1;
+    this.nzModal.confirm({
+      nzTitle: 'Bạn có muốn xóa cấp tỉnh này không?',
+      nzContent: '',
+      nzOkText: 'yes',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.userService.deleteUser(item.id).subscribe({
+          next: (res: any) => {
+            this.nzMessage.success('Xóa khoá học thành công', res);
+            this.getAllUsers();
+          },
+        });
+      },
+    });
+  }
+
+  handleRowClick(item: any) {
+    this.status = 'EDIT';
+    this.isUser = true;
+    this.userService.getUserById(item.id).subscribe({
+      next: (res: any) => {
+        this.form.patchValue(res);
+        this.getAllUsers();
+      },
+    });
+  }
 
   optionSelects = [
     { label: '5', value: 5 },
