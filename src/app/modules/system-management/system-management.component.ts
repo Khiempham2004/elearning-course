@@ -21,7 +21,7 @@ export class SystemManagementComponent implements OnInit {
   systemId: any = null;
   isSystem = false;
   page = 1;
-  pageSize = 10;
+  pageSize = 5;
   total = 0;
   constructor(
     private fb: FormBuilder,
@@ -66,6 +66,17 @@ export class SystemManagementComponent implements OnInit {
     this.form.reset();
   }
 
+  pageChange(page: any) {
+    this.page = page;
+    this.getAllSystem();
+  }
+
+  pageSizeChange(pagesize: any) {
+    this.pageSize = pagesize;
+    this.page = 1;
+    this.getAllSystem();
+  }
+
   getAllSystem() {
     this.systemService.getAllSystems().subscribe({
       next: (res: any) => {
@@ -81,7 +92,45 @@ export class SystemManagementComponent implements OnInit {
     });
   }
 
-  handleSubmitRoom() {}
+  handleSubmitRoom() {
+    if (this.form.invalid) {
+      Object.values(this.form.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+          this.form.markAllAsTouched();
+        }
+      });
+      return;
+    }
+
+    const payload = this.form.getRawValue();
+
+    if (this.status === 'CREATE') {
+      this.systemService.createSystem(payload).subscribe({
+        next: (res: any) => {
+          this.nzMessage.success('Tạo mới hệ thống thành công', res);
+          this.getAllSystem();
+        },
+        error: (err: any) => {
+          this.nzMessage.error('Lỗi tạo mới hệ thống', err);
+        },
+      });
+    } else {
+      this.systemService.updateSystem(this.systemId, payload).subscribe({
+        next: (res: any) => {
+          this.nzMessage.success('Cập nhật hệ thống thành công', res);
+          this.getAllSystem();
+        },
+      });
+    }
+
+    this.isSystem = false;
+    this.systemId = null;
+    this.getAllSystem();
+    this.form.reset();
+  }
+
   handleEdit(item: any) {
     this.status = 'EDIT';
     this.isSystem = true;
@@ -89,13 +138,13 @@ export class SystemManagementComponent implements OnInit {
     this.systemService.getSystemById(this.systemId).subscribe({
       next: (res: any) => {
         this.form.patchValue({
-          functionCode : res?.functionCode,
-          functionName : res?.functionName,
-          directoryId : res?.directoryId,
-          functionType : res?.functionType,
-          functionUrl : res?.functionUrl,
-          description : res?.description,
-          sortOrder : res?.sortOrder,
+          functionCode: res?.functionCode,
+          functionName: res?.functionName,
+          directoryId: res?.directoryId,
+          functionType: res?.functionType,
+          functionUrl: res?.functionUrl,
+          description: res?.description,
+          sortOrder: res?.sortOrder,
           status: res.status == null ? null : String(res.status),
         });
         this.getAllSystem();
@@ -103,6 +152,38 @@ export class SystemManagementComponent implements OnInit {
     });
   }
 
-  handleDelete(item: any) {}
-  handleRowClick(item: any) {}
+  handleDelete(item: any) {
+    this.page = 1;
+    this.nzModal.confirm({
+      nzTitle: 'Bạn có muốn xóa cấp tỉnh này không?',
+      nzContent: '',
+      nzOkText: 'yes',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.systemService.deleteSystem(item.id).subscribe({
+          next: (res: any) => {
+            this.nzMessage.success('Xóa khoá học thành công', res);
+            this.getAllSystem();
+          },
+        });
+      },
+    });
+  }
+  handleRowClick(item: any) {
+    this.status = 'EDIT';
+    this.isSystem = true;
+    this.systemService.getSystemById(item.id).subscribe({
+      next: (res: any) => {
+        this.form.patchValue(res);
+      },
+    });
+  }
+
+  handleOptionSelect = [
+    { label: '5', value: 5 },
+    { label: '10', value: 10 },
+    { label: '15', value: 15 },
+    { label: '20', value: 20 },
+  ];
 }

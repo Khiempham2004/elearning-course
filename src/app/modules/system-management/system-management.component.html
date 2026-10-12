@@ -13,7 +13,7 @@
 </div>
 
 <nz-table #basicTable class="system-table" [nzFrontPagination]="false" [nzBordered]="true" [nzData]="listOfSystem"
-  [nzScroll]="{ x: '1000px', y: '535px' }" style="margin-left: 20px; margin-top: 20px">
+  [nzScroll]="{ x: '1000px', y: '500px' }">
   <thead>
     <tr>
       <th>Mã chức năng</th>
@@ -53,6 +53,17 @@
   </tbody>
 </nz-table>
 
+<div class="pagination-header">
+  <div style="margin-left: 20px;">
+    Tổng số : <span class="header-total">{{total}}</span> bản ghi
+  </div>
+  <div class="page-pagination">
+    <span>Hiển thị</span>
+    <nz-select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="handleOptionSelect" />
+    <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
+      (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
+  </div>
+</div>
 
 <nz-modal [(nzVisible)]="isSystem" [nzFooter]="null" (nzOnCancel)="closeModal()" nzWidth="700px"
   [nzTitle]="modalTitleRoom">
