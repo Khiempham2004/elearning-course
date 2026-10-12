@@ -14,6 +14,7 @@ export class SystemManagementComponent implements OnInit {
   filterSystem: string = '';
   listOfSystem: any[] = [];
   system: any[] = [];
+  filterSearch: any[] = [];
 
   form!: FormGroup;
   status: 'CREATE' | 'EDIT' = 'CREATE';
@@ -53,7 +54,6 @@ export class SystemManagementComponent implements OnInit {
     }
     return '';
   }
-  handleClickSearch() {}
   openModal() {
     this.isSystem = true;
     this.status = 'CREATE';
@@ -77,17 +77,45 @@ export class SystemManagementComponent implements OnInit {
     this.getAllSystem();
   }
 
+  updatePagination() {
+    const start = (this.page - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.listOfSystem = this.filterSearch.slice(start, end);
+  }
+  handleClickSearch() {
+    const keyword = this.filterSystem.trim().toLowerCase();
+    if (!keyword) {
+      this.filterSearch = [...this.system];
+      this.total = this.filterSearch.length;
+      this.page = 1;
+      this.updatePagination();
+      return;
+    }
+
+    this.filterSearch = this.system.filter((item: any) => {
+      return (
+        item.functionName?.toLowerCase().includes(keyword) ||
+        item.functionType?.toLowerCase().includes(keyword)
+      );
+    });
+
+    this.total = this.filterSearch.length;
+    this.page = 1;
+    this.updatePagination();
+  }
   getAllSystem() {
     this.systemService.getAllSystems().subscribe({
       next: (res: any) => {
         this.system = res ?? [];
+        this.filterSearch = [...this.system];
+        this.total = this.filterSearch.length;
         this.listOfSystem = [
           ...this.system.slice(
             (this.page - 1) * this.pageSize,
             this.page * this.pageSize,
           ),
         ];
-        this.total = this.system.length;
+        this.updatePagination();
       },
     });
   }
@@ -155,7 +183,7 @@ export class SystemManagementComponent implements OnInit {
   handleDelete(item: any) {
     this.page = 1;
     this.nzModal.confirm({
-      nzTitle: 'Bạn có muốn xóa cấp tỉnh này không?',
+      nzTitle: 'Bạn có muốn xóa chức năng hệ thống này không?',
       nzContent: '',
       nzOkText: 'yes',
       nzOkType: 'primary',

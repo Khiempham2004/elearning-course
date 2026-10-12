@@ -88,3 +88,15 @@ button, input, select { font-family: inherit; }
   .province-form-modal .ant-modal-header { padding: 18px 20px; }
   .province-form-modal .ant-modal-body { padding: 20px; }
 }
+
+.color-span{
+  font-size: 20px;
+  font-weight: 600;
+  color: #0c7eed;
+  margin-left: 20px;
+}
+
+.header-table{
+  background-color: #e7edf5;
+  width: 100%;
+}

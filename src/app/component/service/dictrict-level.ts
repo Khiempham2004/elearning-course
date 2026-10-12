@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class DictrictLevelService {
   constructor(private http: HttpClient) {}
 
-  private readonly urlDictrict = 'http://localhost:9000/dictrict';
+  private readonly urlDictrict = 'http://localhost:4000/dictrict';
 
   getAllDictrict(): Observable<any> {
     return this.http.get<any[]>(this.urlDictrict);
