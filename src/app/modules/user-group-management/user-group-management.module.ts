@@ -11,6 +11,7 @@ import { NzFormDirective, NzFormItemComponent } from 'ng-zorro-antd/form';
 import { NzColDirective } from 'ng-zorro-antd/grid';
 import { NzSelectComponent, NzOptionComponent } from 'ng-zorro-antd/select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
 
 const routes: Routes = [
   {
@@ -36,7 +37,8 @@ const routes: Routes = [
     NzSelectComponent,
     NzOptionComponent,
     NzAutosizeDirective,
-    NzIconModule
+    NzIconModule,
+    NzPaginationComponent
 ],
   declarations: [UserGroupManagementComponent],
 })

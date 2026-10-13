@@ -1,6 +1,12 @@
 tr th {
     justify-content: center;
     text-align: center;
+    font-weight: 600;
+}
+
+tr td {
+    justify-content: center;
+    text-align: center;
 }
 
 .table-header {
@@ -162,4 +168,24 @@ button {
 
 .custom-select ::ng-deep .ant-select-arrow {
     color: #666666;
+}
+
+.class-pagination {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+}
+
+.pagination-header {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.table-action {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
 }

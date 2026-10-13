@@ -1,49 +1,98 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "groupCode": "ADMIN",
       "groupName": "Quản trị viên",
       "description": "Quản lý toàn bộ hệ thống",
       "status": "true",
-      "userIds": [1, 2],
-      "permissionIds": [1, 2, 3]
+      "userIds": [
+        1,
+        2
+      ],
+      "permissionIds": [
+        1,
+        2,
+        3
+      ],
+      "permissionName": "Quản lý quản trị viên"
     },
     {
-      "id": 2,
+      "id": "2",
       "groupCode": "STAFF",
       "groupName": "Nhân viên",
       "description": "Quản lý và xử lý các nghiệp vụ được phân công",
       "status": "true",
-      "userIds": [3, 4],
-      "permissionIds": [2, 3]
+      "userIds": [
+        3,
+        4
+      ],
+      "permissionIds": [
+        2,
+        3
+      ],
+      "permissionName": "Quản lý nhân viên"
     },
     {
-      "id": 3,
+      "id": "3",
       "groupCode": "USER",
       "groupName": "Người dùng",
       "description": "Sử dụng các chức năng cơ bản của hệ thống",
       "status": "true",
-      "userIds": [5, 6],
-      "permissionIds": [3]
+      "userIds": [
+        5,
+        6
+      ],
+      "permissionIds": [
+        3
+      ],
+      "permissionName": "Quản lý người dùng chức năng"
     },
     {
-      "id": 4,
+      "id": "4",
       "groupCode": "MANAGER",
       "groupName": "Quản lý",
       "description": "Quản lý người dùng và theo dõi hoạt động hệ thống",
       "status": "false",
-      "userIds": [7],
-      "permissionIds": [1, 2]
+      "userIds": [
+        3
+      ],
+      "permissionIds": [
+        1,
+        2
+      ],
+      "permissionName": "Quản lý người dùng"
     },
     {
-      "id": 5,
       "groupCode": "GUEST",
       "groupName": "Khách",
       "description": "Chỉ được phép truy cập các chức năng công khai",
       "status": "true",
-      "userIds": [],
-      "permissionIds": []
+      "userIds": [
+        "8",
+        "1"
+      ],
+      "permissionIds": [
+        "1",
+        "4"
+      ],
+      "id": "5"
+    },
+    {
+      "groupCode": "áda",
+      "groupName": "Quản trị viên",
+      "description": "Quản lý người dùng khi thay đổi hệ thống",
+      "status": "true",
+      "userIds": [
+        "1",
+        "DjKL3t-EmoA"
+      ],
+      "permissionIds": [
+        "1",
+        "2"
+      ],
+      "id": "DjKL3t-EmoA"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

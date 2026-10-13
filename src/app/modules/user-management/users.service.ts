@@ -12,7 +12,7 @@ export class UsersService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  getUserById(id: number): Observable<any> {
+  getUserById(id: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
@@ -20,11 +20,11 @@ export class UsersService {
     return this.http.post<any[]>(this.apiUrl, data);
   }
 
-  updateUser(id: number, data: any): Observable<any> {
+  updateUser(id: any, data: any): Observable<any> {
     return this.http.put<any[]>(`${this.apiUrl}/${id}`, data);
   }
 
-  deleteUser(id: number): Observable<any> {
+  deleteUser(id: any): Observable<any> {
     return this.http.delete<any[]>(`${this.apiUrl}/${id}`);
   }
 }
