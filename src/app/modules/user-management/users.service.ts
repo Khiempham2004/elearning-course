@@ -12,16 +12,16 @@ export class UsersService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  getUserById(id: any): Observable<any> {
+  getUserById(id: Number | string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  createUsers(data: any): Observable<any> {
-    return this.http.post<any[]>(this.apiUrl, data);
+  createUsers(payload: any): Observable<any> {
+    return this.http.post<any[]>(this.apiUrl, payload);
   }
 
-  updateUser(id: any, data: any): Observable<any> {
-    return this.http.put<any[]>(`${this.apiUrl}/${id}`, data);
+  updateUser(id: any, payload: any): Observable<any> {
+    return this.http.put<any[]>(`${this.apiUrl}/${id}`, payload);
   }
 
   deleteUser(id: any): Observable<any> {

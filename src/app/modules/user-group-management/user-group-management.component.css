@@ -2,11 +2,13 @@ tr th {
     justify-content: center;
     text-align: center;
     font-weight: 600;
+    height: 100% !important;
 }
 
 tr td {
     justify-content: center;
     text-align: center;
+    height: 100px !important;
 }
 
 .table-header {
@@ -98,8 +100,6 @@ button {
     text-align: center;
 }
 
-/*  */
-
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -186,6 +186,6 @@ button {
 .table-action {
     display: flex;
     justify-content: center;
-    text-align: center;
+    align-items: center;
     gap: 10px;
 }

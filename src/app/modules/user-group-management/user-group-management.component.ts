@@ -16,7 +16,7 @@ export class UserGroupManagementComponent implements OnInit {
   listOfPermissions: any[] = [];
   filters: any[] = [];
   filterSearch: string = '';
-  
+
   status: 'CREATE' | 'EDIT' = 'CREATE';
   isUsers = false;
   userId: any = null;
@@ -99,6 +99,18 @@ export class UserGroupManagementComponent implements OnInit {
     this.page = 1;
     this.updatePagination();
   }
+
+  getUserName(userIds: string[]): string {
+    return (userIds ?? [])
+      .map((id) => {
+        const user = this.listOfUsers.find(
+          (item) => String(item.id) === String(id).trim(),
+        );
+        return user?.groupName;
+      })
+      .filter((name) => !!name)
+      .join(', ');
+  }
   getAllUsers() {
     this.userService.getAllUsers().subscribe({
       next: (res: any) => {
@@ -106,7 +118,7 @@ export class UserGroupManagementComponent implements OnInit {
         this.filters = [...this.users];
         this.total = this.filters.length;
         this.listOfUsers = [
-          ...this.users.slice( 
+          ...this.users.slice(
             (this.page - 1) * this.pageSize,
             this.page * this.pageSize,
           ),
@@ -134,9 +146,15 @@ export class UserGroupManagementComponent implements OnInit {
     const payload = this.form.getRawValue();
 
     if (this.status === 'CREATE') {
-      this.userService.createUsers(payload).subscribe({
+      const { id, ...createPayload } = payload;
+      this.userService.createUsers(createPayload).subscribe({
         next: (res: any) => {
-          this.nzMessage.success('Tạo mới người dùng thành công', res);
+          this.nzMessage.success(
+            `Tạo mới người dùng thành công ID : ${res.id}`,
+            res,
+          );
+          this.closeModal();
+          this.page = 1;
           this.getAllUsers();
         },
         error: (err: any) => {
@@ -159,9 +177,8 @@ export class UserGroupManagementComponent implements OnInit {
     this.getAllUsers();
     this.form.reset();
   }
-  userEdit(item: any) {
-    console.log(item.id);
 
+  userEdit(item: any) {
     this.status = 'EDIT';
     this.isUsers = true;
     this.userId = item.id;
@@ -174,7 +191,7 @@ export class UserGroupManagementComponent implements OnInit {
           groupCode: res?.groupCode,
           groupName: res?.groupName,
           description: res?.description,
-          status: res?.status,
+          status: String(res?.status),
           userIds: (res?.userIds ?? []).map((id: any) => String(id).trim()),
           permissionIds: (res?.permissionIds ?? []).map((id: any) =>
             String(id).trim(),

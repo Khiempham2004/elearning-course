@@ -1,0 +1,150 @@
+.header {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+input {
+    border-radius: 8px !important;
+    font-size: 15px;
+}
+
+button {
+    border-radius: 8px !important;
+    font-size: 15px;
+}
+
+.table-header {
+    margin-top: 20px;
+    margin-left: 20px;
+    border-radius: 8px !important;
+}
+
+tr th {
+    justify-content: center;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+tr td {
+    justify-content: center;
+    text-align: center;
+    height: 100px !important;
+    margin-left: 20px;
+}
+
+.configuration-icon {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.flex-configuration1 nz-form-label {
+    text-align: left;
+}
+
+.flex-configuration1 nz-form-control,
+.flex-configuration1 input {
+    width: 100%;
+}
+
+.flex-configuration2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+
+.flex-configuration2 nz-form-item {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.flex-configuration2 nz-form-label {
+    text-align: left;
+}
+
+.flex-configuration2 nz-form-control,
+.flex-configuration2 nz-select {
+    width: 100%;
+}
+
+.flex-configuration3 .nz-form-label {
+    text-align: left;
+}
+
+.flex-configuration3 textarea {
+    width: 100%;
+    border-radius: 8px !important;
+}
+
+.flex-configuration3 nz-form-control,
+.flex-configuration3 input {
+    width: 100%;
+}
+
+.configuration-action {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.pagination-header {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 20px;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+}
+
+::ng-deep .ant-modal-content {
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+::ng-deep .ant-modal-title {
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+::ng-deep .ant-form-item-label>label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+::ng-deep .ant-select-selector {
+    border-radius: 8px !important;
+}
+
+::ng-deep .ant-form-label {
+    color: #B6B8B6;
+}
+
+::ng-deep .ant-pagination-item {
+    border-radius: 16px !important;
+    align-items: center;
+}
+
+::ng-deep .ant-pagination-prev .ant-pagination-item-link,
+::ng-deep .ant-pagination-next .ant-pagination-item-link {
+    border-radius: 16px !important;
+    align-items: center;
+}

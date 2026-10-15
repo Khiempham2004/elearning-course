@@ -79,7 +79,7 @@
       "id": "5"
     },
     {
-      "groupCode": "áda",
+      "groupCode": "ADMIN",
       "groupName": "Quản trị viên",
       "description": "Quản lý người dùng khi thay đổi hệ thống",
       "status": "true",
@@ -92,6 +92,36 @@
         "2"
       ],
       "id": "DjKL3t-EmoA"
+    },
+    {
+      "groupCode": "ADMIN",
+      "groupName": "Quản lý",
+      "description": "Quản lý giảng viên",
+      "status": "true",
+      "userIds": [
+        "DjKL3t-EmoA"
+      ],
+      "permissionIds": [
+        "4"
+      ],
+      "id": "3xy5BUvR8NE"
+    },
+    {
+      "groupCode": "USER",
+      "groupName": "Quản lý",
+      "description": "Quản lý nhóm người dùng ",
+      "status": "true",
+      "userIds": [
+        "3xy5BUvR8NE",
+        "eJGl3O_wZNU",
+        "DjKL3t-EmoA"
+      ],
+      "permissionIds": [
+        "2",
+        "4",
+        "1"
+      ],
+      "id": "eJGl3O_wZNU"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

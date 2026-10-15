@@ -1,3 +1,140 @@
-<p>
-  configuration-management works!
-</p>
+<span class="color-span">QUẢN LÝ CẤU HÌNH HỆ THỐNG</span>
+<div class="header">
+  <input nz-input placeholder="Tìm kiếm dữ liệu..." [(ngModel)]="filter" (keydown.enter)="handleFilter()" />
+  <button nz-button nzType="primary" (click)="openModal()">Tạo hệ thống</button>
+</div>
+
+<nz-table class="table-header" #basicTable [nzData]="listOfConfiguration" [nzFrontPagination]="false"
+  [nzBordered]="true" [nzScroll]="{ x: '1000px', y: '510px' }">
+  <thead>
+    <tr>
+      <th>Mã cấu hình</th>
+      <th>Tên cấu hình</th>
+      <th>Giá trị cấu hình</th>
+      <th>Loại cấu hình</th>
+      <th>Nhóm cấu hình</th>
+      <th>Mô tả</th>
+      <th>Trạng thái</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let configuration of listOfConfiguration">
+      <td>{{ configuration.configKey }}</td>
+      <td>{{ configuration.configName }}</td>
+      <td>{{ configuration.configValue }}</td>
+      <td>{{ configuration.configType }}</td>
+      <td>{{ configuration.category }}</td>
+      <td>{{ configuration.description }}</td>
+      <td>{{ configuration.status }}</td>
+      <td class="configuration-icon">
+        <button nz-button nzType="primary" (click)="handleConfigurationEdit(configuration)">
+          <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button nz-button nzType="primary" nzDanger (click)="handleConfigurationDelete(configuration)">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<div class="pagination-header">
+  <div>
+    Tổng số : <span style="font-weight: 600;font-size: 15px;">{{total}}</span> bản ghi
+  </div>
+  <div class="pagination-wrapper">
+    <div style="display: flex;gap: 10px;align-items: center;">
+      <span>Hiển thị</span>
+      <nz-select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="optionSelect" />
+    </div>
+    <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
+      (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="isConfigration" [nzFooter]="null" (nzOnCancel)="closeModal()" [nzTitle]="modalTitle"
+  [nzWidth]="'700px'">
+  <ng-container *nzModalContent>
+    <form [formGroup]="form" nz-form nzLayout="vertical">
+      <div class="flex-configuration1">
+        <nz-form-item>
+          <nz-form-label>
+            <span>Mã cấu hình <span style="color: red;">*</span></span>
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Mã cấu hình là bắt buộc">
+            <input nz-input formControlName="configKey" placeholder="Nhập mã cấu hình..." />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
+            <span>Tên cấu hình <span style="color: red;">*</span></span>
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên cấu hình là bắt buộc">
+            <input nz-input formControlName="configName" placeholder="Nhập tên cấu hình..." />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
+            <span>Giá trị cấu hình <span style="color: red;">*</span></span>
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Giá trị cấu hình là bắt buộc">
+            <input nz-input formControlName="configValue" placeholder="Nhập giá trị cấu hình..." />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="flex-configuration2">
+        <nz-form-item>
+          <nz-form-label>
+            <span>Loại cấu hình</span>
+          </nz-form-label>
+          <nz-form-control>
+            <nz-select formControlName="configType" nzAllowClear nzMode="multiple"
+              nzPlaceHolder="Nhập loại cấu hình...">
+              <nz-option *ngFor="let type of listOfConfiguration" [nzValue]="type.configType"
+                [nzLabel]="type.configType" />
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>
+            <span>Nhóm cấu hình <span style="color: red;">*</span></span>
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Nhóm cấu hình là bắt buộc">
+            <nz-select formControlName="category" nzMode="multiple" nzAllowClear nzPlaceHolder="Nhập nhóm cấu hình...">
+              <nz-option *ngFor="let category of listOfCategory" [nzValue]="category.category"
+                [nzLabel]="category.category" />
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="flex-configuration3">
+        <nz-form-item>
+          <nz-form-label>
+            <span>Mô tả</span>
+          </nz-form-label>
+          <nz-form-control>
+            <textarea nz-input formControlName="description" placeholder="Nhập mô tả nhóm người dùng..."
+              [nzAutosize]="{ minRows: 3, maxRows: 5 }"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-control>
+          <nz-form-label>
+            <span>Trạng thái</span>
+          </nz-form-label>
+          <nz-select formControlName="status" nzPlaceHolder="Nhập trạng thái...">
+            <nz-option nzValue="true" nzLabel="true" />
+            <nz-option nzValue="false" nzLabel="false" />
+          </nz-select>
+        </nz-form-control>
+      </div>
+      <div class="configuration-action">
+        <button nz-button nzType="primary" (click)="closeModal()">Hủy</button>
+        <button nz-button nzType="primary" (click)="handleSubmit()">{{status === 'CREATE' ? ('Lưu') : ("Cập
+          nhật")}}</button>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

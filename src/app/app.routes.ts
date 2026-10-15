@@ -101,6 +101,14 @@ export const routes: Routes = [
             (m) => m.ConfigurationManagementModule,
           ),
       },
+      {
+        path: 'system-log-management',
+        data: { breadcrumb: 'Quản lý nhật ký hệ thống' },
+        loadChildren: () =>
+          import('./modules/system-log-management/system-log-management.module').then(
+            (m) => m.SystemLogManagementModule,
+          ),
+      },
     ],
   },
   {

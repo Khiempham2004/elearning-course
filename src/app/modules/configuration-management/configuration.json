@@ -1,0 +1,164 @@
+{
+  "systemConfigs": [
+    {
+      "configKey": "SYSTEM_NAME",
+      "configName": "Tên hệ thống",
+      "configValue": "Learnify",
+      "configType": "2",
+      "category": "3",
+      "description": "Tên hiển thị của hệ thống",
+      "status": "true",
+      "id": "1"
+    },
+    {
+      "configKey": "SYSTEM_LOGO",
+      "configName": "Logo hệ thống",
+      "configValue": "/assets/images/logo.png",
+      "configType": [
+        "2"
+      ],
+      "category": [
+        "2",
+        "3"
+      ],
+      "description": "Đường dẫn logo hiển thị trên giao diện",
+      "status": "true",
+      "id": "2"
+    },
+    {
+      "configKey": "SYSTEM_EMAIL",
+      "configName": "Email liên hệ",
+      "configValue": "support@learnify.vn",
+      "configType": [
+        "STRING",
+        [
+          "STRING"
+        ],
+        "BOOLEAN"
+      ],
+      "category": [
+        "SYSTEM"
+      ],
+      "description": "Email hỗ trợ người dùng của hệ thống",
+      "status": "true",
+      "id": "3"
+    },
+    {
+      "id": "4",
+      "configKey": "DEFAULT_LANGUAGE",
+      "configName": "Ngôn ngữ mặc định",
+      "configValue": "vi",
+      "configType": "STRING",
+      "category": "UI",
+      "description": "Ngôn ngữ mặc định khi truy cập hệ thống",
+      "status": "true"
+    },
+    {
+      "id": "5",
+      "configKey": "DEFAULT_PAGE_SIZE",
+      "configName": "Số bản ghi mỗi trang",
+      "configValue": "10",
+      "configType": "NUMBER",
+      "category": "SYSTEM",
+      "description": "Số bản ghi mặc định hiển thị trên mỗi trang bảng dữ liệu",
+      "status": "true"
+    },
+    {
+      "id": "6",
+      "configKey": "SESSION_TIMEOUT",
+      "configName": "Thời gian phiên đăng nhập",
+      "configValue": "30",
+      "configType": "NUMBER",
+      "category": "SECURITY",
+      "description": "Thời gian hết hạn phiên đăng nhập tính bằng phút",
+      "status": "true"
+    },
+    {
+      "id": "7",
+      "configKey": "MAX_LOGIN_ATTEMPTS",
+      "configName": "Số lần đăng nhập tối đa",
+      "configValue": "5",
+      "configType": "NUMBER",
+      "category": "SECURITY",
+      "description": "Số lần đăng nhập sai tối đa trước khi áp dụng giới hạn",
+      "status": "true"
+    },
+    {
+      "id": "8",
+      "configKey": "MAINTENANCE_MODE",
+      "configName": "Chế độ bảo trì",
+      "configValue": "4",
+      "configType": "BOOLEAN",
+      "category": "SYSTEM",
+      "description": "Bật hoặc tắt chế độ bảo trì hệ thống",
+      "status": "false"
+    },
+    {
+      "id": "9",
+      "configKey": "EMAIL_NOTIFICATION",
+      "configName": "Thông báo qua email",
+      "configValue": "2",
+      "configType": "BOOLEAN",
+      "category": "NOTIFICATION",
+      "description": "Cho phép hệ thống gửi thông báo qua email",
+      "status": "true"
+    },
+    {
+      "id": "10",
+      "configKey": "MAX_UPLOAD_SIZE",
+      "configName": "Dung lượng tải tệp tối đa",
+      "configValue": "10",
+      "configType": "NUMBER",
+      "category": "SYSTEM",
+      "description": "Dung lượng tệp tối đa cho phép tải lên tính bằng MB",
+      "status": "true"
+    },
+    {
+      "configKey": "asda",
+      "configName": "adasd",
+      "configValue": "asdasd",
+      "configType": [
+        [
+          "STRING",
+          [
+            "STRING"
+          ],
+          "BOOLEAN"
+        ]
+      ],
+      "category": [
+        [
+          "SYSTEM"
+        ],
+        "UI"
+      ],
+      "description": "asdad",
+      "status": "false",
+      "id": "Z9tdkRdLKSA"
+    },
+    {
+      "configKey": "áda",
+      "configName": "đá",
+      "configValue": "ádad",
+      "configType": [
+        [
+          "STRING",
+          [
+            "STRING"
+          ],
+          "BOOLEAN"
+        ],
+        "STRING"
+      ],
+      "category": [
+        [
+          "SYSTEM"
+        ]
+      ],
+      "description": "ádasd",
+      "status": "false",
+      "id": "_jo8c8pL3bY"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
