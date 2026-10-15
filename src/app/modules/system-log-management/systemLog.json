@@ -1,0 +1,124 @@
+{
+  "systemLogs": [
+    {
+      "id": 1,
+      "logCode": "LOG001",
+      "userId": 1,
+      "userName": "admin",
+      "action": "LOGIN",
+      "module": "AUTH",
+      "description": "Đăng nhập vào hệ thống thành công",
+      "ipAddress": "192.168.1.10",
+      "status": "SUCCESS",
+      "createdAt": "2026-10-15T08:00:00Z"
+    },
+    {
+      "id": 2,
+      "logCode": "LOG002",
+      "userId": 1,
+      "userName": "admin",
+      "action": "CREATE",
+      "module": "USER",
+      "description": "Tạo tài khoản người dùng mới",
+      "ipAddress": "192.168.1.10",
+      "status": "SUCCESS",
+      "createdAt": "2026-10-15T08:10:00Z"
+    },
+    {
+      "id": 3,
+      "logCode": "LOG003",
+      "userId": 2,
+      "userName": "teacher01",
+      "action": "LOGIN",
+      "module": "AUTH",
+      "description": "Đăng nhập vào hệ thống thất bại do sai mật khẩu",
+      "ipAddress": "192.168.1.15",
+      "status": "FAILED",
+      "createdAt": "2026-10-15T08:15:00Z"
+    },
+    {
+      "id": 4,
+      "logCode": "LOG004",
+      "userId": 1,
+      "userName": "admin",
+      "action": "UPDATE",
+      "module": "SYSTEM_CONFIG",
+      "description": "Cập nhật tên hiển thị của hệ thống thành Learnify",
+      "ipAddress": "192.168.1.10",
+      "status": "SUCCESS",
+      "createdAt": "2026-10-15T08:20:00Z"
+    },
+    {
+      "id": 5,
+      "logCode": "LOG005",
+      "userId": 3,
+      "userName": "teacher02",
+      "action": "CREATE",
+      "module": "COURSE",
+      "description": "Tạo khóa học Angular cơ bản",
+      "ipAddress": "192.168.1.20",
+      "status": "SUCCESS",
+      "createdAt": "2026-10-15T08:30:00Z"
+    },
+    {
+      "id": 6,
+      "logCode": "LOG006",
+      "userId": 1,
+      "userName": "admin",
+      "action": "DELETE",
+      "module": "USER",
+      "description": "Xóa tài khoản người dùng không còn hoạt động",
+      "ipAddress": "192.168.1.10",
+      "status": "SUCCESS",
+      "createdAt": "2026-10-15T08:40:00Z"
+    },
+    {
+      "id": 7,
+      "logCode": "LOG007",
+      "userId": 4,
+      "userName": "student01",
+      "action": "UPDATE",
+      "module": "PROFILE",
+      "description": "Cập nhật thông tin hồ sơ cá nhân",
+      "ipAddress": "192.168.1.25",
+      "status": "SUCCESS",
+      "createdAt": "2026-10-15T08:45:00Z"
+    },
+    {
+      "id": 8,
+      "logCode": "LOG008",
+      "userId": 1,
+      "userName": "admin",
+      "action": "UPDATE",
+      "module": "COURSE",
+      "description": "Cập nhật thông tin khóa học thất bại do dữ liệu không hợp lệ",
+      "ipAddress": "192.168.1.10",
+      "status": "FAILED",
+      "createdAt": "2026-10-15T09:00:00Z"
+    },
+    {
+      "id": 9,
+      "logCode": "LOG009",
+      "userId": 2,
+      "userName": "teacher01",
+      "action": "LOGOUT",
+      "module": "AUTH",
+      "description": "Đăng xuất khỏi hệ thống",
+      "ipAddress": "192.168.1.15",
+      "status": "SUCCESS",
+      "createdAt": "2026-10-15T09:10:00Z"
+    },
+    {
+      "id": 10,
+      "logCode": "LOG010",
+      "userId": 1,
+      "userName": "admin",
+      "action": "UPDATE",
+      "module": "SECURITY",
+      "description": "Thay đổi cấu hình bảo mật hệ thống",
+      "ipAddress": "192.168.1.10",
+      "status": "SUCCESS",
+      "createdAt": "2026-10-15T09:20:00Z"
+    }
+  ]
+}

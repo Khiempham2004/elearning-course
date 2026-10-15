@@ -1,3 +1,155 @@
-<p>
-  system-log-management works!
-</p>
+<div class="header">
+  <span class="color-span">QUẢN LÝ NHẬT KÝ HỆ THỐNG</span>
+  <div style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    ">
+    <input nz-input placeholder="Tìm kiếm dữ liệu..." />
+    <button nz-button nzType="primary" (click)="openModal()">
+      Tạo hệ thống
+    </button>
+  </div>
+</div>
+
+<nz-table class="table-header" #basicTable [nzFrontPagination]="false" [nzBordered]="true" [nzData]="listOfSystemLog"
+  [nzScroll]="{x:'1400px',y:'570px'}">
+  <thead>
+    <tr>
+      <th>Mã nhật ký</th>
+      <th>ID người thực hiện</th>
+      <th>Tên người thực hiện</th>
+      <th>Hành động</th>
+      <th>Chức năng được thao tác</th>
+      <th>Nội dung chi tiết</th>
+      <th>Địa chỉ IP thực hiện</th>
+      <th>Trạng thái</th>
+      <th>action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let system of listOfSystemLog">
+      <td>{{system.logCode}}</td>
+      <td>{{system.userId}}</td>
+      <td>{{system.userName}}</td>
+      <td>{{system.action}}</td>
+      <td>{{system.module}}</td>
+      <td>{{system.description}}</td>
+      <td>{{system.ipAddress}}</td>
+      <td>{{system.createdAt}}</td>
+      <td style="display: flex;align-items: center;gap: 10px;">
+        <button nz-button nzType="primary" (click)="handleEdit(system)">
+          <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button nz-button nzType="primary" (click)="handleDelete(system)">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isSystemLog" [nzTitle]="modalTitle" [nzWidth]="800" [nzFooter]="null"
+  (nzOnCancel)="closeModal()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="form" class="system-log-form" nzLayout="vertical">
+      <div class="form-grid">
+        <div class="form-item">
+          <nz-form-item>
+            <nz-form-label> Mã nhật ký </nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="logCode" placeholder="Mã nhật ký tự động" readonly />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="form-item">
+          <nz-form-item>
+            <nz-form-label>
+              Tên người thực hiện <span class="required">*</span>
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Người thực hiện là bắt buộc">
+              <input nz-input formControlName="userName" placeholder="Nhập tên người thực hiện" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="form-item">
+          <nz-form-item>
+            <nz-form-label>ID người dùng</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="userId" placeholder="Nhập ID người dùng" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="form-item">
+          <nz-form-item>
+            <nz-form-label>
+              Hành động <span class="required">*</span>
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng chọn hành động">
+              <nz-select formControlName="action" nzPlaceHolder="Chọn hành động" nzAllowClear class="full-width">
+                <nz-option nzValue="LOGIN" nzLabel="Đăng nhập"></nz-option>
+                <nz-option nzValue="LOGOUT" nzLabel="Đăng xuất"></nz-option>
+                <nz-option nzValue="CREATE" nzLabel="Thêm mới"></nz-option>
+                <nz-option nzValue="UPDATE" nzLabel="Cập nhật"></nz-option>
+                <nz-option nzValue="DELETE" nzLabel="Xóa"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="form-item">
+          <nz-form-item>
+            <nz-form-label>Phân hệ</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="module" nzPlaceHolder="Chọn phân hệ" nzAllowClear class="full-width">
+                <nz-option nzValue="AUTH" nzLabel="Xác thực"></nz-option>
+                <nz-option nzValue="USER" nzLabel="Người dùng"></nz-option>
+                <nz-option nzValue="COURSE" nzLabel="Khóa học"></nz-option>
+                <nz-option nzValue="SYSTEM_CONFIG" nzLabel="Cấu hình hệ thống"></nz-option>
+                <nz-option nzValue="SECURITY" nzLabel="Bảo mật"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="form-item">
+          <nz-form-item>
+            <nz-form-label>Địa chỉ IP</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="ipAddress" placeholder="Ví dụ: 192.168.1.10" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="form-item">
+          <nz-form-item>
+            <nz-form-label>Thời gian ghi nhận</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker formControlName="createdAt" nzShowTime nzFormat="dd/MM/yyyy HH:mm:ss"
+                nzPlaceHolder="Chọn thời gian" class="full-width"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="form-item full-span">
+          <nz-form-item>
+            <nz-form-label>
+              Nội dung chi tiết <span class="required">*</span>
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Nội dung chi tiết là bắt buộc">
+              <textarea nz-input formControlName="description" placeholder="Nhập nội dung nhật ký hệ thống"
+                [nzAutosize]="{ minRows: 3, maxRows: 5 }" class="custom-textarea"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <ng-template #modalFooter>
+        <button nz-button (click)="closeModal()">Hủy</button>
+        <button nz-button nzType="primary" (click)="handleSubmit()">Lưu</button>
+      </ng-template>
+    </form>
+  </ng-container>
+</nz-modal>

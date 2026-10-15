@@ -3,12 +3,14 @@
 * {
   box-sizing: border-box;
 }
+
 html,
 body {
   margin: 0;
   min-height: 100%;
   font-family: "DM Sans", Arial, sans-serif;
 }
+
 button,
 input,
 select {
@@ -45,7 +47,7 @@ select {
   margin-bottom: 18px;
 }
 
-.province-form-modal .province-form .ant-form-item-label > label {
+.province-form-modal .province-form .ant-form-item-label>label {
   color: #34445a;
   font-size: 14px;
   font-weight: 600;
@@ -98,22 +100,93 @@ select {
   .province-form-modal {
     max-width: calc(100vw - 24px);
   }
+
   .province-form-modal .ant-modal-header {
     padding: 18px 20px;
   }
+
   .province-form-modal .ant-modal-body {
     padding: 20px;
   }
+}
+
+.header {
+  margin-left: 20px;
 }
 
 .color-span {
   font-size: 20px;
   font-weight: 600;
   color: #0c7eed;
-  margin-left: 20px;
 }
 
 .header-table {
   background-color: #e7edf5;
   width: 100%;
+}
+
+input {
+  border-radius: 8px !important;
+  font-size: 15px;
+}
+
+button {
+  border-radius: 8px !important;
+  font-size: 15px;
+}
+
+::ng-deep .ant-modal-content {
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+::ng-deep .ant-modal-title {
+  justify-content: center;
+  text-align: center;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+::ng-deep .ant-form-item-label>label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+::ng-deep .ant-select-selector {
+  border-radius: 8px !important;
+}
+
+::ng-deep .ant-form-label {
+  color: #B6B8B6;
+}
+
+::ng-deep .ant-pagination-item {
+  border-radius: 16px !important;
+  align-items: center;
+}
+
+::ng-deep .ant-pagination-prev .ant-pagination-item-link,
+::ng-deep .ant-pagination-next .ant-pagination-item-link {
+  border-radius: 16px !important;
+  align-items: center;
+}
+
+tr th {
+  justify-content: center;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+tr td {
+  justify-content: center;
+  text-align: center;
+  height: 100px !important;
+  margin-left: 20px;
+}
+
+.table-header {
+  margin-top: 20px;
+  margin-left: 20px;
+  border-radius: 8px !important;
 }
