@@ -6,15 +6,14 @@
   <button nz-button nzType="primary" (click)="handleCreate()">Tạo học viên</button>
 </div>
 
-<nz-table class="studentTable" #basicTable [nzData]="listOfStudent" [nzFrontPagination]="false"
-  [nzShowPagination]="true" [nzShowSizeChanger]="true" [nzBordered]="true" (nzPageIndexChange)="pageChange($event)"
-  (nzPageSizeChange)="pageSizeChange($event)" [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total">
+<nz-table class="studentTable" #basicTable [nzData]="listOfStudent" [nzFrontPagination]="false" [nzBordered]="true"
+  [nzScroll]="{x:'1000px',y:'490px'}">
   <thead>
     <tr>
       <th>Mã học viên</th>
       <th>Họ tên</th>
       <th>SĐT</th>
-      <th style="justify-content: center;text-align: center;">Email</th>
+      <th>Email</th>
       <th>Giới tính</th>
       <th>Ngày sinh</th>
       <th>Lớp</th>
@@ -24,7 +23,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let student of listOfStudent">
-      <td style="cursor: pointer;font-weight: bold;" (click)="handleRowClick(student)">{{ student.studentCode }}</td>
+      <td class="student-code" (click)="handleRowClick(student)">{{ student.studentCode }}</td>
       <td>{{student.studentName}}</td>
       <td>{{student.phone}}</td>
       <td>{{student.email}}</td>
@@ -32,7 +31,7 @@
       <td>{{student.dob | date : 'dd-MM-yyyy'}}</td>
       <td>{{student.class}}</td>
       <td>{{student.status}}</td>
-      <td style="width: 100%;height: 65px ;border-radius: 8px;gap: 10px;display: flex;">
+      <td class="action-cell">
         <button nz-button nzType="primary" (click)="handleEdit(student)">
           <span nz-icon nzType="edit" nzTheme="outline"></span>
         </button>
@@ -45,7 +44,13 @@
 </nz-table>
 
 <div class="student-pagination">
-  <p style="font-size: 16px;">Tổng : <span class="span-total"> {{total}} </span>bản ghi</p>
+  <p style="font-size: 16px;">Tổng số: <span class="span-total"> {{total}} </span>bản ghi</p>
+  <div style="display: flex;justify-content: center;align-items: center;gap: 10px;">
+    <span>Hiển thị</span>
+    <nz-select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="options" />
+    <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
+      (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
+  </div>
 </div>
 
 <nz-modal [(nzVisible)]="isStudent" nzClassName="form-modal-students" [nzFooter]="null" [nzTitle]="modalTitle"

@@ -1,11 +1,6 @@
 <div class="header">
   <span class="color-span">QUẢN LÝ NHẬT KÝ HỆ THỐNG</span>
-  <div style="
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-    ">
+  <div class="system-create">
     <input nz-input placeholder="Tìm kiếm dữ liệu..." />
     <button nz-button nzType="primary" (click)="openModal()">
       Tạo hệ thống
@@ -14,7 +9,7 @@
 </div>
 
 <nz-table class="table-header" #basicTable [nzFrontPagination]="false" [nzBordered]="true" [nzData]="listOfSystemLog"
-  [nzScroll]="{x:'1400px',y:'570px'}">
+  [nzScroll]="{ x: '1400px', y: '570px' }">
   <thead>
     <tr>
       <th>Mã nhật ký</th>
@@ -25,24 +20,24 @@
       <th>Nội dung chi tiết</th>
       <th>Địa chỉ IP thực hiện</th>
       <th>Trạng thái</th>
-      <th>action</th>
+      <th>Hành động</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let system of listOfSystemLog">
-      <td>{{system.logCode}}</td>
-      <td>{{system.userId}}</td>
-      <td>{{system.userName}}</td>
-      <td>{{system.action}}</td>
-      <td>{{system.module}}</td>
-      <td>{{system.description}}</td>
-      <td>{{system.ipAddress}}</td>
-      <td>{{system.createdAt}}</td>
-      <td style="display: flex;align-items: center;gap: 10px;">
+      <td style="font-weight: 600;cursor: pointer;" (click)="getRawCLick(system)">{{ system.logCode }}</td>
+      <td>{{ system.userId }}</td>
+      <td>{{ system.userName }}</td>
+      <td>{{ system.action }}</td>
+      <td>{{ system.module }}</td>
+      <td>{{ system.description }}</td>
+      <td>{{ system.ipAddress }}</td>
+      <td>{{ system.createdAt }}</td>
+      <td style="display: flex; align-items: center; gap: 10px">
         <button nz-button nzType="primary" (click)="handleEdit(system)">
           <span nz-icon nzType="edit" nzTheme="outline"></span>
         </button>
-        <button nz-button nzType="primary" (click)="handleDelete(system)">
+        <button nz-button nzType="primary" nzDanger (click)="handleDelete(system)">
           <span nz-icon nzType="delete" nzTheme="outline"></span>
         </button>
       </td>
@@ -50,6 +45,16 @@
   </tbody>
 </nz-table>
 
+<div class="pagination-header">
+  <p>Tổng số : <span style="font-weight: 600;">{{total}}</span> bản ghi</p>
+  <div class="pagination-select">
+    <span>Hiển thị</span>
+    <nz-select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="handleOptions" />
+    <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
+      (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />
+  </div>
+
+</div>
 <nz-modal [(nzVisible)]="isSystemLog" [nzTitle]="modalTitle" [nzWidth]="800" [nzFooter]="null"
   (nzOnCancel)="closeModal()">
   <ng-container *nzModalContent>
@@ -59,7 +64,8 @@
           <nz-form-item>
             <nz-form-label> Mã nhật ký </nz-form-label>
             <nz-form-control>
-              <input nz-input formControlName="logCode" placeholder="Mã nhật ký tự động" readonly />
+              <input nz-input formControlName="logCode" placeholder="Mã nhật ký tự động" />
+              <!-- readonly  -->
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -146,10 +152,12 @@
           </nz-form-item>
         </div>
       </div>
-      <ng-template #modalFooter>
+      <div class="action-system">
         <button nz-button (click)="closeModal()">Hủy</button>
-        <button nz-button nzType="primary" (click)="handleSubmit()">Lưu</button>
-      </ng-template>
+        <button nz-button nzType="primary" (click)="handleSubmit()">
+          {{ status === "CREATE" ? "Lưu" : "Cập nhật" }}
+        </button>
+      </div>
     </form>
   </ng-container>
 </nz-modal>

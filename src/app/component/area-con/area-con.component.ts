@@ -66,12 +66,14 @@ export class AreaConComponent implements OnInit {
 
   pageChange(event: any) {
     this.page = event;
-    this.updatePagination();
+    // this.updatePagination();
+    this.getAllDictrict();
   }
   pageSizeChange(event: any) {
     this.pageSize = event;
     this.page = 1;
-    this.updatePagination();
+    // this.updatePagination();
+    this.getAllDictrict();
   }
 
   filterSearch() {
@@ -87,24 +89,25 @@ export class AreaConComponent implements OnInit {
       return searchableText.toLocaleLowerCase().includes(keywords);
     });
     this.page = 1;
-    this.updatePagination();
+    this.getAllDictrict();
   }
 
   private updatePagination() {
     const start = (this.page - 1) * this.pageSize;
+    const end = start + this.pageSize;
     this.total = this.filteredDictrict.length;
-    this.listOfDictrict = this.filteredDictrict.slice(
-      start,
-      start + this.pageSize,
-    );
+    this.listOfDictrict = this.filteredDictrict.slice(start, end);
   }
   getAllDictrict() {
-    this.dictrictService.getAllDictrict().subscribe({
-      next: (res: any) => {
-        this.dictrict = Array.isArray(res) ? res : [];
-        this.filterSearch();
-      },
-    });
+    this.dictrictService
+      .getAllDictrict(this.page, this.pageSize, this.filter)
+      .subscribe({
+        next: (res: any) => {
+          this.dictrict = res?.data || [];
+          this.listOfDictrict = [...this.dictrict];
+          this.total =  res?.pagination?.totalPagination ?? 0;
+        },
+      });
   }
 
   handleSubmitDictrict() {
@@ -148,11 +151,17 @@ export class AreaConComponent implements OnInit {
     this.isDictrict = true;
     this.dictrictService.getDictrictById(item.id).subscribe({
       next: (res: any) => {
-        this.form.patchValue(res);
+        this.form.patchValue({
+          districtCode: res?.districtCode,
+          districtName: res?.districtName,
+          districtType: res?.districtType,
+          provinceId: res?.provinceId,
+          provinceName: res?.provinceName,
+          status: res?.status,
+        });
         this.getAllDictrict();
       },
     });
-    console.log(item);
   }
 
   handleClickDictrictDelete(item: any) {

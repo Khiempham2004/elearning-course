@@ -1,7 +1,7 @@
 {
   "systemLogs": [
     {
-      "id": 1,
+      "id": "1",
       "logCode": "LOG001",
       "userId": 1,
       "userName": "admin",
@@ -13,7 +13,7 @@
       "createdAt": "2026-10-15T08:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "logCode": "LOG002",
       "userId": 1,
       "userName": "admin",
@@ -25,7 +25,7 @@
       "createdAt": "2026-10-15T08:10:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "logCode": "LOG003",
       "userId": 2,
       "userName": "teacher01",
@@ -37,7 +37,7 @@
       "createdAt": "2026-10-15T08:15:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "logCode": "LOG004",
       "userId": 1,
       "userName": "admin",
@@ -49,7 +49,7 @@
       "createdAt": "2026-10-15T08:20:00Z"
     },
     {
-      "id": 5,
+      "id": "5",
       "logCode": "LOG005",
       "userId": 3,
       "userName": "teacher02",
@@ -61,7 +61,7 @@
       "createdAt": "2026-10-15T08:30:00Z"
     },
     {
-      "id": 6,
+      "id": "6",
       "logCode": "LOG006",
       "userId": 1,
       "userName": "admin",
@@ -73,7 +73,7 @@
       "createdAt": "2026-10-15T08:40:00Z"
     },
     {
-      "id": 7,
+      "id": "7",
       "logCode": "LOG007",
       "userId": 4,
       "userName": "student01",
@@ -85,7 +85,7 @@
       "createdAt": "2026-10-15T08:45:00Z"
     },
     {
-      "id": 8,
+      "id": "8",
       "logCode": "LOG008",
       "userId": 1,
       "userName": "admin",
@@ -97,7 +97,7 @@
       "createdAt": "2026-10-15T09:00:00Z"
     },
     {
-      "id": 9,
+      "id": "9",
       "logCode": "LOG009",
       "userId": 2,
       "userName": "teacher01",
@@ -109,7 +109,7 @@
       "createdAt": "2026-10-15T09:10:00Z"
     },
     {
-      "id": 10,
+      "id": "10",
       "logCode": "LOG010",
       "userId": 1,
       "userName": "admin",
@@ -119,6 +119,18 @@
       "ipAddress": "192.168.1.10",
       "status": "SUCCESS",
       "createdAt": "2026-10-15T09:20:00Z"
+    },
+    {
+      "logCode": "LG11",
+      "userId": "1312321",
+      "userName": "user",
+      "action": "LOGOUT",
+      "module": "USER",
+      "description": "asdada",
+      "ipAddress": "123.322.123",
+      "createdAt": "2026-10-28T16:09:23.532Z",
+      "id": "EKIf4QDRlAQ"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

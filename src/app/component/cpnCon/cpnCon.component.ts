@@ -59,29 +59,35 @@ export class CpnConComponent implements OnInit {
 
   pageChange(event: any) {
     this.page = event;
-    this.updateProvincePage();
+    this.getAllProvince();
   }
 
   pageSizeChange(event: any) {
     this.pageSize = event;
     this.page = 1;
-    this.updateProvincePage();
+    this.getAllProvince();
   }
 
   handleSearch(): void {
     const keyword = this.filterSearch.trim().toLocaleLowerCase();
     this.filteredProvinces = this.province.filter((item: any) =>
-      [item.provinceCode, item.provinceName]
-        .some((value) => String(value ?? '').toLocaleLowerCase().includes(keyword)),
+      [item.provinceCode, item.provinceName].some((value) =>
+        String(value ?? '')
+          .toLocaleLowerCase()
+          .includes(keyword),
+      ),
     );
     this.page = 1;
-    this.updateProvincePage();
+    this.getAllProvince();
   }
 
   private updateProvincePage(): void {
     const start = (this.page - 1) * this.pageSize;
     this.total = this.filteredProvinces.length;
-    this.listOfProvince = this.filteredProvinces.slice(start, start + this.pageSize);
+    this.listOfProvince = this.filteredProvinces.slice(
+      start,
+      start + this.pageSize,
+    );
   }
 
   createNewProvince(): void {
@@ -100,12 +106,15 @@ export class CpnConComponent implements OnInit {
   }
 
   getAllProvince(): void {
-    this.provinceService.getAllProvinces().subscribe({
-      next: (res: any) => {
-        this.province = Array.isArray(res) ? res : [];
-        this.handleSearch();
-      },
-    });
+    this.provinceService
+      .getAllProvinces(this.page, this.pageSize, this.filterSearch)
+      .subscribe({
+        next: (res: any) => {
+          this.province = res?.data || [];
+          this.listOfProvince = [...this.province];
+          this.total = res?.pagination?.totalPagination || 0;
+        },
+      });
   }
 
   handleSubmit() {

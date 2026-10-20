@@ -6,9 +6,7 @@
 </div>
 
 <nz-table style="margin-top: 20px;" #basicTable [nzData]="listOfTeacher" [nzFrontPagination]="false"
-  [nzShowPagination]="true" [nzShowSizeChanger]="true" [nzBordered]="true" [nzTotal]="total"
-  (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" [nzPageIndex]="page"
-  [nzPageSize]="pageSize" [nzScroll]="{x:'2000px',y:'500px'}">
+  [nzScroll]="{x:'2000px',y:'480px'}">
   <thead>
     <tr>
       <th nzWidth="130px">Mã giảng viên</th>
@@ -52,8 +50,14 @@
   </tbody>
 </nz-table>
 
-<div style="display: flex;justify-content: space-between;">
+<div class="pagination-header-teacher">
   <p style="font-size: 16px;">Tổng : <span style="font-weight: bold;">{{total}}</span> bản ghi</p>
+  <div class="teacher-select">
+    <span>Hiển thị</span>
+    <nz-select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="optionTeacher" />
+    <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total" (nzPageIndexChange)="pageChange($event)"
+    (nzPageSizeChange)="pageSizeChange($event)" />
+  </div>
 </div>
 
 <nz-modal [(nzVisible)]="isTeacher" [nzFooter]="null" (nzOnCancel)="handleCancel()" [nzTitle]="modalTitle"

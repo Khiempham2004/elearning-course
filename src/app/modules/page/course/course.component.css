@@ -31,16 +31,30 @@
         font-weight: 500;
     }
 
-    ::ng-deep .ant-modal-title {
-        justify-content: center;
-        text-align: center;
-        font-size: 25px;
-        font-weight: bold;
-    }
-
     ::ng-deep .ant-form-item-label>label {
         font-weight: bold;
     }
+}
+
+::ng-deep .ant-modal-title {
+    justify-content: center;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+::ng-deep .select-pagination .ant-select-selector {
+    border-radius: 8px !important;
+}
+
+::ng-deep .ant-modal-content {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+::ng-deep .ant-pagination-item {
+    border-radius: 10px !important;
+    overflow: hidden;
 }
 
 .course-header {
@@ -61,7 +75,6 @@ input {
 button {
     border-radius: 8px;
     font-size: 16px;
-    height: auto;
     font-weight: bold;
 }
 
@@ -90,6 +103,18 @@ td {
     vertical-align: middle;
 }
 
+tr th {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: 600;
+}
+
+tr td {
+    justify-content: center;
+    align-items: center;
+}
+
 th {
     background: #f5f5f5;
     font-weight: bold;
@@ -97,11 +122,4 @@ th {
 
 tr:hover {
     background: #fafafa;
-}
-::ng-deep .select-pagination .ant-select-selector{
-    border-radius: 8px !important;
-}
-::ng-deep .ant-modal-content{
-    border-radius: 8px !important;
-    overflow: hidden !important;
 }

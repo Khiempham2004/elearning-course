@@ -1,3 +1,10 @@
+.system-create {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
 .modal-title {
   text-align: center;
   font-size: 18px;
@@ -62,6 +69,34 @@
   margin-left: 3px;
 }
 
+
+/* // */
+.action-system {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+}
+
+input {
+  border-radius: 10px !important;
+}
+
+.pagination-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.pagination-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
 @media (max-width: 768px) {
   .form-grid {
     grid-template-columns: 1fr;
@@ -83,18 +118,31 @@
 ::ng-deep .custom-textarea {
   border-radius: 8px !important;
 }
-::ng-deep .ant-modal-title{
+
+::ng-deep .ant-modal-title {
   justify-content: center;
   text-align: center;
   font-weight: 600;
-  font-size:  22px;
+  font-size: 22px;
 }
-::ng-deep .ant-form-item-label>label{
+
+::ng-deep .ant-form-item-label>label {
   font-weight: 500;
 }
 
-::ng-deep .ant-modal-content{
+::ng-deep nz-form-control input[nz-input] {
+  /* height: 36px; */
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+::ng-deep .ant-modal-content {
   border-radius: 8px !important;
   overflow: hidden;
-  
+
+}
+
+::ng-deep .ant-pagination-item {
+  border-radius: 10px !important;
+  overflow: hidden;
 }

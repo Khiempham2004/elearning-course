@@ -10,6 +10,12 @@
     margin-top: 20px;
 }
 
+tr th {
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+}
+
 input {
     border-radius: 8px !important;
     font-size: 16px;
@@ -31,9 +37,20 @@ thead th {
     height: 35px !important;
 }
 
+.pagination-header-teacher {
+    display: flex;
+    justify-content: space-between;
+}
+
 ::ng-deep .nzSelect .ant-select-selector {
     border-radius: 8px !important;
     height: 35px !important;
+}
+
+.teacher-select {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 ::ng-deep .ant-modal-title {
@@ -47,6 +64,7 @@ thead th {
     color: #000;
     font-size: 16px;
 }
+
 ::ng-deep .ant-modal-content {
     border-radius: 16px !important;
     overflow: hidden;
@@ -55,4 +73,14 @@ thead th {
 ::ng-deep .ant-form-item-label>label {
     font-weight: 500;
     font-size: 15px;
+}
+
+::ng-deep .ant-pagination-item {
+    border-radius: 10px !important;
+    overflow: hidden;
+}
+
+::ng-deep .ant-select-selector {
+    border-radius: 10px !important;
+    overflow: hidden;
 }

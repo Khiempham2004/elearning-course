@@ -133,6 +133,8 @@ export class StudentsComponent implements OnInit {
         next: (res: any) => {
           this.students = res?.data || [];
           this.listOfStudent = [...this.students];
+          console.log(this.listOfStudent);
+
           this.total = res?.pagination?.totalStudents;
         },
       });
@@ -248,4 +250,11 @@ export class StudentsComponent implements OnInit {
     });
     this.getAllStudent();
   }
+
+  options = [
+    { label: '5', value: 5 },
+    { label: '10', value: 10 },
+    { label: '15', value: 15 },
+    { label: '20', value: 20 },
+  ];
 }

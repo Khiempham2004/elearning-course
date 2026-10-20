@@ -1,0 +1,13 @@
+::ng-deep .select-pagination .ant-select-selector {
+    border-radius: 8px !important;
+}
+
+::ng-deep .ant-modal-content {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+::ng-deep .ant-pagination-item {
+    border-radius: 10px !important;
+    overflow: hidden;
+}
