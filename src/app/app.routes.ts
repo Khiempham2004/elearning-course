@@ -9,9 +9,6 @@ import { HelpComponent } from './modules/page/help/help.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './modules/auth/login/login.component';
 import { RegisterComponent } from './modules/auth/register/register.component';
-import { AreaConComponent } from './component/area-con/area-con.component';
-import { CpnConComponent } from './component/cpnCon/cpnCon.component';
-import { ComponentComponent } from './component/component.component';
 import { DirectoryComponent } from './layouts/directory/directory.component';
 
 export const routes: Routes = [
@@ -107,6 +104,16 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./modules/system-log-management/system-log-management.module').then(
             (m) => m.SystemLogManagementModule,
+          ),
+      },
+      {
+        path: 'notification-management',
+        data: {
+          breadcrumb: 'Quản lý thông báo',
+        },
+        loadChildren: () =>
+          import('./modules/notification-management/notification-management.module').then(
+            (m) => m.NotificationManagementModule,
           ),
       },
     ],

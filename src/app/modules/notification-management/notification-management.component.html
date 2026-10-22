@@ -1,0 +1,151 @@
+<div style="display: flex; justify-content: space-between; text-align: center">
+  <div>
+    <span class="notifi-manage">QUẢN LÝ THÔNG BÁO</span>
+    <p style="font-weight: 100; margin-left: 20px">
+      Quản lý nội dung và trạng thái thông báo
+    </p>
+  </div>
+  <div class="notifi-all">
+    <div class="notifi-card">
+      <p>Tổng thông báo</p>
+      <h2>
+        {{ totalNotifi }}
+      </h2>
+      <span class="notifi-icon" nz-icon nzType="bell" nzTheme="outline"></span>
+    </div>
+    <div class="notifi-card">
+      <p>Đã xuất bản</p>
+      <h2>
+        {{ publishedNotification }}
+      </h2>
+      <span class="notifi-icon" nz-icon nzType="send" nzTheme="outline"></span>
+    </div>
+  </div>
+</div>
+
+<div class="notifi-header">
+  <input nz-input [(ngModel)]="filter" (keyup.enter)="handleFilter()" placeholder="Tìm theo tiêu đề thông báo..." />
+  <button nz-button nzType="primary" (click)="openModal()">
+    Tạo mới thông báo
+  </button>
+</div>
+
+<nz-table class="table-notifi" #basicTable [nzData]="listOfNotifi" [nzFrontPagination]="false"
+  [nzShowPagination]="false" [nzBordered]="true" [nzScroll]="{y:'450px'}">
+  <thead>
+    <tr>
+      <th>Tiêu đề</th>
+      <th>Nội dung</th>
+      <th>loại</th>
+      <th>Người nhận</th>
+      <th>Trạng thái</th>
+      <th>Thời điểm</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let notifi of listOfNotifi">
+      <td>{{ notifi.title }}</td>
+      <td>{{ notifi.content }}</td>
+      <td>{{ notifi.type }}</td>
+      <td>{{ notifi.recipient }}</td>
+      <td>{{ notifi.status }}</td>
+      <td>{{ notifi.createdAt }}</td>
+      <td class="action-notifi">
+        <button nz-button nzType="primary" (click)="editNotifi(notifi)">
+          <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button nz-button nzType="primary" nzDanger (click)="deleteNotifi(notifi)">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<div class="total-pagination">
+  <p>Tống số : <span style="font-weight: 600;">{{total}}</span> bản ghi</p>
+  <div class="notifi-selector">
+    <div style="display: flex;gap: 10px;align-items: center;">
+      <span>Hiển thị</span>
+      <nz-select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="optionNotifi"/>
+    </div>
+    <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total" (nzPageIndexChange)="pageChange($event)"
+    (nzPageSizeChange)="pageSizeChange($event)" />
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="isNotification" nzWidth="700px" [nzTitle]="modalTitle" (nzOnCancel)="closeModal()"
+  [nzFooter]="null">
+  <ng-container *nzModalContent>
+    <form [formGroup]="form" nz-form nzLayout="vertical">
+      <div class="notification-form">
+        <nz-form-item>
+          <nz-form-label nzRequired>Tiêu đề</nz-form-label>
+          <nz-form-control nzErrorTip="Vui lòng nhập tiêu đề thông báo">
+            <input nz-input formControlName="title" placeholder="Nhập tiêu đề thông báo..." />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzRequired>Nội dung</nz-form-label>
+          <nz-form-control nzErrorTip="Vui lòng nhập nội dung thông báo">
+            <textarea nz-input formControlName="content" placeholder="Nhập nội dung thông báo..."
+              [nzAutosize]="{ minRows: 4, maxRows: 6 }"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+
+        <div class="notification-form__row">
+          <nz-form-item>
+            <nz-form-label nzRequired>Loại thông báo</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng chọn loại thông báo">
+              <nz-select formControlName="type" nzPlaceHolder="Chọn loại thông báo...">
+                <nz-option nzValue="SYSTEM" nzLabel="SYSTEM" />
+                <nz-option nzValue="COURSE" nzLabel="COURSE" />
+                <nz-option nzValue="SCHEDULE" nzLabel="SCHEDULE" />
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzRequired>Người nhận</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng chọn người nhận">
+              <nz-select formControlName="recipient" nzPlaceHolder="Chọn đối tượng nhận...">
+                <nz-option nzValue="ALL" nzLabel="ALL" />
+                <nz-option nzValue="ADMIN" nzLabel="ADMIN" />
+                <nz-option nzValue="TEACHER" nzLabel="TEACHER" />
+                <nz-option nzValue="STUDENT" nzLabel="STUDENT" />
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzRequired>Trạng thái</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng chọn trạng thái">
+              <nz-select formControlName="status" nzPlaceHolder="Chọn trạng thái...">
+                <nz-option nzValue="DRAFT" nzLabel="DRAFT" />
+                <nz-option nzValue="PUBLISHED" nzLabel="PUBLISHED" />
+                <nz-option nzValue="ARCHIVED" nzLabel="ARCHIVED" />
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <nz-form-item>
+          <nz-form-label nzRequired>Thời điểm thông báo</nz-form-label>
+          <nz-form-control nzErrorTip="Vui lòng chọn thời điểm">
+            <nz-date-picker formControlName="createdAt" nzShowTime nzFormat="dd/MM/yyyy HH:mm:ss"
+              nzPlaceHolder="Chọn ngày và giờ..."></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="form-actions">
+        <button nz-button type="button" (click)="closeModal()">Hủy</button>
+        <button nz-button nzType="primary" type="button" (click)="handleSubmit()">
+          {{ status === "CREATE" ? "Lưu" : "Cập nhật" }}
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

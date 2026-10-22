@@ -1,0 +1,104 @@
+{
+  "notifications": [
+    {
+      "id": "1",
+      "title": "Thông báo lịch học mới",
+      "content": "Lịch học môn Angular đã được cập nhật.",
+      "type": "SCHEDULE",
+      "recipient": "ALL",
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-21"
+    },
+    {
+      "id": "2",
+      "title": "Mở đăng ký khóa học",
+      "content": "Học viên có thể đăng ký khóa học mới.",
+      "type": "COURSE",
+      "recipient": "STUDENT",
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-20"
+    },
+    {
+      "id": "3",
+      "title": "Thông báo bảo trì hệ thống",
+      "content": "Hệ thống sẽ được bảo trì vào cuối tuần.",
+      "type": "SYSTEM",
+      "recipient": "TEACHER",
+      "status": "DRAFT",
+      "createdAt": "2026-10-19"
+    },
+    {
+      "id": "4",
+      "title": "Lịch thi cuối kỳ",
+      "content": "Lịch thi cuối kỳ đã được cập nhật trên hệ thống.",
+      "type": "SCHEDULE",
+      "recipient": "STUDENT",
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-18"
+    },
+    {
+      "id": "5",
+      "title": "Cập nhật chương trình đào tạo",
+      "content": "Chương trình đào tạo mới đã được cập nhật.",
+      "type": "COURSE",
+      "recipient": "ALL",
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-17"
+    },
+    {
+      "id": "6",
+      "title": "Thông báo họp giảng viên",
+      "content": "Các giảng viên tham gia cuộc họp vào lúc 14 giờ thứ Sáu.",
+      "type": "SYSTEM",
+      "recipient": "TEACHER",
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-16"
+    },
+    {
+      "id": "7",
+      "title": "Nhắc nhở hoàn thành bài tập",
+      "content": "Học viên vui lòng hoàn thành bài tập trước thời hạn.",
+      "type": "COURSE",
+      "recipient": "STUDENT",
+      "status": "DRAFT",
+      "createdAt": "2026-10-15"
+    },
+    {
+      "id": "8",
+      "title": "Điều chỉnh lịch học",
+      "content": "Lịch học môn ReactJS được chuyển sang buổi chiều.",
+      "type": "SCHEDULE",
+      "recipient": "ALL",
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-14"
+    },
+    {
+      "id": "9",
+      "title": "Thông báo nâng cấp hệ thống",
+      "content": "Hệ thống sẽ được nâng cấp để cải thiện hiệu suất.",
+      "type": "SYSTEM",
+      "recipient": "ALL",
+      "status": "DRAFT",
+      "createdAt": "2026-10-13"
+    },
+    {
+      "id": "10",
+      "title": "Thông báo khóa học mới",
+      "content": "Khóa học NodeJS cơ bản đã được mở đăng ký.",
+      "type": "COURSE",
+      "recipient": "STUDENT",
+      "status": "PUBLISHED",
+      "createdAt": "2026-10-12"
+    },
+    {
+      "title": "áda",
+      "content": "ádad",
+      "type": "SYSTEM",
+      "recipient": "ADMIN",
+      "status": "DRAFT",
+      "createdAt": "2026-10-20T10:46:20.642Z",
+      "id": "b3Zl5txPYls"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

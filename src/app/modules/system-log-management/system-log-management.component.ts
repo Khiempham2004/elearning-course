@@ -155,7 +155,7 @@ export class SystemLogManagementComponent implements OnInit {
       nzOnOk: () => {
         this.systemlogService.deleteSystemLog(item.id).subscribe({
           next: (res: any) => {
-            this.nzMessage.success('Xóa khoá học thành công', res);
+            this.nzMessage.success('Xóa nhật ký hệ thống thành công', res);
             this.getAllSystems();
           },
         });
