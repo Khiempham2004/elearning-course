@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class SystemLogService {
   constructor(private http: HttpClient) {}
-  private apiSystemLog = 'http://localhost:3030/systemLogs';
+  private readonly apiSystemLog = 'http://localhost:3001/api/directory/system-log-management';
 
   getAllSystemLog(): Observable<any[]> {
     return this.http.get<any[]>(this.apiSystemLog);

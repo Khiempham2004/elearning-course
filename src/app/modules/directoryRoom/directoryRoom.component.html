@@ -1,11 +1,11 @@
-<span style="color:#087EED;font-size: 20px;margin-left: 20px;">QUẢN LÝ DANH MỤC CÁC PHÒNG</span>
+<span style="color:#087EED;font-size: 20px;margin-left: 20px;font-weight: 600;">QUẢN LÝ DANH MỤC CÁC PHÒNG</span>
 <div class="room-header">
     <input type="text" nz-input placeholder="Tìm kiếm dữ liệu" [(ngModel)]="filterSearch" (keyup.enter)="handleFilter()">
     <button nz-button nzType="primary" (click)="openModal()">Tạo mới phòng</button>
 </div>
 
-<nz-table class="table-room" #basicTable [nzFrontPagination]="false" [nzData]="listOfDirectory" [nzBordered]="true"
-    [nzScroll]="{x:'1000px',y:'540px'}">
+<nz-table class="table-header" #basicTable [nzFrontPagination]="false" [nzData]="listOfDirectory" [nzBordered]="true"
+    [nzScroll]="{x:'1000px',y:'560px'}">
     <thead>
         <tr>
             <th>Mã phòng</th>
@@ -25,7 +25,7 @@
                 <button nz-button nzType="primary" (click)="handleEditRoom(room)">
                     <span nz-icon nzType="edit" nzTheme="outline"></span>
                 </button>
-                <button nz-button nzType="primary" (click)="handleDeleteRoom(room)">
+                <button nz-button nzType="primary" nzDanger (click)="handleDeleteRoom(room)">
                     <span nz-icon nzType="delete" nzTheme="outline"></span>
                 </button>
             </td>

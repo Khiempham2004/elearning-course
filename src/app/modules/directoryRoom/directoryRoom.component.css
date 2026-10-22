@@ -18,6 +18,9 @@ button {
 }
 
 tr th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     justify-content: center;
     text-align: center;
     font-size: 15px;
@@ -68,6 +71,7 @@ tr td {
 
 ::ng-deep .ant-modal-content {
     border-radius: 16px;
+    overflow: hidden;
     margin-top: 50px;
 }
 
@@ -75,6 +79,7 @@ tr td {
     justify-content: center;
     text-align: center;
     font-weight: 600;
+    font-size: 20px;
 }
 
 ::ng-deep .ant-select-selector {

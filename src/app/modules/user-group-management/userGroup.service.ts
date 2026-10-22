@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserGroupService {
   constructor(private http: HttpClient) {}
-  private readonly userApi = 'http://localhost:8080/users';
+  private readonly userApi = 'http://localhost:3001/api/directory/user-group-management';
 
   getAllUser(): Observable<any> {
     return this.http.get<any[]>(this.userApi);

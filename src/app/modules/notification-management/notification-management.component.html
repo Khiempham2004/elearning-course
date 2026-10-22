@@ -30,7 +30,7 @@
   </button>
 </div>
 
-<nz-table class="table-notifi" #basicTable [nzData]="listOfNotifi" [nzFrontPagination]="false"
+<nz-table class="table-header" #basicTable [nzData]="listOfNotifi" [nzFrontPagination]="false"
   [nzShowPagination]="false" [nzBordered]="true" [nzScroll]="{y:'450px'}">
   <thead>
     <tr>
@@ -50,7 +50,7 @@
       <td>{{ notifi.type }}</td>
       <td>{{ notifi.recipient }}</td>
       <td>{{ notifi.status }}</td>
-      <td>{{ notifi.createdAt }}</td>
+      <td>{{ notifi.createdAt | date : 'dd/MM/yyyy' }}</td>
       <td class="action-notifi">
         <button nz-button nzType="primary" (click)="editNotifi(notifi)">
           <span nz-icon nzType="edit" nzTheme="outline"></span>
@@ -134,7 +134,7 @@
         <nz-form-item>
           <nz-form-label nzRequired>Thời điểm thông báo</nz-form-label>
           <nz-form-control nzErrorTip="Vui lòng chọn thời điểm">
-            <nz-date-picker formControlName="createdAt" nzShowTime nzFormat="dd/MM/yyyy HH:mm:ss"
+            <nz-date-picker formControlName="createdAt" nzFormat="dd/MM/yyyy"
               nzPlaceHolder="Chọn ngày và giờ..."></nz-date-picker>
           </nz-form-control>
         </nz-form-item>

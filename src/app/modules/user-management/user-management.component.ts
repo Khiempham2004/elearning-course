@@ -88,7 +88,7 @@ export class UserManagementComponent implements OnInit {
       this.filterSearch = [...this.users];
       this.total = this.filterSearch.length;
       this.page = 1;
-      this.updatePagination();
+      this.getAllUsers();
       return;
     }
 
@@ -98,23 +98,18 @@ export class UserManagementComponent implements OnInit {
 
     this.page = 1;
     this.total = this.filterSearch.length;
-    this.updatePagination();
+    this.getAllUsers();
   }
   getAllUsers() {
-    this.userService.getAllUsers().subscribe({
-      next: (res: any) => {
-        this.users = res ?? [];
-        this.filterSearch = [...this.users];
-        this.total = this.filterSearch.length;
-        this.listOfUser = [
-          ...this.users.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        this.updatePagination();
-      },
-    });
+    this.userService
+      .getAllUsers(this.page, this.pageSize, this.filterUser)
+      .subscribe({
+        next: (res: any) => {
+          this.users = res?.data ?? [];
+          this.listOfUser = [...this.users];
+          this.total = res?.pagination?.total || 0;
+        },
+      });
   }
 
   handleSubmit() {
@@ -161,22 +156,29 @@ export class UserManagementComponent implements OnInit {
 
   handleEditUser(item: any) {
     this.status = 'EDIT';
-    this.userId = item.id;
+    this.userId = item._id ?? item.id;
     this.isUser = true;
 
     this.userService.getUserById(this.userId).subscribe({
       next: (res: any) => {
-        this.form.patchValue({
-          userCode: res.userCode,
-          fullName: res.fullName,
-          email: res.email,
-          phone: res.phone,
-          role: res.role,
-          departmentId: res.departmentId,
-          // API/data hiện tại trả status dạng chuỗi "true"/"false";
-          // ép về chuỗi để khớp nz-option ở form.
-          status: res.status == null ? null : String(res.status),
-        });
+        const userData = res?.data || [];
+        if (!userData) {
+          return;
+        }
+        if (userData) {
+          this.form.patchValue({
+            userCode: userData?.userCode,
+            fullName: userData?.fullName,
+            email: userData?.email,
+            phone: userData?.phone,
+            role: userData?.role,
+            departmentId: userData?.departmentId,
+            // API/data hiện tại trả status dạng chuỗi "true"/"false";
+            // ép về chuỗi để khớp nz-option ở form.
+            // status: userData?.status == null ? null : String(userData?.status),
+            status :userData?.status
+          });
+        }
       },
     });
   }
@@ -189,7 +191,7 @@ export class UserManagementComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.userService.deleteUser(item.id).subscribe({
+        this.userService.deleteUser(item._id).subscribe({
           next: (res: any) => {
             this.nzMessage.success('Xóa khoá học thành công', res);
             this.getAllUsers();
@@ -202,9 +204,13 @@ export class UserManagementComponent implements OnInit {
   handleRowClick(item: any) {
     this.status = 'EDIT';
     this.isUser = true;
-    this.userService.getUserById(item.id).subscribe({
+    this.userService.getUserById(item._id).subscribe({
       next: (res: any) => {
-        this.form.patchValue(res);
+        const userData = res?.data;
+        if (!userData) {
+          return;
+        }
+        this.form.patchValue(userData);
         this.getAllUsers();
       },
     });

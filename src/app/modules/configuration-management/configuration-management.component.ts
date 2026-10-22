@@ -101,26 +101,16 @@ export class ConfigurationManagementComponent implements OnInit {
   }
 
   getAllConfiguration() {
-    this.configurationService.getAllConfiguration().subscribe({
-      next: (res: any) => {
-        this.configuration = res ?? [];
-        this.lisfOfFilter = [...this.configuration];
-        this.total = this.lisfOfFilter.length;
-        this.listOfConfiguration = [
-          ...this.configuration.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        this.listOfCategory = [
-          ...this.configuration.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        // this.total = this.configuration.length;
-      },
-    });
+    this.configurationService
+      .getAllConfiguration(this.page, this.pageSize, this.filter)
+      .subscribe({
+        next: (res: any) => {
+          this.configuration = res?.data ?? [];
+          this.listOfConfiguration = [...this.configuration];
+          this.listOfCategory = [...this.configuration];
+          // this.total = this.configuration.length;
+        },
+      });
   }
 
   // Select sử dụng tên làm nzValue, nên đổi ID từ API về tên option trước khi patch.

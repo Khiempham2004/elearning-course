@@ -77,13 +77,14 @@ export class DirectoryRoomComponent implements OnInit {
     const end = start + this.pageSize;
     this.listOfDirectory = this.filter.slice(start, end);
   }
+
   handleFilter() {
     const keywords = this.filterSearch.trim().toLowerCase();
     if (!keywords) {
       this.filter = [...this.direcRoom];
       this.page = 1;
       this.total = this.filter.length;
-      this.upPagination();
+      this.getAllRoom();
       return;
     }
 
@@ -94,25 +95,19 @@ export class DirectoryRoomComponent implements OnInit {
     );
     this.page = 1;
     this.total = this.filter.length;
-
-    this.upPagination();
+    this.getAllRoom();
   }
 
   getAllRoom() {
-    this.roomService.getAllRooms().subscribe({
-      next: (res: any) => {
-        this.direcRoom = res ?? [];
-        this.filter = [...this.direcRoom];
-        this.total = this.filter.length;
-
-        this.listOfDirectory = [
-          ...this.direcRoom.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-      },
-    });
+    this.roomService
+      .getAllRooms(this.page, this.pageSize, this.filterSearch)
+      .subscribe({
+        next: (res: any) => {
+          this.direcRoom = res?.data ?? [];
+          this.listOfDirectory = [...this.direcRoom];
+          this.total = res?.pagination?.total || 0;
+        },
+      });
   }
 
   handleSubmitRoom() {
@@ -132,6 +127,7 @@ export class DirectoryRoomComponent implements OnInit {
       this.roomService.createRoom(payload).subscribe({
         next: (res: any) => {
           this.nzMessage.success('Tạo danh sách phòng thành công', res);
+          this.page = 1;
           this.getAllRoom();
         },
       });
@@ -149,16 +145,30 @@ export class DirectoryRoomComponent implements OnInit {
     this.form.reset();
   }
   handleEditRoom(item: any) {
-    console.log(item);
-    this.roomId = item.id;
+    this.roomId = item._id ?? item.id;
     this.status = 'EDIT';
     this.isRoom = true;
     this.roomService.getRoomById(this.roomId).subscribe({
       next: (res: any) => {
-        this.form.patchValue(res);
-        this.getAllRoom();
+        const roomData = res?.data;
+
+        if (!roomData) {
+          return;
+        }
+        if (roomData) {
+          this.form.patchValue({
+            roomCode: roomData?.roomCode,
+            roomName: roomData?.roomName,
+            roomType: roomData?.roomType,
+            status: roomData?.status,
+          });
+        }
+      },
+      error: (err: any) => {
+        this.nzMessage.error('Lấy danh sách phòng lỗi', err);
       },
     });
+    this.getAllRoom();
   }
   handleDeleteRoom(item: any) {
     console.log(item);
@@ -170,7 +180,7 @@ export class DirectoryRoomComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.roomService.deleteRoom(item.id).subscribe({
+        this.roomService.deleteRoom(item._id).subscribe({
           next: (res: any) => {
             this.nzMessage.success('Xóa khoá học thành công', res);
             this.getAllRoom();
@@ -182,11 +192,12 @@ export class DirectoryRoomComponent implements OnInit {
 
   handleRowClick(item: any) {
     this.status = 'EDIT';
-    this.roomId = item.id;
+    this.roomId = item._id ?? item.id;
     this.isRoom = true;
     this.roomService.getRoomById(this.roomId).subscribe({
       next: (res: any) => {
-        this.form.patchValue(res);
+        const roomData = res?.data;
+        this.form.patchValue(roomData);
         this.getAllRoom();
       },
     });

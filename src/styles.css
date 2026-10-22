@@ -120,13 +120,6 @@ select {
   color: #0c7eed;
   margin-left: 20px;
 }
-
-.header-table {
-  background-color: #e7edf5;
-  width: 100%;
-}
-
-
 button {
   border-radius: 8px !important;
   font-size: 15px;
@@ -168,17 +161,10 @@ button {
   align-items: center;
 }
 
-tr th {
-  justify-content: center;
-  text-align: center;
-  margin-top: 20px;
-  font-weight: 600;
-}
 
-tr td {
+tr:not(.ant-table-measure-row) td {
   justify-content: center;
   text-align: center;
-  height: 100px !important;
   margin-left: 20px;
 }
 
@@ -187,4 +173,3 @@ tr td {
   margin-left: 20px;
   border-radius: 8px !important;
 }
-

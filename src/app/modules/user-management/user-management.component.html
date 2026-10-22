@@ -39,7 +39,7 @@
                 <button nz-button nzType="primary" (click)="handleEditUser(users)">
                     <span nz-icon nzType="edit" nzTheme="outline"></span>
                 </button>
-                <button nz-button nzType="primary" (click)="handleDeleteUser(users)">
+                <button nz-button nzType="primary" nzDanger (click)="handleDeleteUser(users)">
                     <span nz-icon nzType="delete" nzTheme="outline"></span>
                 </button>
             </td>
@@ -129,8 +129,8 @@
                         </nz-form-label>
                         <nz-form-control>
                             <nz-select formControlName="status" nzPlaceHolder="Chọn trạng thái">
-                                <nz-option nzValue="true" nzLabel="true" />
-                                <nz-option nzValue="false" nzLabel="false" />
+                                <nz-option [nzValue]="true" nzLabel="true" />
+                                <nz-option [nzValue]="false" nzLabel="false" />
                             </nz-select>
                         </nz-form-control>
                     </nz-form-item>

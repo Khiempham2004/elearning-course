@@ -14,12 +14,11 @@ export class SystemManagementComponent implements OnInit {
   filterSystem: string = '';
   listOfSystem: any[] = [];
   system: any[] = [];
-  filterSearch: any[] = [];
 
   form!: FormGroup;
   status: 'CREATE' | 'EDIT' = 'CREATE';
 
-  systemId: any = null;
+  systemId: string | null = null;
   isSystem = false;
   page = 1;
   pageSize = 5;
@@ -38,7 +37,7 @@ export class SystemManagementComponent implements OnInit {
       functionUrl: [''],
       description: [''],
       sortOrder: [1],
-      status: ['ACTIVE', Validators.required],
+      status: [true, Validators.required],
     });
   }
 
@@ -57,7 +56,17 @@ export class SystemManagementComponent implements OnInit {
   openModal() {
     this.isSystem = true;
     this.status = 'CREATE';
-    this.form.reset();
+    this.systemId = null;
+    this.form.reset({
+      functionCode: '',
+      functionName: '',
+      directoryId: null,
+      functionType: 'PAGE',
+      functionUrl: '',
+      description: '',
+      sortOrder: 1,
+      status: true,
+    });
   }
 
   closeModal() {
@@ -77,47 +86,21 @@ export class SystemManagementComponent implements OnInit {
     this.getAllSystem();
   }
 
-  updatePagination() {
-    const start = (this.page - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.listOfSystem = this.filterSearch.slice(start, end);
-  }
   handleClickSearch() {
-    const keyword = this.filterSystem.trim().toLowerCase();
-    if (!keyword) {
-      this.filterSearch = [...this.system];
-      this.total = this.filterSearch.length;
-      this.page = 1;
-      this.updatePagination();
-      return;
-    }
-
-    this.filterSearch = this.system.filter((item: any) => {
-      return (
-        item.functionName?.toLowerCase().includes(keyword) ||
-        item.functionType?.toLowerCase().includes(keyword)
-      );
-    });
-
-    this.total = this.filterSearch.length;
     this.page = 1;
-    this.updatePagination();
+    this.getAllSystem();
   }
   getAllSystem() {
-    this.systemService.getAllSystems().subscribe({
-      next: (res: any) => {
-        this.system = res ?? [];
-        this.filterSearch = [...this.system];
-        this.total = this.filterSearch.length;
-        this.listOfSystem = [
-          ...this.system.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        this.updatePagination();
-      },
-    });
+    this.systemService
+      .getAllSystems(this.page, this.pageSize, this.filterSystem)
+      .subscribe({
+        next: (res: any) => {
+          this.system = res?.data ?? [];
+          this.listOfSystem = [...this.system];
+          this.total = res?.pagination?.total ?? 0;
+        },
+        error: () => this.nzMessage.error('Không thể tải danh sách chức năng hệ thống'),
+      });
   }
 
   handleSubmitRoom() {
@@ -133,49 +116,74 @@ export class SystemManagementComponent implements OnInit {
     }
 
     const payload = this.form.getRawValue();
-
     if (this.status === 'CREATE') {
       this.systemService.createSystem(payload).subscribe({
-        next: (res: any) => {
-          this.nzMessage.success('Tạo mới hệ thống thành công', res);
+        next: () => {
+          this.nzMessage.success('Tạo mới hệ thống thành công');
+          this.page = 1;
+          this.closeModal();
           this.getAllSystem();
         },
         error: (err: any) => {
-          this.nzMessage.error('Lỗi tạo mới hệ thống', err);
+          this.nzMessage.error(
+            err?.error?.message || 'Lỗi tạo mới hệ thống',
+          );
         },
       });
     } else {
+      if (!this.systemId) {
+        this.nzMessage.error('Không xác định được chức năng cần cập nhật');
+        return;
+      }
       this.systemService.updateSystem(this.systemId, payload).subscribe({
-        next: (res: any) => {
-          this.nzMessage.success('Cập nhật hệ thống thành công', res);
+        next: () => {
+          this.nzMessage.success('Cập nhật hệ thống thành công');
+          this.closeModal();
           this.getAllSystem();
+        },
+        error: (err: any) => {
+          this.nzMessage.error(
+            err?.error?.message || 'Lỗi cập nhật hệ thống',
+          );
         },
       });
     }
-
-    this.isSystem = false;
-    this.systemId = null;
-    this.getAllSystem();
-    this.form.reset();
   }
 
   handleEdit(item: any) {
     this.status = 'EDIT';
     this.isSystem = true;
-    this.systemId = item.id;
+    const id = item._id ?? item.id;
+    if (!id) {
+      this.nzMessage.error('Không xác định được chức năng cần chỉnh sửa');
+      this.closeModal();
+      return;
+    }
+    this.systemId = String(id);
     this.systemService.getSystemById(this.systemId).subscribe({
       next: (res: any) => {
+        const systemData = res?.data;
+        if (!systemData) {
+          this.nzMessage.error('Không tìm thấy chức năng hệ thống');
+          this.closeModal();
+          return;
+        }
         this.form.patchValue({
-          functionCode: res?.functionCode,
-          functionName: res?.functionName,
-          directoryId: res?.directoryId,
-          functionType: res?.functionType,
-          functionUrl: res?.functionUrl,
-          description: res?.description,
-          sortOrder: res?.sortOrder,
-          status: res.status == null ? null : String(res.status),
+          functionCode: systemData.functionCode,
+          functionName: systemData.functionName,
+          directoryId: systemData.directoryId,
+          functionType: systemData.functionType,
+          functionUrl: systemData.functionUrl,
+          description: systemData.description,
+          sortOrder: systemData.sortOrder,
+          status: systemData.status,
         });
-        this.getAllSystem();
+      },
+      error: (err: any) => {
+        this.nzMessage.error(
+          err?.error?.message || 'Không thể tải chức năng hệ thống',
+        );
+        this.closeModal();
       },
     });
   }
@@ -189,23 +197,22 @@ export class SystemManagementComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.systemService.deleteSystem(item.id).subscribe({
-          next: (res: any) => {
-            this.nzMessage.success('Xóa khoá học thành công', res);
+        this.systemService.deleteSystem(item._id ?? item.id).subscribe({
+          next: () => {
+            this.nzMessage.success('Xóa chức năng hệ thống thành công');
             this.getAllSystem();
+          },
+          error: (err: any) => {
+            this.nzMessage.error(
+              err?.error?.message || 'Lỗi xóa chức năng hệ thống',
+            );
           },
         });
       },
     });
   }
   handleRowClick(item: any) {
-    this.status = 'EDIT';
-    this.isSystem = true;
-    this.systemService.getSystemById(item.id).subscribe({
-      next: (res: any) => {
-        this.form.patchValue(res);
-      },
-    });
+    this.handleEdit(item);
   }
 
   handleOptionSelect = [

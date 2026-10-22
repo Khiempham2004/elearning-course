@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../user-management/users.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { UserGroupService } from './userGroup.service';
 
 @Component({
   selector: 'app-user-group-management',
@@ -27,7 +28,7 @@ export class UserGroupManagementComponent implements OnInit {
   total = 0;
   constructor(
     private fb: FormBuilder,
-    private userService: UsersService,
+    private userService: UserGroupService,
     private nzMessage: NzMessageService,
     private nzModal: NzModalService,
   ) {
@@ -112,7 +113,7 @@ export class UserGroupManagementComponent implements OnInit {
       .join(', ');
   }
   getAllUsers() {
-    this.userService.getAllUsers().subscribe({
+    this.userService.getAllUser().subscribe({
       next: (res: any) => {
         this.users = res ?? [];
         this.filters = [...this.users];
@@ -147,7 +148,7 @@ export class UserGroupManagementComponent implements OnInit {
 
     if (this.status === 'CREATE') {
       const { id, ...createPayload } = payload;
-      this.userService.createUsers(createPayload).subscribe({
+      this.userService.createUser(createPayload).subscribe({
         next: (res: any) => {
           this.nzMessage.success(
             `Tạo mới người dùng thành công ID : ${res.id}`,
@@ -162,7 +163,7 @@ export class UserGroupManagementComponent implements OnInit {
         },
       });
     } else {
-      this.userService.updateUser(this.userId, payload).subscribe({
+      this.userService.putUser(this.userId, payload).subscribe({
         next: (res: any) => {
           this.nzMessage.success('Cập nhật nhóm người dùng thành công', res);
           this.getAllUsers();

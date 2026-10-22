@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from './notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { errorContext } from 'rxjs/internal/util/errorContext';
 
 @Component({
   selector: 'app-notification-management',
@@ -37,7 +38,7 @@ export class NotificationManagementComponent implements OnInit {
       type: ['SYSTEM'],
       recipient: ['ALL'],
       status: ['DRAFT'],
-      createdAt: [new Date(), [Validators.required]],
+      createdAt: [Date(), [Validators.required]],
     });
   }
 
@@ -65,15 +66,13 @@ export class NotificationManagementComponent implements OnInit {
   }
   pageChange(page: any) {
     this.page = page;
-    this.updatePagination();
-    // this.getAllNotifi();
+    this.getAllNotifi();
   }
 
   pageSizeChange(pagesize: any) {
     this.pageSize = pagesize;
     this.page = 1;
-    // this.getAllNotifi();
-    this.updatePagination();
+    this.getAllNotifi();
   }
 
   updatePagination() {
@@ -88,7 +87,7 @@ export class NotificationManagementComponent implements OnInit {
       this.filterNotifi = [...this.notification];
       this.total = this.filterNotifi.length;
       this.page = 1;
-      this.updatePagination();
+      // this.updatePagination();
       return;
     }
 
@@ -97,7 +96,8 @@ export class NotificationManagementComponent implements OnInit {
     });
     this.total = this.filterNotifi.length;
     this.page = 1;
-    this.updatePagination();
+    // this.updatePagination();
+    this.getAllNotifi();
   }
   onChange(result: Date) {
     console.log('Selected Time: ', result);
@@ -118,20 +118,15 @@ export class NotificationManagementComponent implements OnInit {
   }
 
   getAllNotifi() {
-    this.notifiService.getAllNotifi().subscribe({
-      next: (res: any) => {
-        this.notification = res || [];
-        this.filterNotifi = [...this.notification];
-        this.total = this.filterNotifi.length;
-        this.listOfNotifi = [
-          ...this.notification.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        this.total = this.notification.length;
-      },
-    });
+    this.notifiService
+      .getAllNotifi(this.page, this.pageSize, this.filter)
+      .subscribe({
+        next: (res: any) => {
+          this.notification = res?.data;
+          this.listOfNotifi = [...this.notification];
+          this.total = res?.pagination?.total || 0;
+        },
+      });
   }
 
   handleSubmit() {
@@ -149,8 +144,11 @@ export class NotificationManagementComponent implements OnInit {
     if (this.status === 'CREATE') {
       this.notifiService.createNotifi(payload).subscribe({
         next: (res: any) => {
-          this.nzMessage.success('Tạo mới thành công');
+          this.nzMessage.success('Tạo mới thành công', res);
           this.getAllNotifi();
+        },
+        error: (err: any) => {
+          this.nzMessage.error('Tạo thông báo bị lỗi');
         },
       });
     } else {
@@ -158,6 +156,9 @@ export class NotificationManagementComponent implements OnInit {
         next: (res: any) => {
           this.nzMessage.success('Cập nhật thành công');
           this.getAllNotifi();
+        },
+        error: (err: any) => {
+          this.nzMessage.error('Cập nhật thông báo lỗi!');
         },
       });
     }
@@ -168,14 +169,30 @@ export class NotificationManagementComponent implements OnInit {
   }
   editNotifi(item: any) {
     this.status = 'EDIT';
-    this.notificationId = item.id;
+    this.notificationId = item._id ?? item.id;
     this.isNotification = true;
     this.notifiService.getNotifiById(this.notificationId).subscribe({
       next: (res: any) => {
-        this.form.patchValue(res);
-        this.getAllNotifi();
+        const notifiData = res?.data;
+        if (!notifiData) {
+          return;
+        }
+        if (notifiData) {
+          this.form.patchValue({
+            title: notifiData.title,
+            content: notifiData.content,
+            type: notifiData.type,
+            recipient: notifiData.recipient,
+            status: notifiData.status,
+            createdAt: notifiData.createdAt,
+          });
+        }
+      },
+      error: (err: any) => {
+        console.log('Lỗi không tìm thấy thông báo', err);
       },
     });
+    this.getAllNotifi();
   }
   deleteNotifi(item: any) {
     this.page = 1;
@@ -186,7 +203,7 @@ export class NotificationManagementComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.notifiService.deleteNotifi(item.id).subscribe({
+        this.notifiService.deleteNotifi(item._id).subscribe({
           next: (res: any) => {
             this.nzMessage.success('Xóa thông báo thành công', res);
             this.getAllNotifi();
