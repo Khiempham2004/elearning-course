@@ -1,0 +1,28 @@
+<div [class]="tableClass">
+<nz-table
+  [nzData]="data"
+  [nzFrontPagination]="false"
+  [nzBordered]="bordered"
+  [nzScroll]="scrollConfig"
+  [nzShowPagination]="false"
+  [nzTableLayout]="'auto'"
+>
+  <thead>
+    <tr>
+      <th *ngFor="let column of columns" [style.width]="column.width" [nzAlign]="column.align || 'left'">
+        {{ column.title }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of data">
+      <td *ngFor="let column of columns" [nzAlign]="column.align || 'left'">
+        <ng-container *ngIf="column.template; else defaultCell">
+          <ng-container *ngTemplateOutlet="column.template; context: { $implicit: row }"></ng-container>
+        </ng-container>
+        <ng-template #defaultCell>{{ valueOf(row, column.key) }}</ng-template>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+</div>

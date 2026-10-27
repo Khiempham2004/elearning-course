@@ -9,14 +9,14 @@ button {
 tr th {
     justify-content: center;
     text-align: center;
-    height: 60px;
+    height: 80px;
     background-color: #F5F5F5;
 }
 
 tr td {
     justify-content: center;
     text-align: center;
-    height: 50px;
+    height: 80px;
 }
 
 .user-modal-title {

@@ -36,7 +36,7 @@ export class SystemLogManagementComponent implements OnInit {
       module: [null],
       description: [null, [Validators.required]],
       ipAddress: [null],
-      createdAt: [null],
+      createdAt: [new Date()],
     });
   }
 
@@ -66,18 +66,15 @@ export class SystemLogManagementComponent implements OnInit {
   }
 
   getAllSystems() {
-    this.systemlogService.getAllSystemLog().subscribe({
-      next: (res: any) => {
-        this.systemLog = res;
-        this.listOfSystemLog = [
-          ...this.systemLog.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        this.total = this.systemLog.length;
-      },
-    });
+    this.systemlogService
+      .getAllSystemLog(this.page, this.pageSize, this.filter)
+      .subscribe({
+        next: (res: any) => {
+          this.systemLog = res?.data ?? [];
+          this.listOfSystemLog = [...this.systemLog];
+          this.total = res?.pagination?.total ?? 0;
+        },
+      });
   }
   handleSubmit() {
     if (this.form.invalid) {
@@ -95,7 +92,9 @@ export class SystemLogManagementComponent implements OnInit {
     if (this.status === 'CREATE') {
       this.systemlogService.createSystemLog(payload).subscribe({
         next: (res: any) => {
-          this.nzMessage.success('Tạo mới nhật ký hệ thống thành công');
+          this.nzMessage.success('Tạo mới nhật ký hệ thống thành công', res);
+          this.closeModal();
+          this.page = 1;
           this.getAllSystems();
         },
         error: (err: any) => {
@@ -105,7 +104,7 @@ export class SystemLogManagementComponent implements OnInit {
     } else {
       this.systemlogService.putSystemLog(this.systemId, payload).subscribe({
         next: (res: any) => {
-          this.nzMessage.success('Cập nhật nhật ký hệ thống thành công');
+          this.nzMessage.success('Cập nhật nhật ký hệ thống thành công', res);
           this.getAllSystems();
         },
         error: (err: any) => {
@@ -132,11 +131,12 @@ export class SystemLogManagementComponent implements OnInit {
 
   handleEdit(item: any) {
     this.status = 'EDIT';
-    this.systemId = item.id;
+    this.systemId = item._id ?? item.id;
     this.isSystemLog = true;
     this.systemlogService.getSystemById(this.systemId).subscribe({
       next: (res: any) => {
-        this.form.patchValue(res);
+        const systemData = res?.data;
+        this.form.patchValue(systemData);
         this.getAllSystems();
       },
       error: (err: any) => {
@@ -153,7 +153,7 @@ export class SystemLogManagementComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.systemlogService.deleteSystemLog(item.id).subscribe({
+        this.systemlogService.deleteSystemLog(item._id).subscribe({
           next: (res: any) => {
             this.nzMessage.success('Xóa nhật ký hệ thống thành công', res);
             this.getAllSystems();
@@ -165,11 +165,12 @@ export class SystemLogManagementComponent implements OnInit {
 
   getRawCLick(item: any) {
     this.status === 'EDIT';
+    this.systemId = item._id ?? item.id;
     this.isSystemLog = true;
-
-    this.systemlogService.getSystemById(item.id).subscribe({
+    this.systemlogService.getSystemById(this.systemId).subscribe({
       next: (res: any) => {
-        this.form.patchValue(res);
+        const systemData = res?.data;
+        this.form.patchValue(systemData);
         this.getAllSystems();
       },
     });

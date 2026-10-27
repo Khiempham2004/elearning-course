@@ -12,6 +12,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import {  NzSelectComponent, NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTabLinkTemplateDirective } from 'ng-zorro-antd/tabs';
 import { NzPaginationComponent, NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { DataTableComponent } from '../../shared/data-table/data-table.component';
 const routes : Routes = [
   {
     path : "",
@@ -35,6 +36,7 @@ const routes : Routes = [
     NzPaginationModule,
     NzSelectComponent,
     FormsModule,
+    DataTableComponent,
     
 ],
   declarations: [UserManagementComponent]

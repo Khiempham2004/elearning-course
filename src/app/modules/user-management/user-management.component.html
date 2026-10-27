@@ -12,40 +12,19 @@
     <button nz-button nzType="primary" (click)="openModal()">Tạo mới</button>
 </div>
 
-<nz-table #basicTable [nzFrontPagination]="false" [nzBordered]="true" [nzData]="listOfUser"
-    [nzScroll]="{x:'1000px',y:'535px'}" style="margin-left: 20px; margin-top: 20px">
-    <thead>
-        <tr>
-            <th>Mã người dùng</th>
-            <th>Họ và tên</th>
-            <th>Email</th>
-            <th>Số điện thoại</th>
-            <th>Vai trò</th>
-            <th>Mã phòng ban</th>
-            <th>Trạng thái</th>
-            <th>Hoạt động</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let users of listOfUser">
-            <td style="font-weight: 600;cursor: pointer;" (click)="handleRowClick(users)">{{ users.userCode }}</td>
-            <td>{{ users.fullName }}</td>
-            <td>{{ users.email }}</td>
-            <td>{{ users.phone }}</td>
-            <td>{{ users.role }}</td>
-            <td>{{ users.departmentId }}</td>
-            <td>{{ users.status }}</td>
-            <td style="display: flex; gap: 10px; align-items: center">
-                <button nz-button nzType="primary" (click)="handleEditUser(users)">
-                    <span nz-icon nzType="edit" nzTheme="outline"></span>
-                </button>
-                <button nz-button nzType="primary" nzDanger (click)="handleDeleteUser(users)">
-                    <span nz-icon nzType="delete" nzTheme="outline"></span>
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</nz-table>
+<app-data-table [columns]="tableColumns" [data]="listOfUser" scrollX="1000px" scrollY="535px"
+    tableClass="user-management-table" style="margin-left: 20px; margin-top: 20px">
+</app-data-table>
+<ng-template #actionTemplate let-users>
+    <div style="display: flex; gap: 10px; align-items: center">
+        <button nz-button nzType="primary" (click)="handleEditUser(users)">
+            <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button nz-button nzType="primary" nzDanger (click)="handleDeleteUser(users)">
+            <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
+    </div>
+</ng-template>
 
 <div class="table-pagination-total">
     <div style="margin-left: 20px;">

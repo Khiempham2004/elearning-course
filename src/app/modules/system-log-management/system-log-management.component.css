@@ -152,3 +152,18 @@ input {
   border-radius: 10px !important;
   overflow: hidden;
 }
+
+tr th {
+  font-weight: 600;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  height: 80px;
+}
+
+tr td{
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  height: 80px;
+}

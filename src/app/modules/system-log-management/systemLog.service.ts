@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -7,18 +7,29 @@ import { Observable } from 'rxjs';
 })
 export class SystemLogService {
   constructor(private http: HttpClient) {}
-  private readonly apiSystemLog = 'http://localhost:3001/api/directory/system-log-management';
+  private readonly apiSystemLog =
+    'http://localhost:3001/api/directory/system-log-management';
 
-  getAllSystemLog(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiSystemLog);
+  getAllSystemLog(
+    page: number,
+    pageSize: number,
+    keyword: string,
+  ): Observable<any[]> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+    if (keyword.trim()) {
+      params = params.set('q', keyword.trim());
+    }
+    return this.http.get<any[]>(this.apiSystemLog , {params});
   }
 
   getSystemById(id: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiSystemLog}/${id}`);
+    return this.http.get<any>(`${this.apiSystemLog}/${id}`);
   }
 
   createSystemLog(payload: any): Observable<any> {
-    return this.http.post<any>(this.apiSystemLog, payload);
+    return this.http.post<any[]>(this.apiSystemLog, payload);
   }
 
   putSystemLog(id: any, payload: any): Observable<any> {

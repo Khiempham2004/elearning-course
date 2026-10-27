@@ -13,6 +13,9 @@ import { UserGroupService } from './userGroup.service';
 })
 export class UserGroupManagementComponent implements OnInit {
   users: any[] = [];
+  permissionName: any[] = [];
+  group: any[] = [];
+  listOfGroupnames: any[] = [];
   listOfUsers: any[] = [];
   listOfPermissions: any[] = [];
   filters: any[] = [];
@@ -39,11 +42,14 @@ export class UserGroupManagementComponent implements OnInit {
       status: ['true'],
       userIds: [[]],
       permissionIds: [[]],
+      permissionName: [[]],
     });
   }
 
   ngOnInit() {
     this.getAllUsers();
+    this.getAllGroupName();
+    this.getAllPermissionName();
   }
 
   get modalTitle() {
@@ -113,22 +119,31 @@ export class UserGroupManagementComponent implements OnInit {
       .join(', ');
   }
   getAllUsers() {
-    this.userService.getAllUser().subscribe({
-      next: (res: any) => {
-        this.users = res ?? [];
-        this.filters = [...this.users];
-        this.total = this.filters.length;
-        this.listOfUsers = [
-          ...this.users.slice(
-            (this.page - 1) * this.pageSize,
-            this.page * this.pageSize,
-          ),
-        ];
-        console.log(this.listOfUsers);
+    this.userService
+      .getAllUser(this.page, this.pageSize, this.filterSearch)
+      .subscribe({
+        next: (res: any) => {
+          this.users = res?.data ?? [];
+          this.listOfUsers = [...this.users];
+          this.total = res?.pagination?.total || 0;
+        },
+      });
+  }
 
-        this.listOfPermissions = [...this.users];
-        // this.total = this.users.length;
-        this.updatePagination();
+  getAllGroupName() {
+    this.userService.getAllGroupName().subscribe({
+      next: (res: any) => {
+        this.group = res ?? [];
+        this.listOfGroupnames = [...this.group];
+      },
+    });
+  }
+
+  getAllPermissionName() {
+    this.userService.getAllPermissionName().subscribe({
+      next: (res: any) => {
+        this.permissionName = res ?? [];
+        this.listOfPermissions = [...this.permissionName];
       },
     });
   }
@@ -182,23 +197,29 @@ export class UserGroupManagementComponent implements OnInit {
   userEdit(item: any) {
     this.status = 'EDIT';
     this.isUsers = true;
-    this.userId = item.id;
+    this.userId = item._id ?? item.id;
     console.log(item);
 
     this.userService.getUserById(this.userId).subscribe({
       next: (res: any) => {
-        console.log(res);
-        this.form.patchValue({
-          groupCode: res?.groupCode,
-          groupName: res?.groupName,
-          description: res?.description,
-          status: String(res?.status),
-          userIds: (res?.userIds ?? []).map((id: any) => String(id).trim()),
-          permissionIds: (res?.permissionIds ?? []).map((id: any) =>
-            String(id).trim(),
-          ),
-        });
-        console.log(this.form);
+        const userData = res?.data;
+        if (!userData) {
+          return;
+        }
+        if (userData) {
+          this.form.patchValue({
+            groupCode: userData?.groupCode,
+            groupName: userData?.groupName,
+            description: userData?.description,
+            status: String(userData?.status),
+            userIds: (userData?.userIds ?? []).map((id: any) =>
+              String(id).trim(),
+            ),
+            permissionIds: (userData?.permissionIds ?? []).map((id: any) =>
+              String(id).trim(),
+            ),
+          });
+        }
         this.getAllUsers();
       },
     });
@@ -213,9 +234,9 @@ export class UserGroupManagementComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.userService.deleteUser(item.id).subscribe({
+        this.userService.deleteUser(item._id).subscribe({
           next: (res: any) => {
-            this.nzMessage.success('Xóa người dùng thành công');
+            this.nzMessage.success('Xóa người dùng thành công',res);
             this.getAllUsers();
           },
         });

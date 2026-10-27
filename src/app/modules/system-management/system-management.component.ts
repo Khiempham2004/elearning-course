@@ -57,16 +57,7 @@ export class SystemManagementComponent implements OnInit {
     this.isSystem = true;
     this.status = 'CREATE';
     this.systemId = null;
-    this.form.reset({
-      functionCode: '',
-      functionName: '',
-      directoryId: null,
-      functionType: 'PAGE',
-      functionUrl: '',
-      description: '',
-      sortOrder: 1,
-      status: true,
-    });
+    this.form.reset();
   }
 
   closeModal() {
@@ -99,7 +90,8 @@ export class SystemManagementComponent implements OnInit {
           this.listOfSystem = [...this.system];
           this.total = res?.pagination?.total ?? 0;
         },
-        error: () => this.nzMessage.error('Không thể tải danh sách chức năng hệ thống'),
+        error: () =>
+          this.nzMessage.error('Không thể tải danh sách chức năng hệ thống'),
       });
   }
 
@@ -125,9 +117,7 @@ export class SystemManagementComponent implements OnInit {
           this.getAllSystem();
         },
         error: (err: any) => {
-          this.nzMessage.error(
-            err?.error?.message || 'Lỗi tạo mới hệ thống',
-          );
+          this.nzMessage.error(err?.error?.message || 'Lỗi tạo mới hệ thống');
         },
       });
     } else {
@@ -142,9 +132,7 @@ export class SystemManagementComponent implements OnInit {
           this.getAllSystem();
         },
         error: (err: any) => {
-          this.nzMessage.error(
-            err?.error?.message || 'Lỗi cập nhật hệ thống',
-          );
+          this.nzMessage.error(err?.error?.message || 'Lỗi cập nhật hệ thống');
         },
       });
     }

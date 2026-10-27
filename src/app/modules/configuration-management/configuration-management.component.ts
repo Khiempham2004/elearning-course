@@ -21,6 +21,11 @@ export class ConfigurationManagementComponent implements OnInit {
   filter: string = '';
   lisfOfFilter: any = [];
 
+  type: any[] = [];
+  group: any[] = [];
+  listOfType: any[] = [];
+  listOfGroup: any[] = [];
+
   page = 1;
   pageSize = 10;
   total = 0;
@@ -44,6 +49,8 @@ export class ConfigurationManagementComponent implements OnInit {
 
   ngOnInit() {
     this.getAllConfiguration();
+    this.getAllType();
+    this.getAllGroup();
   }
 
   pageChange(page: any) {
@@ -105,12 +112,31 @@ export class ConfigurationManagementComponent implements OnInit {
       .getAllConfiguration(this.page, this.pageSize, this.filter)
       .subscribe({
         next: (res: any) => {
+          console.log(res);
+
           this.configuration = res?.data ?? [];
           this.listOfConfiguration = [...this.configuration];
-          this.listOfCategory = [...this.configuration];
-          // this.total = this.configuration.length;
+          this.total = res?.pagination?.total || 0;
         },
       });
+  }
+
+  getAllType() {
+    this.configurationService.getAllType().subscribe({
+      next: (res: any) => {
+        this.type = res ?? [];
+        this.listOfType = [...this.type];
+      },
+    });
+  }
+
+  getAllGroup() {
+    this.configurationService.getAllGroup().subscribe({
+      next: (res: any) => {
+        this.group = res ?? [];
+        this.listOfGroup = [...this.group];
+      },
+    });
   }
 
   // Select sử dụng tên làm nzValue, nên đổi ID từ API về tên option trước khi patch.
@@ -154,9 +180,15 @@ export class ConfigurationManagementComponent implements OnInit {
     if (this.status === 'CREATE') {
       this.configurationService.createConfiguration(payload).subscribe({
         next: (res: any) => {
-          this.nzMessage.success('Tạo cấu hình hệ thống thành công', res);
+          this.nzMessage.success('Tạo cấu hình hệ thống thành công');
+          this.closeModal();
           this.page = 1;
           this.getAllConfiguration();
+        },
+        error: (err: any) => {
+          this.nzMessage.error(
+            err?.error?.message ?? 'Không thể tạo cấu hình hệ thống',
+          );
         },
       });
     } else {
@@ -164,43 +196,43 @@ export class ConfigurationManagementComponent implements OnInit {
         .putConfiguration(this.configrationId, payload)
         .subscribe({
           next: (res: any) => {
-            this.nzMessage.success(
-              'Cập nhật cấu hình hệ thống thành công',
-              res,
-            );
+            this.nzMessage.success('Cập nhật cấu hình hệ thống thành công');
+            this.closeModal();
             this.getAllConfiguration();
+          },
+          error: (err: any) => {
+            this.nzMessage.error(
+              err?.error?.message ?? 'Không thể cập nhật cấu hình hệ thống',
+            );
           },
         });
     }
-    this.isConfigration = false;
-    this.configrationId = null;
-    this.getAllConfiguration();
-    this.form.reset();
   }
   handleConfigurationEdit(item: any) {
     this.status = 'EDIT';
     this.isConfigration = true;
-    this.configrationId = item.id;
+    this.configrationId = item._id ?? item.id;
     this.configurationService
       .getConfigurationById(this.configrationId)
       .subscribe({
         next: (res: any) => {
+          const confiData = res?.data;
           this.form.patchValue({
-            configKey: res?.configKey,
-            configName: res?.configName,
-            configValue: res?.configValue,
+            configKey: (confiData?.data ?? confiData)?.configKey,
+            configName: (confiData?.data ?? confiData)?.configName,
+            configValue: (confiData?.data ?? confiData)?.configValue,
             configType: this.toSelectNames(
-              res?.configType,
-              this.listOfConfiguration,
+              (confiData?.data ?? confiData)?.configType,
+              this.listOfType,
               'configType',
             ),
             category: this.toSelectNames(
-              res?.category,
-              this.listOfCategory,
+              (confiData?.data ?? confiData)?.category,
+              this.listOfGroup,
               'category',
             ),
-            description: res?.description,
-            status: res?.status,
+            description: (confiData?.data ?? confiData)?.description,
+            status: (confiData?.data ?? confiData)?.status,
           });
         },
       });
@@ -214,7 +246,7 @@ export class ConfigurationManagementComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.configurationService.deleteConfiguration(item.id).subscribe({
+        this.configurationService.deleteConfiguration(item._id).subscribe({
           next: (res: any) => {
             this.nzMessage.success('Xóa người dùng thành công');
             this.getAllConfiguration();
@@ -222,6 +254,22 @@ export class ConfigurationManagementComponent implements OnInit {
         });
       },
     });
+  }
+
+  handleRawClick(item: any) {
+    this.status = 'EDIT';
+    this.configrationId = item._id ?? item.id;
+    this.isConfigration = true;
+
+    this.configurationService
+      .getConfigurationById(this.configrationId)
+      .subscribe({
+        next: (res: any) => {
+          const confiData = res?.data;
+          this.form.patchValue(confiData);
+          this.getAllConfiguration();
+        },
+      });
   }
 
   optionSelect = [

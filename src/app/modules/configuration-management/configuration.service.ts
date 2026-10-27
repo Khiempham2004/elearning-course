@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class ConfigurationService {
   constructor(private readonly http: HttpClient) {}
-  // private configurationApi = 'http://localhost:9000/systemConfigs';
+  private readonly configurationApi = 'http://localhost:8080/listOfConfiguration';
+  private readonly categoryApi = 'http://localhost:8080/listOfCategory';
   private readonly apiUrl =
     'http://localhost:3001/api/directory/configuration-management';
 
@@ -39,5 +40,12 @@ export class ConfigurationService {
 
   deleteConfiguration(id: any): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
+  getAllType(): Observable<any> {
+    return this.http.get<any[]>(this.configurationApi);
+  }
+  getAllGroup(): Observable<any> {
+    return this.http.get<any[]>(this.categoryApi);
   }
 }

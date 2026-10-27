@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from './users.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { DataTableColumn } from '../../shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-user-management',
@@ -11,6 +12,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
   standalone: false,
 })
 export class UserManagementComponent implements OnInit {
+  @ViewChild('actionTemplate', { static: true }) actionTemplate!: TemplateRef<{ $implicit: any }>;
+  tableColumns: DataTableColumn<any>[] = [];
   form!: FormGroup;
   status: 'CREATE' | 'EDIT' = 'CREATE';
   users: any[] = [];
@@ -41,8 +44,19 @@ export class UserManagementComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.tableColumns = [
+      { title: 'Mã người dùng', key: 'userCode' },
+      { title: 'Họ và tên', key: 'fullName' },
+      { title: 'Email', key: 'email' },
+      { title: 'Số điện thoại', key: 'phone' },
+      { title: 'Vai trò', key: 'role' },
+      { title: 'Mã phòng ban', key: 'departmentId' },
+      { title: 'Trạng thái', key: 'status' },
+      { title: 'Hoạt động', key: 'actions', width: '120px', template: this.actionTemplate, align: 'center' },
+    ];
     this.getAllUsers();
   }
+
 
   get modalTitleUser() {
     if (this.status === 'CREATE') {

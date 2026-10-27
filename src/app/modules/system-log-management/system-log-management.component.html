@@ -32,7 +32,7 @@
       <td>{{ system.module }}</td>
       <td>{{ system.description }}</td>
       <td>{{ system.ipAddress }}</td>
-      <td>{{ system.createdAt }}</td>
+      <td>{{ system.createdAt | date: "dd/MM/yyyy" }}</td>
       <td style="display: flex; align-items: center; gap: 10px">
         <button nz-button nzType="primary" (click)="handleEdit(system)">
           <span nz-icon nzType="edit" nzTheme="outline"></span>
@@ -134,8 +134,9 @@
           <nz-form-item>
             <nz-form-label>Thời gian ghi nhận</nz-form-label>
             <nz-form-control>
-              <nz-date-picker formControlName="createdAt" nzShowTime nzFormat="dd/MM/yyyy HH:mm:ss"
-                nzPlaceHolder="Chọn thời gian" class="full-width"></nz-date-picker>
+              <nz-date-picker formControlName="createdAt" nzFormat="dd/MM/yyyy "
+                nzPlaceHolder="Chọn thời gian" class="full-width">
+              </nz-date-picker>
             </nz-form-control>
           </nz-form-item>
         </div>

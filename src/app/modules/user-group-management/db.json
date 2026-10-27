@@ -1,0 +1,66 @@
+{
+  "groupName": [
+    {
+      "id": "1",
+      "groupName": "Quản trị viên"
+    },
+    {
+      "id": "2",
+      "groupName": "Giảng viên"
+    },
+    {
+      "id": "3",
+      "groupName": "Học viên"
+    },
+    {
+      "id": "4",
+      "groupName": "Phòng đào tạo"
+    },
+    {
+      "id": "5",
+      "groupName": "Nhân viên"
+    }
+  ],
+  "permissionName": [
+    {
+      "id": "1",
+      "permissionName": "Xem danh sách"
+    },
+    {
+      "id": "2",
+      "permissionName": "Thêm mới"
+    },
+    {
+      "id": "3",
+      "permissionName": "Chỉnh sửa"
+    },
+    {
+      "id": "4",
+      "permissionName": "Xóa dữ liệu"
+    },
+    {
+      "id": "5",
+      "permissionName": "Phân quyền"
+    },
+    {
+      "id": "6",
+      "permissionName": "Quản lý khóa học"
+    },
+    {
+      "id": "7",
+      "permissionName": "Quản lý học viên"
+    },
+    {
+      "id": "8",
+      "permissionName": "Quản lý giảng viên"
+    },
+    {
+      "id": "9",
+      "permissionName": "Quản lý hệ thống"
+    },
+    {
+      "id": "10",
+      "permissionName": "Xem báo cáo"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "listOfConfiguration": [
+    { "id": 1, "configType": "STRING" },
+    { "id": 2, "configType": "NUMBER" },
+    { "id": 3, "configType": "BOOLEAN" },
+    { "id": 4, "configType": "DATE" },
+    { "id": 5, "configType": "JSON" },
+    { "id": 6, "configType": "ARRAY" }
+  ],
+  "listOfCategory": [
+    { "id": 1, "category": "SYSTEM" },
+    { "id": 2, "category": "USER" },
+    { "id": 3, "category": "SECURITY" },
+    { "id": 4, "category": "EMAIL" },
+    { "id": 5, "category": "NOTIFICATION" },
+    { "id": 6, "category": "PAYMENT" },
+    { "id": 7, "category": "GENERAL" }
+  ]
+}
