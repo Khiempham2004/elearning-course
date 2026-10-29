@@ -16,6 +16,8 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { DataTableComponent } from '../shared/data-table/data-table.component';
+import { PagingComponent } from '../shared/paging/paging.component';
 const routes: Routes = [{ path: '', component: ComponentComponent }];
 
 @NgModule({
@@ -38,6 +40,8 @@ const routes: Routes = [{ path: '', component: ComponentComponent }];
     NzButtonModule,
     NzIconModule,
     NzRowDirective,
+    DataTableComponent,
+    PagingComponent
 ],
   declarations: [ComponentComponent, CpnConComponent, AreaConComponent],
   exports: [],

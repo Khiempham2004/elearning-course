@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { SystemService } from './system.service';
+import { DataTableColumn } from '../../shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-system-management',
@@ -11,6 +12,7 @@ import { SystemService } from './system.service';
   standalone: false,
 })
 export class SystemManagementComponent implements OnInit {
+  dataTable: DataTableColumn<any>[] = [];
   filterSystem: string = '';
   listOfSystem: any[] = [];
   system: any[] = [];
@@ -42,7 +44,73 @@ export class SystemManagementComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.intialTableColumn();
     this.getAllSystem();
+  }
+
+  intialTableColumn() {
+    this.dataTable = [
+      {
+        title: 'Mã chức năng',
+        key: 'functionCode',
+        width: '150px',
+      },
+      {
+        title: 'Tên chức năng',
+        key: 'functionName',
+        width: '150px',
+      },
+      {
+        title: 'Danh mục/menu chứa chức năng',
+        key: 'directoryId',
+        width: '150px',
+      },
+      {
+        title: 'Loại chức năng',
+        key: 'functionType',
+        width: '150px',
+      },
+      {
+        title: 'Đường dẫn chức năng',
+        key: 'functionUrl',
+        width: '150px',
+      },
+      {
+        title: 'Mô tả chức năng',
+        key: 'description',
+        width: '150px',
+      },
+      {
+        title: 'Thứ tự hiển thị',
+        key: 'sortOrder',
+        width: '150px',
+      },
+      {
+        title: 'Trạng thái',
+        key: 'status',
+        width: '150px',
+      },
+      {
+        title: 'Hành động',
+        key: 'action',
+        width: '150px',
+        actions: [
+          {
+            key: 'edit',
+            icon: 'edit',
+            type: 'primary',
+            callback: (item: any) => this.handleEdit(item),
+          },
+          {
+            key: 'delete',
+            icon: 'delete',
+            type: 'primary',
+            danger: true,
+            callback: (item: any) => this.handleDelete(item),
+          },
+        ],
+      },
+    ];
   }
   get modalTitleRoom() {
     if (this.status === 'CREATE') {
@@ -110,8 +178,8 @@ export class SystemManagementComponent implements OnInit {
     const payload = this.form.getRawValue();
     if (this.status === 'CREATE') {
       this.systemService.createSystem(payload).subscribe({
-        next: () => {
-          this.nzMessage.success('Tạo mới hệ thống thành công');
+        next: (res:any) => {
+          this.nzMessage.success('Tạo mới hệ thống thành công',res);
           this.page = 1;
           this.closeModal();
           this.getAllSystem();

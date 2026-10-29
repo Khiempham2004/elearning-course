@@ -12,6 +12,8 @@ import { NzColDirective } from 'ng-zorro-antd/grid';
 import { NzSelectComponent, NzOptionComponent } from 'ng-zorro-antd/select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
+import { DataTableComponent } from '../../shared/data-table/data-table.component';
+import { PagingComponent } from '../../shared/paging/paging.component';
 
 const routes: Routes = [
   {
@@ -38,7 +40,9 @@ const routes: Routes = [
     NzOptionComponent,
     NzAutosizeDirective,
     NzIconModule,
-    NzPaginationComponent
+    NzPaginationComponent,
+    DataTableComponent,
+    PagingComponent
 ],
   declarations: [UserGroupManagementComponent],
 })

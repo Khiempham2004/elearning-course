@@ -19,7 +19,7 @@ select {
 
 /* Province create/edit modal is rendered in the CDK overlay, outside component styles. */
 .province-form-modal .ant-modal-content {
-  overflow: hidden;
+  /* overflow: hidden; */
   padding: 0;
   border: 1px solid #e7edf5;
   border-radius: 16px;

@@ -6,38 +6,9 @@
     </button>
 </div>
 
-<nz-table class="table-wrapper" #basicTable [nzData]="listOfDictrict" [nzShowPagination]="false"
-    [nzFrontPagination]="false" [nzBordered]="true" [nzScroll]="{x:'1000px',y:'500px'}">
-    <thead>
-        <tr>
-            <th>Mã huyện</th>
-            <th>Tên huyện</th>
-            <th>Loại</th>
-            <th>Thuộc</th>
-            <th>Tên tỉnh/thành phố</th>
-            <th>Trạng thái</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let dictrict of listOfDictrict">
-            <td style="font-weight: 600;cursor: pointer;" (click)="handleRowClick(dictrict)">{{ dictrict.districtCode }}</td>
-            <td>{{ dictrict.districtName }}</td>
-            <td>{{ dictrict.districtType }}</td>
-            <td>{{ dictrict.provinceId }}</td>
-            <td>{{ dictrict.provinceName }}</td>
-            <td>{{ dictrict.status }}</td>
-            <td class="dictrict-icon">
-                <button nz-button nzType="primary" (click)="handleClickDictrictEdit(dictrict)">
-                    <span nz-icon nzType="edit" nzTheme="outline"></span>
-                </button>
-                <button nz-button nzType="primary" (click)="handleClickDictrictDelete(dictrict)">
-                    <span nz-icon nzType="delete" nzTheme="outline"></span>
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</nz-table>
+<app-data-table [data]="dictrict" [columns]="listOfDictrict" [bordered]="true" (rowClick)="handleRowClick($event)"
+    (actionClick)="handleActionClick($any($event))"></app-data-table>
+
 
 <div class="pagination-header">
     <div>

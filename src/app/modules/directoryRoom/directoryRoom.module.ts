@@ -11,6 +11,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectComponent, NzOptionComponent } from 'ng-zorro-antd/select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { DataTableComponent } from '../../shared/data-table/data-table.component';
 const routes: Routes = [
   {
     path: '',
@@ -34,7 +35,8 @@ const routes: Routes = [
     NzOptionComponent,
     NzIconModule,
     NzPaginationModule,
-    FormsModule
+    FormsModule,
+    DataTableComponent
 ],
   providers: [NzModalService],
   declarations: [DirectoryRoomComponent],

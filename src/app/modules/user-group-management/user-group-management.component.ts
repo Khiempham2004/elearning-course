@@ -4,6 +4,7 @@ import { UsersService } from '../user-management/users.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UserGroupService } from './userGroup.service';
+import { DataTableColumn } from '../../shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-user-group-management',
@@ -12,6 +13,7 @@ import { UserGroupService } from './userGroup.service';
   standalone: false,
 })
 export class UserGroupManagementComponent implements OnInit {
+  dataTable: DataTableColumn<any>[] = [];
   users: any[] = [];
   permissionName: any[] = [];
   group: any[] = [];
@@ -47,11 +49,66 @@ export class UserGroupManagementComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initialDataTable();
     this.getAllUsers();
     this.getAllGroupName();
     this.getAllPermissionName();
   }
 
+  initialDataTable() {
+    this.dataTable = [
+      {
+        title: 'Mã nhóm',
+        key: 'groupCode',
+        width: '150px',
+      },
+      {
+        title: 'Tên nhóm',
+        key: 'groupName',
+        width: '150px',
+      },
+      {
+        title: 'Mô tả',
+        key: 'description',
+        width: '150px',
+      },
+      {
+        title: 'Trạng thái',
+        key: 'status',
+        width: '150px',
+      },
+      {
+        title: 'Mã người dùng',
+        key: 'userIds',
+        width: '150px',
+      },
+      {
+        title: 'Mã quyền',
+        key: 'permissionIds',
+        width: '150px',
+      },
+      {
+        title: 'Hành động',
+        key: 'action',
+        width: '150px',
+        actions: [
+          {
+            key: 'edit',
+            icon: 'edit',
+            type: 'primary',
+            callback: (item: any) => this.userEdit(item),
+          },
+          {
+            key: 'delete',
+            icon: 'delete',
+            type: 'primary',
+            danger: true,
+            callback: (item: any) => this.userDelete(item),
+          },
+        ],
+      },
+    ];
+  }
   get modalTitle() {
     if (this.status === 'CREATE') {
       return 'Tạo mới người dùng';
@@ -236,12 +293,16 @@ export class UserGroupManagementComponent implements OnInit {
       nzOnOk: () => {
         this.userService.deleteUser(item._id).subscribe({
           next: (res: any) => {
-            this.nzMessage.success('Xóa người dùng thành công',res);
+            this.nzMessage.success('Xóa người dùng thành công', res);
             this.getAllUsers();
           },
         });
       },
     });
+  }
+
+  handleRowClick(item: any) {
+    this.userEdit(item);
   }
 
   handleOptions = [

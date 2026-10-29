@@ -1,0 +1,37 @@
+.paging-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.record-count {
+  font-size: 14px;
+}
+
+.record-count strong {
+  font-size: 16px;
+}
+
+.paging-controls,
+.page-size-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 640px) {
+  .paging-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .paging-controls {
+    flex-wrap: wrap;
+  }
+}
+
+::ng-deep .ant-select-selector {
+  border-radius: 10px !important;
+}

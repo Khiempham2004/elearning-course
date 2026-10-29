@@ -18,7 +18,7 @@ export class RoomService {
   ): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
-      .set('pageSize', pageSize.toString());
+      .set('limit', pageSize.toString());
     if (keyword.trim()) {
       params = params.set('q', keyword.trim());
     }

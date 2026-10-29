@@ -88,6 +88,7 @@ input {
   justify-content: space-between;
   align-items: center;
   margin-left: 20px;
+  margin-top: 20px;
 }
 
 .pagination-select {

@@ -12,6 +12,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
+import { TeachersComponent } from '../page/teachers/teachers.component';
+import { DataTableComponent } from '../../shared/data-table/data-table.component';
 
 const routes : Routes = [
   {
@@ -40,7 +42,9 @@ const routes : Routes = [
     NzInputModule,
     NzPaginationComponent,
     NzFormModule,
-    FormsModule
+    FormsModule,
+    TeachersComponent,
+    DataTableComponent
 ],
   declarations: [SystemLogManagementComponent]
 })

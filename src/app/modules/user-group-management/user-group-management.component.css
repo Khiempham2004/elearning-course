@@ -175,6 +175,7 @@ button {
     justify-content: space-between;
     text-align: center;
     align-items: center;
+    margin-top: 20px;
 }
 
 .pagination-header {

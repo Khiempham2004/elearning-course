@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfigurationService } from './configuration.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { DataTableColumn } from '../../shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-configuration-management',
@@ -11,6 +12,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
   standalone: false,
 })
 export class ConfigurationManagementComponent implements OnInit {
+  dataTable: DataTableColumn<any>[] = [];
   form!: FormGroup;
   status: 'CREATE' | 'EDIT' = 'CREATE';
   isConfigration = false;
@@ -48,9 +50,70 @@ export class ConfigurationManagementComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initialDataTable();
     this.getAllConfiguration();
     this.getAllType();
     this.getAllGroup();
+  }
+
+  initialDataTable() {
+    this.dataTable = [
+      {
+        title: 'Mã cấu hình',
+        key: 'configKey',
+        width: '150px',
+      },
+      {
+        title: 'Tên cấu hình',
+        key: 'configName',
+        width: '150px',
+      },
+      {
+        title: 'Giá trị cấu hình',
+        key: 'configValue',
+        width: '150px',
+      },
+      {
+        title: 'Loại cấu hình',
+        key: 'configType',
+        width: '150px',
+      },
+      {
+        title: 'Nhóm cấu hình',
+        key: 'category',
+        width: '150px',
+      },
+      {
+        title: 'Mô tả',
+        key: 'description',
+        width: '150px',
+      },
+      {
+        title: 'Trạng thái',
+        key: 'status',
+        width: '150px',
+      },
+      {
+        title: 'Hành động',
+        key: 'action',
+        width: '150px',
+        actions: [
+          {
+            key: 'edit',
+            icon: 'edit',
+            type: 'primary',
+            callback: (item: any) => this.handleConfigurationEdit(item),
+          },
+          {
+            key: 'delete',
+            icon: 'delete',
+            type: 'primary',
+            danger: true,
+            callback: (item: any) => this.handleConfigurationDelete(item),
+          },
+        ],
+      },
+    ];
   }
 
   pageChange(page: any) {
@@ -248,7 +311,7 @@ export class ConfigurationManagementComponent implements OnInit {
       nzOnOk: () => {
         this.configurationService.deleteConfiguration(item._id).subscribe({
           next: (res: any) => {
-            this.nzMessage.success('Xóa người dùng thành công');
+            this.nzMessage.success('Xóa người dùng thành công',res);
             this.getAllConfiguration();
           },
         });

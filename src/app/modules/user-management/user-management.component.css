@@ -102,3 +102,9 @@ input {
     font-weight: 600;
     font-size: 15px;
 }
+
+.action-users {
+    display: flex;
+    gap: 10px;
+    align-items: center
+}

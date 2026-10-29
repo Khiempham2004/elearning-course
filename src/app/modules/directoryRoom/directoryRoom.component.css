@@ -55,6 +55,7 @@ tr td {
     display: flex;
     justify-content: space-between;
     margin-left: 20px;
+    margin-top: 20px;
 }
 
 .pagination-page {

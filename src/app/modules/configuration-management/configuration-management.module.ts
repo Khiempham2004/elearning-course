@@ -11,6 +11,7 @@ import { NzModalComponent, NzModalContentDirective, NzModalModule } from 'ng-zor
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzSelectComponent, NzOptionComponent } from 'ng-zorro-antd/select';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { DataTableComponent } from '../../shared/data-table/data-table.component';
 
 const routes: Routes = [
   {
@@ -39,7 +40,8 @@ const routes: Routes = [
     NzSelectComponent,
     NzOptionComponent,
     ReactiveFormsModule,
-    NzPaginationModule
+    NzPaginationModule,
+    DataTableComponent
 ],
   declarations: [ConfigurationManagementComponent],
 })

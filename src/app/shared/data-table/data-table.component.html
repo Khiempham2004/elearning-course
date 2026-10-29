@@ -1,28 +1,66 @@
-<div [class]="tableClass">
 <nz-table
+  #basicTable
   [nzData]="data"
   [nzFrontPagination]="false"
   [nzBordered]="bordered"
   [nzScroll]="scrollConfig"
   [nzShowPagination]="false"
   [nzTableLayout]="'auto'"
+  style="margin-top: 20px"
 >
   <thead>
     <tr>
-      <th *ngFor="let column of columns" [style.width]="column.width" [nzAlign]="column.align || 'left'">
+      <th
+        *ngFor="let column of columns"
+        [style.width]="column.width"
+        [nzAlign]="column.align || 'left'"
+      >
         {{ column.title }}
       </th>
     </tr>
   </thead>
+
   <tbody>
-    <tr *ngFor="let row of data">
-      <td *ngFor="let column of columns" [nzAlign]="column.align || 'left'">
-        <ng-container *ngIf="column.template; else defaultCell">
-          <ng-container *ngTemplateOutlet="column.template; context: { $implicit: row }"></ng-container>
+    <tr *ngFor="let row of basicTable.data">
+      <td
+        *ngFor="let column of columns"
+        [nzAlign]="column.align || 'left'"
+        (click)="onRowClick(row , column)"
+        [style.cursor]="column.key === columns[0].key ? 'pointer' : 'default'"
+        [style.font-weight]="column.key === columns[0]?.key ? '600' : '400'"
+        [style.cursor]="column.key === columns[0].key ? 'pointer' : 'default'"
+      >
+        <ng-container *ngIf="column.template; else actionOrDefaultCell">
+          <ng-container
+            [ngTemplateOutlet]="column.template"
+            [ngTemplateOutletContext]="{ $implicit: row }"
+          >
+          </ng-container>
         </ng-container>
-        <ng-template #defaultCell>{{ valueOf(row, column.key) }}</ng-template>
+
+        <ng-template #actionOrDefaultCell>
+          <ng-container *ngIf="column.actions?.length; else defaultCell">
+            <div class="table-actions">
+              <button
+                *ngFor="let action of column.actions"
+                nz-button
+                [nzType]="action.type || 'default'"
+                [nzDanger]="action.danger || false"
+                [disabled]="action.disabled?.(row) || false"
+                [attr.aria-label]="action.label || action.key"
+                (click)="onActionClick(action, row, $event)"
+              >
+                <span *ngIf="action.icon" nz-icon [nzType]="action.icon"></span>
+                <span *ngIf="action.label">{{ action.label }}</span>
+              </button>
+            </div>
+          </ng-container>
+        </ng-template>
+
+        <ng-template #defaultCell>
+          {{ valueOf(row, column.key , column) }}
+        </ng-template>
       </td>
     </tr>
   </tbody>
 </nz-table>
-</div>

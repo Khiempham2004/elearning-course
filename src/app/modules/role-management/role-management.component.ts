@@ -69,17 +69,21 @@ export class RoleManagementComponent implements OnInit {
 
   loadRoles(): void {
     this.loading = true;
-    this.roleService.getRoles(this.page, this.pageSize, this.keyword).subscribe({
-      next: (response) => {
-        this.roles = response?.data ?? [];
-        this.total = response?.pagination?.total ?? 0;
-        this.loading = false;
-      },
-      error: (error) => {
-        this.loading = false;
-        this.message.error(error?.error?.message ?? 'Không tải được danh sách vai trò');
-      },
-    });
+    this.roleService
+      .getRoles(this.page, this.pageSize, this.keyword)
+      .subscribe({
+        next: (response) => {
+          this.roles = response?.data ?? [];
+          this.total = response?.pagination?.total ?? 0;
+          this.loading = false;
+        },
+        error: (error) => {
+          this.loading = false;
+          this.message.error(
+            error?.error?.message ?? 'Không tải được danh sách vai trò',
+          );
+        },
+      });
   }
 
   search(): void {
@@ -101,7 +105,13 @@ export class RoleManagementComponent implements OnInit {
   openCreate(): void {
     this.status = 'CREATE';
     this.selectedRoleId = null;
-    this.form.reset({ roleCode: '', roleName: '', description: '', permissionIds: [], status: true });
+    this.form.reset({
+      roleCode: '',
+      roleName: '',
+      description: '',
+      permissionIds: [],
+      status: true,
+    });
     this.isModalVisible = true;
   }
 
@@ -121,13 +131,17 @@ export class RoleManagementComponent implements OnInit {
           roleCode: data?.roleCode ?? '',
           roleName: data?.roleName ?? '',
           description: data?.description ?? '',
-          permissionIds: (data?.permissionIds ?? []).map((value: unknown) => String(value)),
+          permissionIds: (data?.permissionIds ?? []).map((value: unknown) =>
+            String(value),
+          ),
           status: data?.status ?? true,
         });
       },
       error: (error) => {
         this.isModalVisible = false;
-        this.message.error(error?.error?.message ?? 'Không tải được thông tin vai trò');
+        this.message.error(
+          error?.error?.message ?? 'Không tải được thông tin vai trò',
+        );
       },
     });
   }
@@ -135,13 +149,21 @@ export class RoleManagementComponent implements OnInit {
   closeModal(): void {
     this.isModalVisible = false;
     this.selectedRoleId = null;
-    this.form.reset({ roleCode: '', roleName: '', description: '', permissionIds: [], status: true });
+    this.form.reset({
+      roleCode: '',
+      roleName: '',
+      description: '',
+      permissionIds: [],
+      status: true,
+    });
   }
 
   save(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      Object.values(this.form.controls).forEach((control) => control.markAsDirty());
+      Object.values(this.form.controls).forEach((control) =>
+        control.markAsDirty(),
+      );
       return;
     }
 
@@ -149,17 +171,24 @@ export class RoleManagementComponent implements OnInit {
       ...this.form.getRawValue(),
       roleCode: String(this.form.value.roleCode).trim(),
       roleName: String(this.form.value.roleName).trim(),
-      permissionIds: (this.form.value.permissionIds ?? []).map((value: unknown) => String(value)),
+      permissionIds: (this.form.value.permissionIds ?? []).map(
+        (value: unknown) => String(value),
+      ),
     };
     this.saving = true;
-    const request = this.status === 'CREATE'
-      ? this.roleService.createRole(payload)
-      : this.roleService.updateRole(this.selectedRoleId!, payload);
+    const request =
+      this.status === 'CREATE'
+        ? this.roleService.createRole(payload)
+        : this.roleService.updateRole(this.selectedRoleId!, payload);
 
     request.subscribe({
       next: () => {
         this.saving = false;
-        this.message.success(this.status === 'CREATE' ? 'Tạo vai trò thành công' : 'Cập nhật vai trò thành công');
+        this.message.success(
+          this.status === 'CREATE'
+            ? 'Tạo vai trò thành công'
+            : 'Cập nhật vai trò thành công',
+        );
         this.closeModal();
         this.loadRoles();
       },
@@ -179,18 +208,25 @@ export class RoleManagementComponent implements OnInit {
       nzOkText: 'Xóa vai trò',
       nzOkDanger: true,
       nzCancelText: 'Hủy',
-      nzOnOk: () => this.roleService.deleteRole(String(id)).subscribe({
-        next: () => {
-          this.message.success('Đã xóa vai trò');
-          if (this.roles.length === 1 && this.page > 1) this.page--;
-          this.loadRoles();
-        },
-        error: (error) => this.message.error(error?.error?.message ?? 'Không thể xóa vai trò'),
-      }),
+      nzOnOk: () =>
+        this.roleService.deleteRole(String(id)).subscribe({
+          next: () => {
+            this.message.success('Đã xóa vai trò');
+            if (this.roles.length === 1 && this.page > 1) this.page--;
+            this.loadRoles();
+          },
+          error: (error) =>
+            this.message.error(
+              error?.error?.message ?? 'Không thể xóa vai trò',
+            ),
+        }),
     });
   }
 
   permissionName(id: unknown): string {
-    return this.permissionOptions.find((item) => item.id === String(id))?.name ?? String(id);
+    return (
+      this.permissionOptions.find((item) => item.id === String(id))?.name ??
+      String(id)
+    );
   }
 }

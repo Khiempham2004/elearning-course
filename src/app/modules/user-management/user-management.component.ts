@@ -12,7 +12,9 @@ import { DataTableColumn } from '../../shared/data-table/data-table.component';
   standalone: false,
 })
 export class UserManagementComponent implements OnInit {
-  @ViewChild('actionTemplate', { static: true }) actionTemplate!: TemplateRef<{ $implicit: any }>;
+  @ViewChild('actionTemplate', { static: true }) actionTemplate!: TemplateRef<{
+    $implicit: any;
+  }>;
   tableColumns: DataTableColumn<any>[] = [];
   form!: FormGroup;
   status: 'CREATE' | 'EDIT' = 'CREATE';
@@ -33,17 +35,24 @@ export class UserManagementComponent implements OnInit {
     private nzModal: NzModalService,
   ) {
     this.form = this.fb.group({
-      userCode: [null],
+      // The API model requires a unique userCode, so validate it before POST.
+      userCode: [null, [Validators.required]],
       fullName: [null, [Validators.required]],
-      email: [null, [Validators.required]],
-      phone: [null, [Validators.required]],
+      // These fields are optional in the API model; older records may not
+      // have them, so they must not block editing unrelated fields.
+      email: [null],
+      phone: [null],
       role: [null],
       departmentId: [null],
-      status: [null],
+      status: [true],
     });
   }
 
   ngOnInit() {
+    this.initialTableColumn();
+    this.getAllUsers();
+  }
+  initialTableColumn() {
     this.tableColumns = [
       { title: 'Mã người dùng', key: 'userCode' },
       { title: 'Họ và tên', key: 'fullName' },
@@ -52,12 +61,30 @@ export class UserManagementComponent implements OnInit {
       { title: 'Vai trò', key: 'role' },
       { title: 'Mã phòng ban', key: 'departmentId' },
       { title: 'Trạng thái', key: 'status' },
-      { title: 'Hoạt động', key: 'actions', width: '120px', template: this.actionTemplate, align: 'center' },
+      {
+        title: 'Hoạt động',
+        key: 'actions',
+        width: '120px',
+        template: this.actionTemplate,
+        align: 'center',
+        actions: [
+          {
+            icon: 'edit',
+            key: 'edit',
+            type: 'primary',
+            callback: (item: any) => this.handleEditUser(item),
+          },
+          {
+            icon: 'delete',
+            key: 'delete',
+            type: 'primary',
+            danger: true,
+            callback: (item: any) => this.handleDeleteUser(item),
+          },
+        ],
+      },
     ];
-    this.getAllUsers();
   }
-
-
   get modalTitleUser() {
     if (this.status === 'CREATE') {
       return 'Thêm mới người dùng';
@@ -71,6 +98,7 @@ export class UserManagementComponent implements OnInit {
     this.isUser = true;
     this.status = 'CREATE';
     this.form.reset();
+    this.form.patchValue({ status: true });
   }
 
   closeModal() {
@@ -139,33 +167,40 @@ export class UserManagementComponent implements OnInit {
     }
 
     const payload = this.form.getRawValue();
-
     if (this.status === 'CREATE') {
-      this.userService.createUsers(payload).subscribe({
+      this.userService.createUser(payload).subscribe({
         next: (res: any) => {
           this.nzMessage.success('Tạo mới người dùng thành công', res);
+          this.closeModal();
+          this.page = 1;
           this.getAllUsers();
         },
         error: (err: any) => {
-          this.nzMessage.error('Tạo mới thất bại', err);
+          this.nzMessage.error(
+            err?.error?.message || err?.error?.error || 'Tạo mới thất bại',
+          );
         },
       });
-    } else {
-      this.userService.updateUser(this.userId, payload).subscribe({
-        next: (res: any) => {
-          this.nzMessage.success('Cập nhật người dùng thành công', res);
-          this.getAllUsers();
-        },
-        error: (err: any) => {
-          this.nzMessage.error('Cập nhật thất bại', err);
-        },
-      });
+      return;
     }
 
-    this.isUser = false;
-    this.userId = null;
-    this.getAllUsers();
-    this.form.reset();
+    if (!this.userId) {
+      this.nzMessage.error('Không xác định được người dùng cần cập nhật');
+      return;
+    }
+
+    this.userService.updateUser(this.userId, payload).subscribe({
+      next: (res: any) => {
+        this.nzMessage.success('Cập nhật người dùng thành công', res?.message);
+        this.closeModal();
+        this.getAllUsers();
+      },
+      error: (err: any) => {
+        this.nzMessage.error(
+          err?.error?.message || err?.error?.error || 'Cập nhật thất bại',
+        );
+      },
+    });
   }
 
   handleEditUser(item: any) {
@@ -175,27 +210,36 @@ export class UserManagementComponent implements OnInit {
 
     this.userService.getUserById(this.userId).subscribe({
       next: (res: any) => {
-        const userData = res?.data || [];
+        const userData = res?.data;
         if (!userData) {
+          this.nzMessage.error('Không tìm thấy người dùng cần cập nhật');
+          this.closeModal();
           return;
         }
-        if (userData) {
-          this.form.patchValue({
-            userCode: userData?.userCode,
-            fullName: userData?.fullName,
-            email: userData?.email,
-            phone: userData?.phone,
-            role: userData?.role,
-            departmentId: userData?.departmentId,
-            // API/data hiện tại trả status dạng chuỗi "true"/"false";
-            // ép về chuỗi để khớp nz-option ở form.
-            // status: userData?.status == null ? null : String(userData?.status),
-            status :userData?.status
-          });
-        }
+        this.patchUserForm(userData);
+      },
+      error: (err: any) => {
+        this.nzMessage.error(
+          err?.error?.message || 'Không tải được thông tin người dùng',
+        );
+        this.closeModal();
       },
     });
   }
+
+  private patchUserForm(userData: any): void {
+    const rawStatus = userData?.status;
+    const status =
+      rawStatus === true || rawStatus === 'true'
+        ? true
+        : rawStatus === false || rawStatus === 'false'
+          ? false
+          : true;
+
+    this.form.reset();
+    this.form.patchValue({ ...userData, status });
+  }
+  
   handleDeleteUser(item: any) {
     this.page = 1;
     this.nzModal.confirm({
@@ -218,14 +262,22 @@ export class UserManagementComponent implements OnInit {
   handleRowClick(item: any) {
     this.status = 'EDIT';
     this.isUser = true;
-    this.userService.getUserById(item._id).subscribe({
+    this.userId = item._id ?? item.id;
+    this.userService.getUserById(this.userId).subscribe({
       next: (res: any) => {
         const userData = res?.data;
         if (!userData) {
+          this.nzMessage.error('Không tìm thấy người dùng cần cập nhật');
+          this.closeModal();
           return;
         }
-        this.form.patchValue(userData);
-        this.getAllUsers();
+        this.patchUserForm(userData);
+      },
+      error: (err: any) => {
+        this.nzMessage.error(
+          err?.error?.message || 'Không tải được thông tin người dùng',
+        );
+        this.closeModal();
       },
     });
   }

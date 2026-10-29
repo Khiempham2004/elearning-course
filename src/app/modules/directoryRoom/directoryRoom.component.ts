@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoomService } from './service/room.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import {
+  DataTableAction,
+  DataTableColumn,
+} from '../../shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-directoryRoom',
@@ -13,7 +17,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 export class DirectoryRoomComponent implements OnInit {
   form!: FormGroup;
   direcRoom: any[] = [];
-  listOfDirectory: any[] = [];
+  listOfDirectory: DataTableColumn[] = [];
   filterSearch: string = '';
 
   filter: any[] = [];
@@ -39,9 +43,65 @@ export class DirectoryRoomComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initialTableColumn();
     this.getAllRoom();
   }
 
+  initialTableColumn() {
+    this.listOfDirectory = [
+      {
+        title: 'Mã phòng',
+        key: 'roomCode',
+        width: '150px',
+      },
+      {
+        title: 'Tên phòng',
+        key: 'roomName',
+        width: '150px',
+      },
+      {
+        title: 'Loại phòng',
+        key: 'roomType',
+        width: '150px',
+      },
+      {
+        title: 'Trạng thái',
+        key: 'status',
+        width: '150px',
+      },
+      {
+        title: 'Hành động',
+        key: 'action',
+        width: '150px',
+        actions: [
+          {
+            icon: 'edit',
+            key: 'edit',
+            type: 'primary',
+            callback: (item: any) => this.handleEditRoom(item),
+          },
+          {
+            icon: 'delete',
+            key: 'delete',
+            type: 'primary',
+            danger: true,
+            callback: (item: any) => this.handleDeleteRoom(item),
+          },
+        ],
+      },
+    ];
+  }
+
+  handleActionClick(event: { action: DataTableAction; row: any }) {
+    switch (event.action.key) {
+      case 'edit':
+        this.handleEditRoom(event.row);
+        break;
+      case 'delete':
+        this.handleDeleteRoom(event.row);
+        break;
+    }
+  }
   pageChange(page: any) {
     this.page = page;
     this.getAllRoom();
@@ -103,8 +163,8 @@ export class DirectoryRoomComponent implements OnInit {
       .getAllRooms(this.page, this.pageSize, this.filterSearch)
       .subscribe({
         next: (res: any) => {
-          this.direcRoom = res?.data ?? [];
-          this.listOfDirectory = [...this.direcRoom];
+          this.direcRoom = res?.data || [];
+          // this.listOfDirectory = [...this.direcRoom];
           this.total = res?.pagination?.total || 0;
         },
       });
@@ -196,7 +256,7 @@ export class DirectoryRoomComponent implements OnInit {
     this.isRoom = true;
     this.roomService.getRoomById(this.roomId).subscribe({
       next: (res: any) => {
-        const roomData = res?.data;
+        const roomData = res?.data || [];
         this.form.patchValue(roomData);
         this.getAllRoom();
       },

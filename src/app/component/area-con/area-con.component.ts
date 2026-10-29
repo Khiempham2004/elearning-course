@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DictrictLevelService } from '../service/dictrict-level';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import {
+  DataTableAction,
+  DataTableColumn,
+} from '../../shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-area-con',
@@ -12,7 +16,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 })
 export class AreaConComponent implements OnInit {
   form!: FormGroup;
-  listOfDictrict: any = [];
+  listOfDictrict: DataTableColumn[] = [];
   dictrict: any = [];
   status: 'CREATE' | 'EDIT' = 'CREATE';
   isDictrict = false;
@@ -40,9 +44,75 @@ export class AreaConComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initialTabelColumns();
     this.getAllDictrict();
   }
 
+  initialTabelColumns() {
+    this.listOfDictrict = [
+      {
+        title: 'Mã huyện',
+        key: 'districtCode',
+        width: '150px',
+      },
+      {
+        title: 'Tên huyện',
+        key: 'districtName',
+        width: '150px',
+      },
+      {
+        title: 'Loại',
+        key: 'districtType',
+        width: '150px',
+      },
+      {
+        title: 'Thuộc tỉnh/thành phố nào',
+        key: 'provinceId',
+        width: '150px',
+      },
+      {
+        title: 'Tên tỉnh/thành phố',
+        key: 'provinceName',
+        width: '150px',
+      },
+      {
+        title: 'Trạng thái',
+        key: 'status',
+        width: '150px',
+      },
+      {
+        title: 'Hành động',
+        key: 'action',
+        width: '150px',
+        actions: [
+          {
+            icon: 'edit',
+            key: 'edit',
+            type: 'primary',
+            callback: (item: any) => this.handleClickDictrictEdit(item),
+          },
+          {
+            icon: 'delete',
+            key: 'delete',
+            type: 'primary',
+            danger: true,
+            callback: (item: any) => this.handleClickDictrictDelete(item),
+          },
+        ],
+      },
+    ];
+  }
+
+  handleActionClick(event: { action: DataTableAction; row: any }) {
+    switch (event.action.key) {
+      case 'edit':
+        this.handleClickDictrictEdit(event.row);
+        break;
+      case 'delete':
+        this.handleClickDictrictDelete(event.row);
+        break;
+    }
+  }
   get modalTitle() {
     if (this.status === 'CREATE') {
       return 'Thêm mới cấp huyện';
@@ -104,8 +174,8 @@ export class AreaConComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.dictrict = res?.data || [];
-          this.listOfDictrict = [...this.dictrict];
-          this.total =  res?.pagination?.totalPagination ?? 0;
+          // this.listOfDictrict = [...this.dictrict];
+          this.total = res?.pagination?.totalPagination ?? 0;
         },
       });
   }
@@ -134,7 +204,7 @@ export class AreaConComponent implements OnInit {
     } else {
       this.dictrictService.updateDictrict(this.dictrictId, payload).subscribe({
         next: (res: any) => {
-          this.nzMessage.success('Cập nhật cấp huyện thành công');
+          this.nzMessage.success('Cập nhật cấp huyện thành công', res);
           this.getAllDictrict();
         },
       });
@@ -147,9 +217,9 @@ export class AreaConComponent implements OnInit {
 
   handleClickDictrictEdit(item: any) {
     this.status = 'EDIT';
-    this.dictrictId = item.id;
+    this.dictrictId = item._id ?? item.id;
     this.isDictrict = true;
-    this.dictrictService.getDictrictById(item.id).subscribe({
+    this.dictrictService.getDictrictById(this.dictrictId).subscribe({
       next: (res: any) => {
         this.form.patchValue({
           districtCode: res?.districtCode,
@@ -165,7 +235,7 @@ export class AreaConComponent implements OnInit {
   }
 
   handleClickDictrictDelete(item: any) {
-    this.dictrictId = item.id;
+    this.dictrictId = item._id;
     this.nzModalDictrict.confirm({
       nzTitle: 'Bạn muốn xóa khóa học này không?',
       nzContent: '',
@@ -173,7 +243,7 @@ export class AreaConComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.dictrictService.deleteDictrict(item.id).subscribe({
+        this.dictrictService.deleteDictrict(item._id).subscribe({
           next: (res: any) => {
             this.nzMessage.success('Xóa khóa học thành công', res);
             this.getAllDictrict();
@@ -192,8 +262,9 @@ export class AreaConComponent implements OnInit {
 
   handleRowClick(item: any) {
     this.status = 'EDIT';
+    this.dictrictId = item._id ?? item.id;
     this.isDictrict = true;
-    this.dictrictService.getDictrictById(item.id).subscribe({
+    this.dictrictService.getDictrictById(this.dictrictId).subscribe({
       next: (res: any) => {
         this.form.patchValue(res);
         this.getAllDictrict();

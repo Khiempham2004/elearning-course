@@ -1,0 +1,27 @@
+<div class="paging-bar">
+  <div class="record-count" aria-live="polite">
+    Tổng số: <strong>{{ total }}</strong> bản ghi
+  </div>
+
+  <div class="paging-controls">
+    <label class="page-size-control">
+      <span>Hiển thị</span>
+      <nz-select
+        [ngModel]="pageSize"
+        (ngModelChange)="changePageSize($event)"
+        [nzOptions]="pageSizeOptionsForSelect"
+        [nzShowSearch]="false"
+        [nzAllowClear]="false"
+        aria-label="Số bản ghi mỗi trang">
+      </nz-select>
+    </label>
+
+    <nz-pagination
+      [nzPageIndex]="page"
+      [nzPageSize]="pageSize"
+      [nzTotal]="total"
+      [nzShowSizeChanger]="false"
+      (nzPageIndexChange)="changePage($event)">
+    </nz-pagination>
+  </div>
+</div>

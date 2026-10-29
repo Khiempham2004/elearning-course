@@ -5,6 +5,10 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { finalize } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import {
+  DataTableAction,
+  DataTableColumn,
+} from '../../shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-cpnCon',
@@ -17,14 +21,13 @@ export class CpnConComponent implements OnInit {
   form!: FormGroup;
   isProvince = false;
   province: any = [];
-  listOfProvince: any = [];
+  listOfProvince: DataTableColumn[] = [];
   filteredProvinces: any[] = [];
   status: 'CREATE' | 'EDIT' | 'DETAIL' = 'CREATE';
   provinceId: any = null;
   page = 1;
   pageSize = 5;
   total = 0;
-
   constructor(
     private fb: FormBuilder,
     private provinceService: ProvinceLevelService,
@@ -41,7 +44,70 @@ export class CpnConComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initialTableColumns();
     this.getAllProvince();
+  }
+
+  initialTableColumns() {
+    this.listOfProvince = [
+      {
+        title: 'Mã tỉnh',
+        key: 'provinceCode',
+        width: '150px',
+        align: 'center',
+      },
+      {
+        title: 'Tên tỉnh',
+        key: 'provinceName',
+        width: '200px',
+        align: 'center',
+      },
+      {
+        title: 'Loại đơn vị',
+        key: 'provinceType',
+        width: '150px',
+        align: 'center',
+      },
+      {
+        title: 'Trạng thái',
+        key: 'status',
+        width: '100px',
+        align: 'center',
+      },
+      {
+        title: 'Hành động',
+        key: 'action',
+        width: '150px',
+        height : '100px',
+        align: 'center',
+        actions: [
+          {
+            key: 'edit',
+            icon: 'edit',
+            type: 'primary',
+            callback: (item: any) => this.editProvince(item),
+          },
+          {
+            key: 'delete',
+            icon: 'delete',
+            type: 'primary',
+            danger: true,
+            callback: (item: any) => this.deleteProvince(item),
+          },
+        ],
+      },
+    ];
+  }
+
+  handleActionClick(event: { action: DataTableAction; row: any }) {
+    switch (event.action.key) {
+      case 'edit':
+        this.editProvince(event.row);
+        break;
+      case 'delete':
+        this.deleteProvince(event.row);
+        break;
+    }
   }
 
   get modalTitle(): string {
@@ -111,7 +177,6 @@ export class CpnConComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.province = res?.data || [];
-          this.listOfProvince = [...this.province];
           this.total = res?.pagination?.totalPagination || 0;
         },
       });
@@ -183,7 +248,7 @@ export class CpnConComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.provinceService.deleteProvince(item.id).subscribe({
+        this.provinceService.deleteProvince(item._id).subscribe({
           next: (res: any) => {
             this.nzMessage.success('Xóa khoá học thành công', res);
             this.getAllProvince();
@@ -195,15 +260,14 @@ export class CpnConComponent implements OnInit {
 
   handleRowClick(item: any) {
     this.status = 'EDIT';
-    this.provinceId = item.id;
+    this.provinceId = item._id ?? item.id;
     this.isProvince = true;
-    this.provinceService.getProvinceById(item.id).subscribe({
+    this.provinceService.getProvinceById(this.provinceId).subscribe({
       next: (res: any) => {
         this.form.patchValue(res);
-        // this.form.disable();
+        this.getAllProvince();
       },
     });
-    this.getAllProvince();
   }
 
   handlePageSizeOption = [

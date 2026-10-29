@@ -16,7 +16,7 @@ export class UsersService {
   ): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
-      .set('pageSize', pageSize.toString());
+      .set('limit', pageSize.toString());
     if (keyword.trim()) {
       params = params.set('q', keyword.trim());
     }
@@ -27,7 +27,7 @@ export class UsersService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  createUsers(payload: any): Observable<any> {
+  createUser(payload: any): Observable<any> {
     return this.http.post<any[]>(this.apiUrl, payload);
   }
 

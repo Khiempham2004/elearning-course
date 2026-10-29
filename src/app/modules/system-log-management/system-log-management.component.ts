@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SystemLogService } from './systemLog.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { DataTableColumn } from '../../shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-system-log-management',
@@ -11,6 +12,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
   standalone: false,
 })
 export class SystemLogManagementComponent implements OnInit {
+  dataTable: DataTableColumn<any>[] = [];
   isSystemLog = false;
   status: 'CREATE' | 'EDIT' = 'CREATE';
   form!: FormGroup;
@@ -41,7 +43,74 @@ export class SystemLogManagementComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initialDataTable();
     this.getAllSystems();
+  }
+
+  initialDataTable() {
+    this.dataTable = [
+      {
+        title: 'Mã nhật ký',
+        key: 'logCode',
+        width: '150px',
+      },
+      {
+        title: 'ID người thực hiện',
+        key: 'userId',
+        width: '150px',
+      },
+      {
+        title: 'Tên người thực hiện',
+        key: 'userName',
+        width: '150px',
+      },
+      {
+        title: 'Hành động',
+        key: 'action',
+        width: '150px',
+      },
+      {
+        title: 'Chức năng được thao tác',
+        key: 'module',
+        width: '150px',
+      },
+      {
+        title: 'Nội dung chi tiết',
+        key: 'description',
+        width: '150px',
+      },
+      {
+        title: 'Địa chỉ IP thực hiện',
+        key: 'ipAddress',
+        width: '150px',
+      },
+      {
+        title: 'Trạng thái',
+        key: 'createdAt',
+        width: '150px',
+        dateFormat: 'dd/MM/yyyy',
+      },
+      {
+        title: 'Hành động',
+        key: 'action',
+        width: '150px',
+        actions: [
+          {
+            icon: 'edit',
+            key: 'edit',
+            type: 'primary',
+            callback: (item: any) => this.handleEdit(item),
+          },
+          {
+            icon: 'delete',
+            key: 'delete',
+            type: 'primary',
+            danger: true,
+            callback: (item: any) => this.handleDelete(item),
+          },
+        ],
+      },
+    ];
   }
 
   get modalTitle() {

@@ -4,40 +4,8 @@
   <button nz-button nzType="primary" (click)="openModal()">Tạo hệ thống</button>
 </div>
 
-<nz-table class="table-header" #basicTable [nzData]="listOfConfiguration" [nzFrontPagination]="false"
-  [nzBordered]="true" [nzScroll]="{ x: '1000px', y: '510px' }">
-  <thead>
-    <tr>
-      <th>Mã cấu hình</th>
-      <th>Tên cấu hình</th>
-      <th>Giá trị cấu hình</th>
-      <th>Loại cấu hình</th>
-      <th>Nhóm cấu hình</th>
-      <th>Mô tả</th>
-      <th>Trạng thái</th>
-      <th>Hành động</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let configuration of listOfConfiguration">
-      <td style="font-weight: 600;cursor: pointer;" (click)="handleRawClick(configuration)">{{ configuration.configKey }}</td>
-      <td>{{ configuration.configName }}</td>
-      <td>{{ configuration.configValue }}</td>
-      <td>{{ configuration.configType }}</td>
-      <td>{{ configuration.category }}</td>
-      <td>{{ configuration.description }}</td>
-      <td>{{ configuration.status }}</td>
-      <td class="configuration-icon">
-        <button nz-button nzType="primary" (click)="handleConfigurationEdit(configuration)">
-          <span nz-icon nzType="edit" nzTheme="outline"></span>
-        </button>
-        <button nz-button nzType="primary" nzDanger (click)="handleConfigurationDelete(configuration)">
-          <span nz-icon nzType="delete" nzTheme="outline"></span>
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
+<app-data-table style="margin-left: 20px;" [data]="listOfConfiguration" [columns]="dataTable" (rowClick)="handleRawClick($event)"></app-data-table>
+
 
 <div class="pagination-header">
   <div>
