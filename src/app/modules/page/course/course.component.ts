@@ -25,6 +25,10 @@ import {
 } from 'ng-zorro-antd/pagination';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import {
+  DataTableColumn,
+  DataTableComponent,
+} from '../../../shared/data-table/data-table.component';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
@@ -48,9 +52,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzIconModule,
     NgIf,
     NzPaginationModule,
+    DataTableComponent,
   ],
 })
 export class CourseComponent implements OnInit {
+  tableColumn: DataTableColumn<any>[] = [];
   form: FormGroup;
   courses: any[] = [];
   listOfCourse: any[] = [];
@@ -88,7 +94,90 @@ export class CourseComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initialDatatable();
     this.getAllCourses();
+  }
+
+  initialDatatable() {
+    this.tableColumn = [
+      {
+        title: 'Mã khóa học',
+        key: 'courseCode',
+        width: '120px',
+      },
+      {
+        title: 'Tên khóa học',
+        key: 'courseName',
+        width: '120px',
+      },
+      {
+        title: 'Loại khóa học',
+        key: 'category',
+        width: '100px',
+      },
+      {
+        title: 'Mã giáo viên',
+        key: 'teacherId',
+        width: '120px',
+      },
+      {
+        title: 'Tên giáo viên',
+        key: 'teacherName',
+        width: '150px',
+      },
+      {
+        title: 'Khoảng thời gian',
+        key: 'duration',
+        width: '100px',
+      },
+      {
+        title: 'Số học viên tối đa',
+        key: 'maxStudents',
+        width: '120px',
+      },
+      {
+        title: 'Giá',
+        key: 'price',
+        width: '100px',
+      },
+      {
+        title: 'Ngày bắt đầu',
+        key: 'startDate',
+        width: '120px',
+        dateFormat: 'dd/MM/yyyy',
+      },
+      {
+        title: 'Ngày kết thúc',
+        key: 'endDate',
+        width: '120px',
+        dateFormat: 'dd/MM/yyyy',
+      },
+      {
+        title: 'Trạng thái',
+        key: 'status',
+        width: '100px',
+      },
+      {
+        title: 'Hành động',
+        key: 'action',
+        width: '150px',
+        actions: [
+          {
+            icon: 'edit',
+            key: 'edit',
+            type: 'primary',
+            callback: (item: any) => this.handleEdit(item),
+          },
+          {
+            icon: 'delete',
+            key: 'delete',
+            type: 'primary',
+            danger: true,
+            callback: (item: any) => this.handleDelete(item),
+          },
+        ],
+      },
+    ];
   }
   onStartDateChange(date: Date): void {
     this.startDate = date;
@@ -147,8 +236,6 @@ export class CourseComponent implements OnInit {
         next: (res: any) => {
           this.courses = res?.data || [];
           this.listOfCourse = [...this.courses];
-          console.log('list of course', this.listOfCourse);
-
           //phan trang lay data
           this.total = res?.pagination?.totalCourses || 0;
         },
@@ -197,20 +284,18 @@ export class CourseComponent implements OnInit {
     } else {
       this.courseService.putCourse(this.courseId, payload).subscribe({
         next: (res: any) => {
-          this.nzMessage.success('Cập nhật thành công');
+          this.nzMessage.success('Cập nhật thành công', res);
+          this.getAllCourses();
         },
         error: (err: any) => {
           this.nzMessage.error('Cập nhật thất bại');
           console.log('Update your errror : ', err);
         },
       });
-      this.getAllCourses();
-      this.form.reset();
     }
 
     this.courseId = null;
     this.isCourse = false;
-    this.getAllCourses();
     this.form.enable();
     this.form.reset();
   }

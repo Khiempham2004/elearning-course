@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -9,11 +10,11 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 })
 export class AdminLayoutComponent implements OnInit {
   constructor(private router: Router) {}
-
+  private readonly auth = inject(AuthService);
   ngOnInit() {}
 
   singout() {
-    localStorage.removeItem('token');
+    this.auth.logout();
     this.router.navigate(['login']);
   }
 }

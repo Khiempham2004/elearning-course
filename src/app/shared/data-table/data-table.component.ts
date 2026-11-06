@@ -66,6 +66,10 @@ export class DataTableComponent<T = Record<string, unknown>> {
     };
   }
 
+  get widthConfig(): (string | null)[] {
+    return this.columns.map((column) => column.width || null);
+  }
+
   valueOf(row: T, key: keyof T | string, column: DataTableColumn<T>): unknown {
     const value = (row as Record<string, unknown>)[String(key)];
     if (typeof value === 'boolean') {

@@ -4,16 +4,20 @@
   [nzFrontPagination]="false"
   [nzBordered]="bordered"
   [nzScroll]="scrollConfig"
+  [nzWidthConfig]="widthConfig"
   [nzShowPagination]="false"
-  [nzTableLayout]="'auto'"
+  [nzTableLayout]="'fixed'"
   style="margin-top: 20px"
 >
   <thead>
     <tr>
       <th
         *ngFor="let column of columns"
-        [style.width]="column.width"
+        [nzWidth]="column.width || null"
+        [style.width]="column.width || null"
+        [style.min-width]="column.width || null"
         [nzAlign]="column.align || 'left'"
+        [style.width]="column.width || null"
       >
         {{ column.title }}
       </th>
@@ -25,7 +29,7 @@
       <td
         *ngFor="let column of columns"
         [nzAlign]="column.align || 'left'"
-        (click)="onRowClick(row , column)"
+        (click)="onRowClick(row, column)"
         [style.cursor]="column.key === columns[0].key ? 'pointer' : 'default'"
         [style.font-weight]="column.key === columns[0]?.key ? '600' : '400'"
         [style.cursor]="column.key === columns[0].key ? 'pointer' : 'default'"
@@ -58,7 +62,7 @@
         </ng-template>
 
         <ng-template #defaultCell>
-          {{ valueOf(row, column.key , column) }}
+          {{ valueOf(row, column.key, column) }}
         </ng-template>
       </td>
     </tr>

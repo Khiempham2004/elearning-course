@@ -74,39 +74,30 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authService.login(payload).subscribe({
       next: (res: any) => {
-        this.authService.saveLoginData(res);
-        const role = res.user?.role;
-        switch (role) {
-          case 'admin':
-            this.router.navigate(['/admin']);
-            break;
-
-          case 'teacher':
-            this.router.navigate(['/teacher']);
-            break;
-
-          case 'student':
-            this.router.navigate(['/student']);
-            break;
-
-          case 'course':
-            this.router.navigate(['/courses']);
-            break;
-
-          case 'directory':
-            this.router.navigate(['/directory']);
-            break;
-
-          default:
+        try {
+          this.authService.saveLoginData(res);
+          const role = this.authService.getUserRole();
+          const destination = this.authService.getHomeForRole(role);
+          if (destination === '/login') {
             this.authService.logout();
-            alert('Tài khoản chưa được phân quyền!');
-            break;
+            this.nzMessage.error('Tài khoản chưa được phân quyền');
+            this.loading = false;
+            return;
+          }
+          this.router.navigateByUrl(destination).then((success) => {
+            this.loading = false;
+            if (success) {
+              this.nzMessage.success('Đăng nhập thành công');
+            } else {
+              this.nzMessage.error('Không thể chuyển trang');
+            }
+          });
+        } catch {
+          this.authService.logout();
+          this.nzMessage.error('Phản hồi đăng nhập không hợp lệ');
+          this.loading = false;
+          return;
         }
-        if (res.token) {
-          localStorage.setItem('token', res.token);
-        }
-        this.loading = false;
-        this.nzMessage.success('Đăng nhập thành công');
       },
       error: (err: any) => {
         this.nzMessage.error(err.error?.message || 'Đăng nhập thất bại');

@@ -1,61 +1,22 @@
-<span class="course-header">QUẢN LÝ KHÓA HỌC</span>
+<span class="course-title">QUẢN LÝ KHÓA HỌC</span>
 
-<div style="display: flex;gap: 10px;margin-top: 20px;">
+<div style="display: flex;gap: 10px;margin-top: 20px;margin-left: 20px;">
   <input nz-input [(ngModel)]="filterSearch" (keyup.enter)="handleFiterSearch()" placeholder="Tìm kiếm dữ liệu" />
   <button nz-button nzType="primary" (click)="openModalCourse()">Tạo khóa học</button>
 </div>
+<app-data-table class="header-course" [data]="listOfCourse" [columns]="tableColumn" [scrollX]="'1000px'" [scrollY]="'450px'"
+  (rowClick)="handleRowClick($event)"></app-data-table>
 
-<nz-table #basicTable [nzData]="listOfCourse" class="class-table-coruse" [nzScroll]="{ x: '700px', y: '500px' }"
-  [nzShowPagination]="false" [nzShowPagination]="false">
-  <thead>
-    <tr>
-      <th nzWidth="120px">CourseCode</th>
-      <th nzWidth="120px">CourseName</th>
-      <th nzWidth="100px">Category</th>
-      <th nzWidth="120px">teacherId</th>
-      <th nzWidth="150px">teacherName</th>
-      <th nzWidth="100px">duration</th>
-      <th nzWidth="120px">maxStudents</th>
-      <th nzWidth="80px">price</th>
-      <th nzWidth="120px">startDate</th>
-      <th nzWidth="120px">endDate</th>
-      <th nzWidth="100px">Trạng thái</th>
-      <th nzWidth="150px">Hành động</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let course of listOfCourse">
-      <td (click)="handleRowClick(course)" style="cursor: pointer;font-weight: bold;">{{course.courseCode}}</td>
-      <td>{{course.courseName}}</td>
-      <td>{{course.category}}</td>
-      <td>{{course.teacherId}}</td>
-      <td>{{course.teacherName}}</td>
-      <td>{{course.duration}}</td>
-      <td>{{course.maxStudents}}</td>
-      <td>{{course.price}}</td>
-      <td>{{course.startDate | date:'dd-MM-yyyy'}}</td>
-      <td>{{course.endDate | date : 'dd-MM-yyyy'}}</td>
-      <td>{{course.status}}</td>
-      <td style="width: 100%;height: 65px ;border-radius: 8px;gap: 10px;display: flex;">
-        <button nz-button nzType="primary" (click)="handleEdit(course)">
-          <span nz-icon nzType="edit" nzTheme="outline"></span>
-        </button>
-        <button nz-button nzType="primary" (click)="handleDelete(course)">
-          <span nz-icon nzType="delete" nzTheme="outline"></span>
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
 
-<div style="display: flex;justify-content: space-between;align-items: start;margin-top: 20px;">
+<div class="pagination-course">
   <div>
     Tổng số : <span style="font-weight: bold;font-size: 16px;"> {{total}} </span> bản ghi
   </div>
-  <div style="display: flex; justify-content: center;align-items: center;gap: 10px; margin-right: 20px;">
+  <div class="pagination-course">
     <div style="display: flex;align-items: center; gap: 10px">
       <span>Hiển thị</span>
-      <nz-select class="select-pagination" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)" [nzOptions]="handlePageSize" />
+      <nz-select class="select-pagination" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)"
+        [nzOptions]="handlePageSize" />
     </div>
     <nz-pagination [nzPageIndex]="page" [nzPageSize]="pageSize" [nzTotal]="total"
       (nzPageIndexChange)="pageChange($event)" (nzPageSizeChange)="pageSizeChange($event)" />

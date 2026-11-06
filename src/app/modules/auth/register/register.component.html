@@ -28,6 +28,19 @@
 
       <nz-form-item>
         <nz-form-label>
+          <span style="font-weight: bold;">Role</span>
+        </nz-form-label>
+        <nz-form-control nzErrorTip="Vui lòng chọn role">
+          <select formControlName="role" class="role-select">
+            <option value="student">Học viên (student)</option>
+            <option value="teacher">Giảng viên (teacher)</option>
+            <option value="course">Quản lý khóa học (course)</option>
+          </select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>
           <span style="font-weight: bold;">User Name</span>
         </nz-form-label>
         <nz-form-control nzErrorTip="Username là bắt buộc">

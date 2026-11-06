@@ -39,6 +39,4 @@ export class CorusesService {
   deleteCourse(id: any): Observable<any> {
     return this.http.delete<any>(`${this.apiCourse}/${id}`);
   }
-
-  //search
 }

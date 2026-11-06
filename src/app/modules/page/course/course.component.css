@@ -56,11 +56,20 @@
     border-radius: 10px !important;
     overflow: hidden;
 }
+::ng-deep .ant-picker{
+    border-radius: 8px !important;
+    overflow: hidden;
+}
 
-.course-header {
+::ng-deep .ant-select-selector{
+    border-radius: 8px !important;
+}
+
+.course-title {
     font-size: 22px;
     color: #087EED;
     font-weight: bold;
+    margin-left: 20px;
 }
 
 .class-table-coruse {
@@ -122,4 +131,16 @@ th {
 
 tr:hover {
     background: #fafafa;
+}
+
+.pagination-course {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.header-course{
+    margin-left: 20px;
 }

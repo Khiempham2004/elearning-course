@@ -18,8 +18,31 @@ export class AuthService {
   }
 
   saveLoginData(res: any) {
+    if (typeof res?.token !== 'string' || !res.token) {
+      throw new Error('Phản hồi đăng nhập không có token hợp lệ');
+    }
     localStorage.setItem('token', res.token);
     localStorage.setItem('user', JSON.stringify(res.user));
+  }
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  getHomeForRole(role: string | null): string {
+    switch (role) {
+      case 'admin':
+        return '/admin';
+      case 'directory':
+        return '/directory';
+      case 'teachers':
+        return '/teachers';
+      case 'students':
+        return '/students';
+      case 'courses':
+        return '/courses';
+      default:
+        return '/login';
+    }
   }
   getUserRole(): string | null {
     const user = localStorage.getItem('user');

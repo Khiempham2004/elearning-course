@@ -1,8 +1,4 @@
 import { Routes } from '@angular/router';
-import { OverviewComponent } from './modules/page/overview/overview.component';
-import { CourseComponent } from './modules/page/course/course.component';
-import { StudentsComponent } from './modules/page/students/students.component';
-import { TeachersComponent } from './modules/page/teachers/teachers.component';
 import { ReportsComponent } from './modules/page/reports/reports.component';
 import { SettingsComponent } from './modules/page/settings/settings.component';
 import { HelpComponent } from './modules/page/help/help.component';
@@ -10,25 +6,46 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from './modules/auth/login/login.component';
 import { RegisterComponent } from './modules/auth/register/register.component';
 import { DirectoryComponent } from './layouts/directory/directory.component';
+import { authGuard, guestGuard } from './core/guards/auth.guard';
+import { TeachersComponent } from './modules/page/teachers/teachers.component';
+import { CourseComponent } from './modules/page/course/course.component';
+import { StudentsComponent } from './modules/page/students/students.component';
+import { OverviewComponent } from './modules/page/overview/overview.component';
 
 export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [guestGuard],
   },
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [guestGuard],
   },
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    // canActivate: [authGuard],
+    data: { roles: ['admin'] },
     children: [
       { path: '', redirectTo: 'overview', pathMatch: 'full' },
-      { path: 'overview', component: OverviewComponent },
-      { path: 'courses', component: CourseComponent },
-      { path: 'students', component: StudentsComponent },
-      { path: 'teachers', component: TeachersComponent },
+      {
+        path: 'overview',
+        component: OverviewComponent,
+      },
+      {
+        path: 'courses',
+        component: CourseComponent,
+      },
+      {
+        path: 'students',
+        component: StudentsComponent,
+      },
+      {
+        path: 'teachers',
+        component: TeachersComponent,
+      },
       { path: 'reports', component: ReportsComponent },
       { path: 'settings', component: SettingsComponent },
       { path: 'signOut', component: HelpComponent },
@@ -37,7 +54,8 @@ export const routes: Routes = [
   {
     path: 'directory',
     component: DirectoryComponent,
-    data: { breadcrumb: 'Quản lý danh mục' },
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'directory'], breadcrumb: 'Quản lý danh mục' },
     children: [
       {
         path: '',
@@ -117,6 +135,24 @@ export const routes: Routes = [
           ),
       },
     ],
+  },
+  {
+    path: 'teacher',
+    component: TeachersComponent,
+    // canActivate: [authGuard],
+    data: { roles: ['teacher'] },
+  },
+  {
+    path: 'courses',
+    component: CourseComponent,
+    // canActivate: [authGuard],
+    data: { roles: ['course'] },
+  },
+  {
+    path: 'student',
+    component: StudentsComponent,
+    // canActivate: [authGuard],
+    data: { roles: ['student'] },
   },
   {
     path: '',
