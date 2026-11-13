@@ -1,0 +1,212 @@
+.profile-page {
+    display: grid;
+    align-items: stretch;
+    gap: 24px;
+    width: min(100%, 900px);
+    margin: 0 auto;
+    color: #182230;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.page-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.heading-icon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: #eaf1ff;
+    font-size: 22px;
+}
+
+.eyebrow {
+    margin: 0 0 5px;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: 1.1px;
+}
+
+h1 {
+    margin: 0;
+    color: #182230;
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.subtitle {
+    margin: 6px 0 0;
+    color: #778295;
+    font-size: 16px;
+}
+
+.profile-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 26px;
+    border: 1px solid #e8edf3;
+    border-radius: 16px;
+    background: white;
+    box-shadow: 0 8px 24px #15213b08;
+}
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #edf0f5;
+}
+
+.card-heading h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.card-heading p {
+    margin: 5px 0 0;
+    color: #7b8798;
+    font-size: 15px;
+}
+
+.profile-avatar {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #e8efff;
+    color: #2456c5;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+label {
+    display: block;
+    margin: 18px 0 7px;
+    color: #344054;
+    font-size: 16px;
+    font-weight: 650;
+}
+
+input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 13px;
+    border: 1px solid #d8dee8;
+    border-radius: 9px;
+    outline: 0;
+    color: #182230;
+    font: inherit;
+    font-size: 16px;
+}
+
+input:focus {
+    border-color: #6b91ed;
+    box-shadow: 0 0 0 3px #2563eb18;
+}
+
+.field-error {
+    display: block;
+    margin-top: 5px;
+    color: #d92d20;
+    font-size: 14px;
+}
+
+.password-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #edf0f5;
+}
+
+.password-section h3 {
+    margin: 0;
+    color: #344054;
+    font-size: 18px;
+}
+
+.password-section h3 span,
+.password-section p {
+    color: #7b8798;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.password-section p { margin: 6px 0 14px; }
+
+.form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid #edf0f5;
+    color: #778295;
+    font-size: 16px;
+}
+
+.form-footer button {
+    display: inline-flex;
+    min-width: 125px;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 9px;
+    background: #2563eb;
+    color: white;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.form-footer button:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.form-footer button:disabled {
+    opacity: .65;
+    cursor: wait;
+}
+
+.message {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.message.success {
+    background: #ecfdf3;
+    color: #027a48;
+}
+
+.message.error {
+    background: #fef3f2;
+    color: #b42318;
+}
+
+.notice {
+    color: #778295;
+    font-size: 16px;
+}
+
+@media (max-width: 600px) {
+    .profile-card {
+        padding: 19px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+}

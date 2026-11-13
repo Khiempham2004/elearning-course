@@ -11,6 +11,8 @@ import { TeachersComponent } from './modules/page/teachers/teachers.component';
 import { CourseComponent } from './modules/page/course/course.component';
 import { StudentsComponent } from './modules/page/students/students.component';
 import { OverviewComponent } from './modules/page/overview/overview.component';
+import { StudentLayoutsComponent } from './layouts/student-layouts/student-layouts.component';
+import { StudentElearningComponent } from './modules/student-elearning/student-elearning.component';
 
 export const routes: Routes = [
   {
@@ -39,7 +41,7 @@ export const routes: Routes = [
         component: CourseComponent,
       },
       {
-        path: 'students',
+        path: 'student',
         component: StudentsComponent,
       },
       {
@@ -137,6 +139,51 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'student',
+    component: StudentLayoutsComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'student'], breadcrumb: 'Quản lý học viên' },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'overview',
+      },
+      {
+        path: 'overview',
+        data: { breadcrumb: 'Tổng quan' },
+        loadComponent: () =>
+          import('./modules/student-elearning/student-overview/student-overview.component').then(
+            (m) => m.StudentOverviewComponent,
+          ),
+      },
+      {
+        path: 'courses',
+        data: { breadcrumb: 'Quản lý khóa học' },
+        loadComponent: () =>
+          import('./modules/student-elearning/course-student/course-student.component').then(
+            (m) => m.CourseStudentComponent,
+          ),
+      },
+      {
+        path: 'information',
+        data: { breadcrumb: 'Thông tin cá nhân' },
+        loadComponent: () =>
+          import('./modules/student-elearning/student-information/student-information.component').then(
+            (m) => m.StudentInformationComponent,
+          ),
+      },
+      {
+        path: 'progress',
+        data: { breadcrumb: 'Quản lý tiến độ học tập' },
+        loadComponent: () =>
+          import('./modules/student-elearning/course-progress/course-progress.component').then(
+            (m) => m.CourseProgressComponent,
+          ),
+      },
+    ],
+  },
+  {
     path: 'teacher',
     component: TeachersComponent,
     // canActivate: [authGuard],
@@ -147,12 +194,6 @@ export const routes: Routes = [
     component: CourseComponent,
     // canActivate: [authGuard],
     data: { roles: ['course'] },
-  },
-  {
-    path: 'student',
-    component: StudentsComponent,
-    // canActivate: [authGuard],
-    data: { roles: ['student'] },
   },
   {
     path: '',

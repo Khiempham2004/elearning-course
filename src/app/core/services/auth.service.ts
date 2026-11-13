@@ -17,6 +17,19 @@ export class AuthService {
     return this.http.post<any>(`${this.apiAuth}/login`, params);
   }
 
+  getProfile(): Observable<any> {
+    return this.http.get<any>(`${this.apiAuth}/me`);
+  }
+
+  updateProfile(params: {
+    userName: string;
+    email: string;
+    currentPassword?: string;
+    newPassword?: string;
+  }): Observable<any> {
+    return this.http.put<any>(`${this.apiAuth}/me`, params);
+  }
+
   saveLoginData(res: any) {
     if (typeof res?.token !== 'string' || !res.token) {
       throw new Error('Phản hồi đăng nhập không có token hợp lệ');
@@ -36,8 +49,8 @@ export class AuthService {
         return '/directory';
       case 'teachers':
         return '/teachers';
-      case 'students':
-        return '/students';
+      case 'student':
+        return '/student';
       case 'courses':
         return '/courses';
       default:

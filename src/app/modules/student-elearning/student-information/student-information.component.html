@@ -1,0 +1,65 @@
+<section class="profile-page">
+    <header class="page-heading">
+        <div class="heading-icon">👤</div>
+        <div>
+            <p class="eyebrow">TÀI KHOẢN HỌC VIÊN</p>
+            <h1>Thông tin cá nhân</h1>
+            <p class="subtitle">Xem và cập nhật thông tin hồ sơ của bạn.</p>
+        </div>
+    </header>
+
+    @if (loading()) {
+    <div class="profile-card notice">Đang tải thông tin hồ sơ...</div>
+    } @else {
+    <form class="profile-card" [formGroup]="form" (ngSubmit)="save()">
+        <div class="card-heading">
+            <div>
+                <h2>Hồ sơ của tôi</h2>
+                <p>Thông tin được cập nhật vào tài khoản của bạn.</p>
+            </div>
+            <span class="profile-avatar">HV</span>
+        </div>
+
+        @if (successMessage()) {
+        <div class="message success">{{ successMessage() }}</div>
+        }
+        @if (errorMessage()) {
+        <div class="message error">{{ errorMessage() }}</div>
+        }
+
+        <label for="student-user-name">Tên đăng nhập</label>
+        <input id="student-user-name" type="text" formControlName="userName" autocomplete="username" placeholder="Nhập tên đăng nhập..."/>
+        @if (form.controls['userName'].touched && form.controls['userName'].invalid) {
+        <small class="field-error">Tên đăng nhập là bắt buộc (tối đa 50 ký tự).</small>
+        }
+
+        <label for="student-email">Email</label>
+        <input id="student-email" type="email" formControlName="email" autocomplete="email" placeholder="Nhập email..." />
+        @if (form.controls['email'].touched && form.controls['email'].invalid) {
+        <small class="field-error">Vui lòng nhập email hợp lệ.</small>
+        }
+
+        <div class="password-section">
+          <h3>Đổi mật khẩu <span>(không bắt buộc)</span></h3>
+          <p>Để trống nếu bạn chỉ muốn sửa tên đăng nhập hoặc email. Mật khẩu hiện tại không thể xem lại.</p>
+          <label for="student-current-password">Mật khẩu hiện tại</label>
+          <input id="student-current-password" type="password" formControlName="currentPassword" autocomplete="current-password" placeholder="Nhập password hiện tại..." />
+
+          <label for="student-new-password">Mật khẩu mới</label>
+          <input id="student-new-password" type="password" formControlName="newPassword" autocomplete="new-password" placeholder="Nhập password mới..." />
+          @if (form.controls['newPassword'].touched && form.controls['newPassword'].invalid) {
+            <small class="field-error">Mật khẩu mới cần có ít nhất 8 ký tự.</small>
+          }
+          @if (form.controls['newPassword'].value && !form.controls['currentPassword'].value) {
+            <small class="field-error">Cần nhập mật khẩu hiện tại để xác nhận đổi mật khẩu.</small>
+          }
+        </div>
+        <div class="form-footer">
+            <span>Vai trò học viên</span>
+            <button type="submit" [disabled]="saving()">
+                {{ saving() ? 'Đang lưu...' : 'Lưu thay đổi' }}
+            </button>
+        </div>
+    </form>
+    }
+</section>

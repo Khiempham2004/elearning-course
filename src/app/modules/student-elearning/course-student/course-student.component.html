@@ -1,0 +1,95 @@
+<section class="courses-page">
+  <header class="school-banner">
+    <div class="banner-content">
+      <div class="school-identity">
+        <span class="school-emblem">✦</span>
+        <span>CỔNG HỌC TẬP TRỰC TUYẾN</span>
+      </div>
+      <p class="banner-kicker">KHU VỰC HỌC VIÊN</p>
+      <h1>Chào mừng bạn quay lại!</h1>
+      <p class="banner-copy">Tiếp tục bài học đang dang dở và hoàn thành mục tiêu học tập hôm nay.</p>
+      <div class="banner-tags"><span>▣ Khóa học của tôi</span><span>▸ Học tập chủ động</span></div>
+    </div>
+    <div class="banner-illustration" aria-hidden="true">
+      <span class="illustration-circle circle-back"></span>
+      <span class="illustration-book">▤</span>
+      <span class="illustration-star star-one">✦</span>
+      <span class="illustration-star star-two">✧</span>
+      <span class="illustration-cap">◆</span>
+    </div>
+    <div class="banner-watermark">EDU</div>
+  </header>
+
+  <div class="page-title-row">
+    <div><p class="eyebrow">BẢNG ĐIỀU KHIỂN</p><h2>Không gian học tập</h2></div>
+    <div class="term-chip"><span class="term-dot"></span> Hồ sơ học tập cá nhân</div>
+  </div>
+
+  <div class="summary-grid">
+    <article class="summary-card">
+      <span class="summary-icon navy">▤</span>
+      <div><small>Tổng số khóa học</small><strong>{{ courses().length }}</strong></div>
+      <span class="summary-note">đã đăng ký</span>
+    </article>
+    <article class="summary-card">
+      <span class="summary-icon green">▶</span>
+      <div><small>Đang học</small><strong>{{ inProgressCount() }}</strong></div>
+      <span class="summary-note">khóa học</span>
+    </article>
+    <article class="summary-card">
+      <span class="summary-icon gold">✓</span>
+      <div><small>Hoàn thành</small><strong>0</strong></div>
+      <span class="summary-note">khóa học</span>
+    </article>
+  </div>
+
+  <section class="course-section">
+    <div class="section-heading">
+      <div class="section-title">
+        <span class="section-mark"></span>
+        <div><h2>Chương trình học của tôi</h2><p>Danh sách khóa học và tiến độ hiện tại</p></div>
+      </div>
+      <label class="search-box">
+        <span class="search-icon">⌕</span>
+        <input type="search" placeholder="Tìm kiếm khóa học..." [value]="searchText()" (input)="onSearch($event)" />
+      </label>
+    </div>
+
+    <nav class="category-tabs" aria-label="Lọc theo lĩnh vực">
+      @for (category of categories; track category) {
+        <button type="button" [class.active]="activeCategory() === category" (click)="activeCategory.set(category)">
+          {{ category }}
+        </button>
+      }
+    </nav>
+
+    <div class="course-grid">
+      @for (course of filteredCourses(); track course.id) {
+        <article class="course-card">
+          <div class="course-art" [class]="'course-art ' + course.color">
+            <div class="art-topline"><span class="art-school-mark">E</span><span>CHƯƠNG TRÌNH ĐÀO TẠO</span></div>
+            <span class="course-art-label">{{ course.icon }}</span>
+            <span class="category-pill">{{ course.category }}</span>
+            <span class="art-line line-one"></span><span class="art-line line-two"></span>
+          </div>
+          <div class="course-body">
+            <div class="course-status" [class.not-started]="course.progress === 0">
+              <span></span>{{ course.status }}
+            </div>
+            <h3>{{ course.title }}</h3>
+            <p class="course-description">{{ course.description }}</p>
+            <div class="instructor-row">
+              <span class="teacher-avatar">{{ course.instructor.charAt(0) }}</span>
+              <span><small>Giảng viên phụ trách</small><strong>{{ course.instructor }}</strong></span>
+            </div>
+            <div class="course-meta"><span>▤ {{ course.lessons }} bài học</span><span>◷ {{ course.duration }}</span></div>
+            <div class="progress-heading"><span>Kết quả học tập</span><strong>{{ course.progress }}%</strong></div>
+            <div class="progress-track"><span [style.width.%]="course.progress"></span></div>
+          </div>
+        </article>
+      } @empty {
+        <div class="empty-state"><span>⌕</span><h3>Chưa tìm thấy khóa học</h3><p>Hãy thử từ khóa hoặc danh mục khác.</p></div>
+      }
+    </div>
+  </section>
+</section>
