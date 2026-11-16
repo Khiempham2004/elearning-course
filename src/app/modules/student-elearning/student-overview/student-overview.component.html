@@ -1,1 +1,139 @@
-<p>student-overview works!</p>
+<div class="overview">
+    <!-- Welcome -->
+    <section class="welcome-section">
+        <div class="welcome-content">
+            <span class="welcome-label">STUDENT DASHBOARD</span>
+            <h1>Xin chào, {{ studentName }}! 👋</h1>
+            <p>
+                Chào mừng bạn quay trở lại. Hãy tiếp tục hành trình học tập và phát
+                triển bản thân nhé!
+            </p>
+            <div class="welcome-info">
+                <span>🎓 Sinh viên</span>
+                <span>•</span>
+                <span>Học kỳ 1 - 2026</span>
+            </div>
+        </div>
+
+        <div class="welcome-illustration">
+            <div class="illustration-circle">🎓</div>
+        </div>
+    </section>
+
+    <section class="stats-grid">
+        @for (item of stats; track item.title) {
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-title">{{ item.title }}</span>
+
+                <div class="stat-icon">
+                    {{ item.icon }}
+                </div>
+            </div>
+            <h2>{{ item.value }}</h2>
+            <span class="stat-description"> Thống kê học tập hiện tại </span>
+        </div>
+        }
+    </section>
+    <section class="section">
+        <div class="section-header">
+            <div>
+                <h2>Khóa học của tôi</h2>
+                <p style="font-size: 18px;">Tiếp tục các khóa học bạn đang tham gia</p>
+            </div>
+            <a class="view-all">Xem tất cả <span>→</span></a>
+        </div>
+
+        <div class="course-grid">
+            @for (course of courses; track course.id) {
+            <div class="course-card">
+                <div class="course-cover" [style.background]="course.color + '15'">
+                    <span class="course-cover-icon">📚</span>
+
+                    <span class="course-category">
+                        {{ course.category }}
+                    </span>
+                </div>
+
+                <div class="course-body">
+                    <h4>{{ course.name }}</h4>
+
+                    <p class="instructor">Giảng viên: {{ course.instructor }}</p>
+
+                    <div class="progress-header">
+                        <span>Tiến độ học tập</span>
+                        <strong>{{ course.progress }}%</strong>
+                    </div>
+
+                    <div class="progress-track">
+                        <div class="progress-bar" [style.width.%]="course.progress" [style.background]="course.color">
+                        </div>
+                    </div>
+
+                    <button class="continue-button">
+                        Tiếp tục học
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+            }
+        </div>
+    </section>
+
+    <section class="bottom-grid">
+        <div class="content-card">
+            <div class="section-header">
+                <div>
+                    <h3>Lịch học sắp tới</h3>
+                    <p>Các buổi học gần nhất của bạn</p>
+                </div>
+                <a class="view-all">Xem tất cả →</a>
+            </div>
+
+            <div class="schedule-list">
+                @for (item of schedules; track item.id) {
+                <div class="schedule-item">
+                    <div class="schedule-date">
+                        <strong>{{ item.date.slice(0, 2) }}</strong>
+                        <span>THÁNG 11</span>
+                    </div>
+                    <div class="schedule-info">
+                        <h4>{{ item.subject }}</h4>
+                        <p>{{ item.instructor }}</p>
+                        <span class="schedule-time"> ◷ {{ item.time }} </span>
+                    </div>
+                    <span class="method-badge" [class.online]="item.method === 'Online'">
+                        {{ item.method === "Online" ? "Trực tuyến" : "Trực tiếp" }}
+                    </span>
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="content-card">
+            <div class="section-header">
+                <div>
+                    <h3>Bài tập của tôi</h3>
+                    <p>Bạn có {{ pendingAssignments }} bài tập chưa hoàn thành</p>
+                </div>
+
+                <a class="view-all">Xem tất cả →</a>
+            </div>
+            <div class="assignment-list">
+                @for (item of assignments; track item.id) {
+                <div class="assignment-item">
+                    <div class="assignment-icon">📝</div>
+                    <div class="assignment-info">
+                        <h4>{{ item.title }}</h4>
+                        <p>{{ item.subject }}</p>
+                        <span>Hạn nộp: {{ item.deadline }}</span>
+                    </div>
+                    <span class="status-badge" [class.submitted]="item.status === 'Submitted'">
+                        {{ item.status === "Pending" ? "Chưa nộp" : "Đã nộp" }}
+                    </span>
+                </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>

@@ -12,40 +12,46 @@
           @if (unreadCount() > 0) { <span class="notification-badge">{{ unreadCount() }}</span> }
         </button>
         @if (notificationsOpen()) {
-          <section class="notification-panel" aria-label="Thông báo">
-            <div class="notification-heading">
-              <div><h2>Thông báo</h2><span>{{ unreadCount() }} chưa đọc</span></div>
-              <button type="button" class="mark-all-button" (click)="markAllAsRead()" [disabled]="unreadCount() === 0">Đánh dấu đã đọc</button>
+        <section class="notification-panel" aria-label="Thông báo">
+          <div class="notification-heading">
+            <div>
+              <h2>Thông báo</h2><span>{{ unreadCount() }} chưa đọc</span>
             </div>
-            @if (notifications().length) {
-              <ul class="notification-list">
-                @for (notification of notifications(); track notification.id) {
-                  <li class="notification-item" [class.unread]="!notification.read" (click)="markAsRead(notification.id)">
-                    <span class="notification-status" [class.read]="notification.read"></span>
-                    <div class="notification-copy">
-                      <p>{{ notification.message }}</p>
-                      <time>{{ formatNotificationDate(notification.createdAt) }}</time>
-                      <span class="read-label">{{ notification.read ? 'Đã đọc' : 'Chưa đọc' }}</span>
-                    </div>
-                  </li>
-                }
-              </ul>
-            } @else { <p class="empty-notifications">Chưa có thông báo.</p> }
-          </section>
+            <button type="button" class="mark-all-button" (click)="markAllAsRead()"
+              [disabled]="unreadCount() === 0">Đánh dấu đã đọc</button>
+          </div>
+          @if (notifications().length) {
+          <ul class="notification-list">
+            @for (notification of notifications(); track notification.id) {
+            <li class="notification-item" [class.unread]="!notification.read" (click)="markAsRead(notification.id)">
+              <span class="notification-status" [class.read]="notification.read"></span>
+              <div class="notification-copy">
+                <p>{{ notification.message }}</p>
+                <time>{{ formatNotificationDate(notification.createdAt) }}</time>
+                <span class="read-label">{{ notification.read ? 'Đã đọc' : 'Chưa đọc' }}</span>
+              </div>
+            </li>
+            }
+          </ul>
+          } @else { <p class="empty-notifications">Chưa có thông báo.</p> }
+        </section>
         }
       </div>
 
       <div class="profile-wrapper">
-        <button class="profile-trigger" type="button" (click)="toggleProfileMenu()" [attr.aria-expanded]="profileMenuOpen()" aria-label="Menu tài khoản">
+        <button class="profile-trigger" type="button" (click)="toggleProfileMenu()"
+          [attr.aria-expanded]="profileMenuOpen()" aria-label="Menu tài khoản">
           <span class="avatar"><span nz-icon nzType="user"></span></span>
           <span class="account-name">Học viên</span>
           <span nz-icon nzType="down" class="profile-chevron"></span>
         </button>
         @if (profileMenuOpen()) {
-          <div class="profile-menu" role="menu">
-            <a routerLink="/student/information" role="menuitem" (click)="closeProfileMenu()"><span nz-icon nzType="user"></span><span>Thông tin cá nhân</span></a>
-            <button type="button" role="menuitem" (click)="logout()"><span nz-icon nzType="logout"></span><span>Đăng xuất</span></button>
-          </div>
+        <div class="profile-menu" role="menu">
+          <a routerLink="/student/information" role="menuitem" (click)="closeProfileMenu()"><span nz-icon
+              nzType="user"></span><span>Thông tin cá nhân</span></a>
+          <button type="button" role="menuitem" (click)="logout()"><span nz-icon nzType="logout"></span><span>Đăng
+              xuất</span></button>
+        </div>
         }
       </div>
     </div>
@@ -55,7 +61,7 @@
     <aside class="sidebar">
       <div class="sidebar-label">MENU HỌC TẬP</div>
       <nav class="main-tabs" aria-label="Điều hướng học viên">
-        <a routerLink="/student/learning" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <!-- <a routerLink="/student/overview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <span class="tab-icon" nz-icon nzType="home"></span><span>Tổng quan</span>
         </a>
         <a routerLink="/student/courses" routerLinkActive="active">
@@ -63,7 +69,14 @@
         </a>
         <a routerLink="/student/progress" routerLinkActive="active">
           <span class="tab-icon" nz-icon nzType="bar-chart"></span><span>Tiến độ học tập</span>
+        </a> -->
+        @for (item of menuItems; track item.label) {
+        <a class="menu-item" [routerLink]="item.routerLink" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact : item.routerLink === '/student' || true}">
+          <span class="menu-icon">{{item.icon}}</span>
+          <span>{{item.label}}</span>
         </a>
+        }
       </nav>
 
       <div class="sidebar-note">

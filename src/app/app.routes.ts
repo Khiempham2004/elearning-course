@@ -166,6 +166,14 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'schedule',
+        data: { breadcrumb: 'Quản lý lịch học' },
+        loadComponent: () =>
+          import('./modules/student-elearning/schedule-student/schedule-student.component').then(
+            (m) => m.ScheduleStudentComponent,
+          ),
+      },
+      {
         path: 'information',
         data: { breadcrumb: 'Thông tin cá nhân' },
         loadComponent: () =>
