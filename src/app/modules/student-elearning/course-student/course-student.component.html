@@ -1,4 +1,6 @@
 <section class="courses-page">
+  @if (loading()) { <p>Đang tải danh mục khóa học...</p> }
+  @if (error()) { <p role="alert">{{ error() }}</p> }
   <header class="school-banner">
     <div class="banner-content">
       <div class="school-identity">
@@ -28,17 +30,17 @@
   <div class="summary-grid">
     <article class="summary-card">
       <span class="summary-icon navy">▤</span>
-      <div><small>Tổng số khóa học</small><strong>{{ courses().length }}</strong></div>
-      <span class="summary-note">đã đăng ký</span>
+      <div><small>Khóa học đang mở</small><strong>{{ courses().length }}</strong></div>
+      <span class="summary-note">được trung tâm công bố</span>
     </article>
     <article class="summary-card">
       <span class="summary-icon green">▶</span>
-      <div><small>Đang học</small><strong>{{ inProgressCount() }}</strong></div>
+      <div><small>Đã đăng ký</small><strong>{{ registeredCount() }}</strong></div>
       <span class="summary-note">khóa học</span>
     </article>
     <article class="summary-card">
       <span class="summary-icon gold">✓</span>
-      <div><small>Hoàn thành</small><strong>0</strong></div>
+      <div><small>Hoàn thành</small><strong>{{ completedCount() }}</strong></div>
       <span class="summary-note">khóa học</span>
     </article>
   </div>
@@ -47,7 +49,7 @@
     <div class="section-heading">
       <div class="section-title">
         <span class="section-mark"></span>
-        <div><h2>Chương trình học của tôi</h2><p>Danh sách khóa học và tiến độ hiện tại</p></div>
+        <div><h2>Khóa học của trung tâm</h2><p>Chương trình đang tuyển sinh và các khóa bạn đã đăng ký</p></div>
       </div>
       <label class="search-box">
         <span class="search-icon">⌕</span>
@@ -56,7 +58,7 @@
     </div>
 
     <nav class="category-tabs" aria-label="Lọc theo lĩnh vực">
-      @for (category of categories; track category) {
+      @for (category of categories(); track category) {
         <button type="button" [class.active]="activeCategory() === category" (click)="activeCategory.set(category)">
           {{ category }}
         </button>
@@ -73,7 +75,7 @@
             <span class="art-line line-one"></span><span class="art-line line-two"></span>
           </div>
           <div class="course-body">
-            <div class="course-status" [class.not-started]="course.progress === 0">
+          <div class="course-status" [class.not-started]="!course.enrollmentStatus">
               <span></span>{{ course.status }}
             </div>
             <h3>{{ course.title }}</h3>
@@ -82,9 +84,15 @@
               <span class="teacher-avatar">{{ course.instructor.charAt(0) }}</span>
               <span><small>Giảng viên phụ trách</small><strong>{{ course.instructor }}</strong></span>
             </div>
-            <div class="course-meta"><span>▤ {{ course.lessons }} bài học</span><span>◷ {{ course.duration }}</span></div>
-            <div class="progress-heading"><span>Kết quả học tập</span><strong>{{ course.progress }}%</strong></div>
-            <div class="progress-track"><span [style.width.%]="course.progress"></span></div>
+            <div class="course-meta"><span>◷ Thời lượng: {{ course.duration }}</span></div>
+            @if (course.enrollmentStatus) {
+              <div class="progress-heading"><span>Tiến độ học</span><strong>{{ course.progress }}%</strong></div>
+              <div class="progress-track"><span [style.width.%]="course.progress"></span></div>
+            } @else {
+              <button type="button" (click)="enroll(course)" [disabled]="!!enrolling()">
+                {{ enrolling() === course.id ? 'Đang đăng ký...' : 'Đăng ký khóa học' }}
+              </button>
+            }
           </div>
         </article>
       } @empty {

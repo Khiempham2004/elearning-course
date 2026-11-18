@@ -1,7 +1,8 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
+import { StudentLearningService } from '../../../core/services/student-learning.service';
 
 interface StudentCourse {
-  id: number;
+  id: string;
   title: string;
   category: string;
   instructor: string;
@@ -11,7 +12,8 @@ interface StudentCourse {
   progress: number;
   color: string;
   icon: string;
-  status: 'Đang học' | 'Chưa bắt đầu';
+  status: 'Đang học' | 'Chưa bắt đầu' | 'Hoàn thành';
+  enrollmentStatus: 'active' | 'completed' | null;
 }
 
 @Component({
@@ -21,54 +23,54 @@ interface StudentCourse {
   templateUrl: './course-student.component.html',
   styleUrl: './course-student.component.css',
 })
-export class CourseStudentComponent {
+export class CourseStudentComponent implements OnInit {
   readonly searchText = signal('');
   readonly activeCategory = signal('Tất cả');
 
-  readonly categories = ['Tất cả', 'Lập trình', 'Thiết kế', 'Cơ sở dữ liệu'];
+  readonly categories = computed(() => ['Tất cả', ...new Set(this.courses().map((course) => course.category))]);
+  readonly loading = signal(true);
+  readonly error = signal('');
+  readonly enrolling = signal('');
 
-  // Dữ liệu mẫu để hoàn thiện giao diện trước khi nối API khóa học.
-  readonly courses = signal<StudentCourse[]>([
-    {
-      id: 1,
-      title: 'Lập trình Angular từ cơ bản',
-      category: 'Lập trình',
-      instructor: 'Nguyễn Minh Anh',
-      description: 'Xây dựng ứng dụng web hiện đại với Angular và TypeScript.',
-      lessons: 24,
-      duration: '8 giờ 30 phút',
-      progress: 68,
-      color: 'violet',
-      icon: 'A',
-      status: 'Đang học',
-    },
-    {
-      id: 2,
-      title: 'UI/UX Design thực chiến',
-      category: 'Thiết kế',
-      instructor: 'Trần Thu Hà',
-      description: 'Từ nghiên cứu người dùng đến thiết kế giao diện hoàn chỉnh.',
-      lessons: 18,
-      duration: '6 giờ 15 phút',
-      progress: 32,
-      color: 'orange',
-      icon: '✦',
-      status: 'Đang học',
-    },
-    {
-      id: 3,
-      title: 'SQL và thiết kế cơ sở dữ liệu',
-      category: 'Cơ sở dữ liệu',
-      instructor: 'Lê Hoàng Nam',
-      description: 'Nắm vững truy vấn SQL và cách tổ chức dữ liệu hiệu quả.',
-      lessons: 16,
-      duration: '5 giờ 40 phút',
-      progress: 0,
-      color: 'blue',
-      icon: 'DB',
-      status: 'Chưa bắt đầu',
-    },
-  ]);
+  constructor(private readonly learningService: StudentLearningService) {}
+
+  ngOnInit(): void {
+    this.learningService.getCatalog().subscribe({
+      next: ({ data }) => {
+        this.courses.set(data.map((course) => ({
+          id: course._id,
+          title: course.courseName,
+          category: course.category || 'Khác',
+          instructor: course.teacherName || 'Chưa cập nhật',
+          description: `${course.courseCode}${course.duration ? ` · ${course.duration} giờ` : ''}`,
+          lessons: 0,
+          duration: course.duration ? `${course.duration} giờ` : 'Theo chương trình',
+          progress: course.progress ?? 0,
+          enrollmentStatus: course.enrollmentStatus ?? null,
+          color: 'blue',
+          icon: 'E',
+          status: course.enrollmentStatus === 'completed' ? 'Hoàn thành' : course.enrollmentStatus ? 'Đang học' : 'Chưa bắt đầu',
+        })));
+        this.loading.set(false);
+      },
+      error: (error) => {
+        this.error.set(error?.error?.message ?? 'Không tải được danh sách khóa học.');
+        this.loading.set(false);
+      },
+    });
+  }
+
+  enroll(course: StudentCourse): void {
+    const courseId = course.id;
+    this.enrolling.set(courseId);
+    this.learningService.enroll(courseId).subscribe({
+      next: () => { this.enrolling.set(''); this.ngOnInit(); },
+      error: (error) => { this.error.set(error?.error?.message ?? 'Đăng ký khóa học thất bại.'); this.enrolling.set(''); },
+    });
+  }
+
+  // Danh mục khóa học do trung tâm công bố.
+  readonly courses = signal<StudentCourse[]>([]);
 
   readonly filteredCourses = computed(() => {
     const keyword = this.searchText().trim().toLocaleLowerCase('vi');
@@ -81,9 +83,9 @@ export class CourseStudentComponent {
     });
   });
 
-  readonly inProgressCount = computed(
-    () => this.courses().filter((course) => course.progress > 0 && course.progress < 100).length,
-  );
+  readonly inProgressCount = computed(() => this.courses().filter((course) => course.progress > 0).length);
+  readonly registeredCount = computed(() => this.courses().filter((course) => !!course.enrollmentStatus).length);
+  readonly completedCount = computed(() => this.courses().filter((course) => course.enrollmentStatus === 'completed').length);
 
   onSearch(event: Event): void {
     this.searchText.set((event.target as HTMLInputElement).value);

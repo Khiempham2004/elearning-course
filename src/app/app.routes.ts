@@ -28,7 +28,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     data: { roles: ['admin'] },
     children: [
       { path: '', redirectTo: 'overview', pathMatch: 'full' },
@@ -39,6 +39,10 @@ export const routes: Routes = [
       {
         path: 'courses',
         component: CourseComponent,
+      },
+      {
+        path: 'learning-activities',
+        loadComponent: () => import('./modules/page/learning-activities/learning-activities.component').then((m) => m.LearningActivitiesComponent),
       },
       {
         path: 'student',
@@ -142,7 +146,7 @@ export const routes: Routes = [
     path: 'student',
     component: StudentLayoutsComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin', 'student'], breadcrumb: 'Quản lý học viên' },
+    data: { roles: ['student'], breadcrumb: 'Không gian học tập' },
     children: [
       {
         path: '',
@@ -174,6 +178,22 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'assignments',
+        data: { breadcrumb: 'Quản lý bài tập' },
+        loadComponent: () =>
+          import('./modules/student-elearning/assignments-elearning/assignments-elearning.component').then(
+            (m) => m.AssignmentsElearningComponent,
+          ),
+      },
+      {
+        path: 'exams',
+        data: { breadcrumb: 'Quản lý bài kiểm tra' },
+        loadComponent: () =>
+          import('./modules/student-elearning/exams-elearning/exams-elearning.component').then(
+            (m) => m.ExamsElearningComponent,
+          ),
+      },
+      {
         path: 'information',
         data: { breadcrumb: 'Thông tin cá nhân' },
         loadComponent: () =>
@@ -192,15 +212,21 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'teacher/learning-activities',
+    canActivate: [authGuard],
+    data: { roles: ['teacher'] },
+    loadComponent: () => import('./modules/page/learning-activities/learning-activities.component').then((m) => m.LearningActivitiesComponent),
+  },
+  {
     path: 'teacher',
     component: TeachersComponent,
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     data: { roles: ['teacher'] },
   },
   {
     path: 'courses',
     component: CourseComponent,
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     data: { roles: ['course'] },
   },
   {

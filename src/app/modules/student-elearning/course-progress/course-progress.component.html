@@ -1,1 +1,6 @@
-<p>course-progress works!</p>
+<section class="student-list-page"><header><p class="eyebrow">KẾT QUẢ HỌC TẬP</p><h1>Tiến độ của tôi</h1><p>Theo dõi tiến độ từng khóa học và điểm bài đã được chấm.</p></header>
+  @if (loading()) { <p>Đang tải kết quả...</p> } @if (error()) { <p role="alert">{{ error() }}</p> }
+  <div class="activity-list">@for (enrollment of learning()?.enrollments ?? []; track enrollment._id) { <article><p>{{ enrollment.courseId.courseCode }}</p><h2>{{ enrollment.courseId.courseName }}</h2><p>Giảng viên: {{ enrollment.courseId.teacherName || 'Chưa cập nhật' }}</p><div class="progress-track"><span [style.width.%]="enrollment.progress"></span></div><p>Tiến độ: {{ enrollment.progress }}% · {{ enrollment.completedLessons }} bài học đã hoàn thành</p><p>Trạng thái: {{ enrollment.status === 'completed' ? 'Đã hoàn thành' : 'Đang học' }}</p>
+    @for (activity of learning()?.activities ?? []; track activity._id) { @if (activity.courseId._id === enrollment.courseId._id && activity.submission) { <div class="result-row"><strong>{{ activity.title }}</strong><span>{{ activity.submission.score !== undefined ? (activity.submission.score + '/100 điểm') : 'Đang chờ chấm' }}</span>@if (activity.submission.feedback) { <p>{{ activity.submission.feedback }}</p> }</div> } }
+  </article> } @empty { @if (!loading()) { <p>Bạn chưa có dữ liệu khóa học. Đăng ký khóa học để bắt đầu.</p> } }</div>
+</section>

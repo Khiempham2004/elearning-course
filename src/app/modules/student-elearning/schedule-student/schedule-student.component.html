@@ -1,1 +1,10 @@
-<p>schedule-student works!</p>
+<section class="student-list-page">
+  <header><p class="eyebrow">THỜI KHÓA BIỂU</p><h1>Lịch học của tôi</h1><p>Các buổi học thuộc những khóa bạn đang tham gia.</p></header>
+  @if (loading()) { <p>Đang tải lịch học...</p> }
+  @if (error()) { <p role="alert">{{ error() }}</p> }
+  <div class="activity-list">
+    @for (item of activities(); track item._id) {
+      <article><time>{{ item.startsAt ? (item.startsAt | date:'EEEE, dd/MM/yyyy · HH:mm':'':'vi') : 'Thời gian chưa cập nhật' }}</time><span class="activity-status" [class.past]="!isUpcoming(item)">{{ isUpcoming(item) ? 'Sắp diễn ra' : 'Đã diễn ra' }}</span><h2>{{ item.title }}</h2><p>{{ item.courseId.courseName }}</p><p>{{ item.location || 'Phòng học chưa được cập nhật' }}</p>@if (item.meetingUrl) { <a [href]="item.meetingUrl" target="_blank" rel="noopener">Vào lớp trực tuyến</a> }</article>
+    } @empty { @if (!loading()) { <p>Chưa có lịch học. Trung tâm sẽ cập nhật lịch tại đây.</p> } }
+  </div>
+</section>

@@ -25,6 +25,8 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { TeachersService } from '../../../core/services/teachers.service';
 import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
+import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 @Component({
   selector: 'app-teachers',
   templateUrl: './teachers.component.html',
@@ -49,6 +51,7 @@ import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
     FormsModule,
     NgIf,
     NzPaginationComponent,
+    RouterLink,
   ],
 })
 export class TeachersComponent implements OnInit {
@@ -70,6 +73,7 @@ export class TeachersComponent implements OnInit {
     private teacherService: TeachersService,
     private nzMessage: NzMessageService,
     private nzModal: NzModalService,
+    private readonly authService: AuthService,
   ) {
     this.formTeacher = this.fb.group({
       teacherCode: [null],
@@ -267,4 +271,8 @@ export class TeachersComponent implements OnInit {
     { label: '15', value: 15 },
     { label: '20', value: 20 },
   ];
+
+  get learningManagementLink(): string {
+    return this.authService.getUserRole() === 'admin' ? '/admin/learning-activities' : '/teacher/learning-activities';
+  }
 }

@@ -1,5 +1,7 @@
 <span class="teacher-header">QUẢN LÝ GIẢNG VIÊN</span>
 
+<a class="learning-management-link" [routerLink]="learningManagementLink">Mở lịch học, bài tập & kiểm tra →</a>
+
 <div class="header">
   <input nz-input (keyup.enter)="handleSearch()" [(ngModel)]="filterSearch" placeholder="Tìm kiếm giảng viên" />
   <button nz-button nzType="primary" (click)="handleCreate()">Tạo mới giảng viên</button>

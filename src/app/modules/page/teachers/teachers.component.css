@@ -84,3 +84,5 @@ thead th {
     border-radius: 10px !important;
     overflow: hidden;
 }
+.learning-management-link { display: inline-flex; margin: 14px 0 4px; padding: 10px 14px; border-radius: 8px; background: #edf4ff; color: #245bd1; font-weight: 650; text-decoration: none; }
+.learning-management-link:hover { background: #e1ecff; }

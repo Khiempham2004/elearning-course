@@ -1,139 +1,42 @@
 <div class="overview">
-    <!-- Welcome -->
-    <section class="welcome-section">
-        <div class="welcome-content">
-            <span class="welcome-label">STUDENT DASHBOARD</span>
-            <h1>Xin chào, {{ studentName }}! 👋</h1>
-            <p>
-                Chào mừng bạn quay trở lại. Hãy tiếp tục hành trình học tập và phát
-                triển bản thân nhé!
-            </p>
-            <div class="welcome-info">
-                <span>🎓 Sinh viên</span>
-                <span>•</span>
-                <span>Học kỳ 1 - 2026</span>
-            </div>
-        </div>
+  <section class="welcome-section">
+    <div class="welcome-content">
+      <span class="welcome-label">KHÔNG GIAN HỌC TẬP</span>
+      <h1>Xin chào, {{ learning()?.student?.userName || 'Học viên' }}! 👋</h1>
+      <p>Theo dõi khóa học, lịch học và nhiệm vụ học tập của bạn tại đây.</p>
+      <div class="welcome-info"><span>🎓 Học viên</span><span>•</span><span>{{ learning()?.student?.email }}</span></div>
+    </div>
+    <div class="welcome-illustration"><div class="illustration-circle">🎓</div></div>
+  </section>
 
-        <div class="welcome-illustration">
-            <div class="illustration-circle">🎓</div>
-        </div>
-    </section>
-
+  @if (loading()) { <p>Đang tải dữ liệu học tập...</p> }
+  @if (error()) { <p role="alert">{{ error() }}</p> }
+  @if (!loading() && !error()) {
     <section class="stats-grid">
-        @for (item of stats; track item.title) {
-        <div class="stat-card">
-            <div class="stat-header">
-                <span class="stat-title">{{ item.title }}</span>
-
-                <div class="stat-icon">
-                    {{ item.icon }}
-                </div>
-            </div>
-            <h2>{{ item.value }}</h2>
-            <span class="stat-description"> Thống kê học tập hiện tại </span>
-        </div>
-        }
+      <div class="stat-card"><span class="stat-title">Khóa học đang tham gia</span><h2>{{ courses.length }}</h2><span class="stat-description">Các lớp đã đăng ký</span></div>
+      <div class="stat-card"><span class="stat-title">Bài tập chưa nộp</span><h2>{{ pendingCount }}</h2><span class="stat-description">Còn trong danh sách bài tập</span></div>
+      <div class="stat-card"><span class="stat-title">Khóa học hoàn thành</span><h2>{{ completedCount }}</h2><span class="stat-description">Các khóa đã hoàn tất</span></div>
+      <div class="stat-card"><span class="stat-title">Tiến độ trung bình</span><h2>{{ averageProgress }}%</h2><span class="stat-description">Theo tiến độ lớp học</span></div>
     </section>
+
     <section class="section">
-        <div class="section-header">
-            <div>
-                <h2>Khóa học của tôi</h2>
-                <p style="font-size: 18px;">Tiếp tục các khóa học bạn đang tham gia</p>
-            </div>
-            <a class="view-all">Xem tất cả <span>→</span></a>
-        </div>
-
-        <div class="course-grid">
-            @for (course of courses; track course.id) {
-            <div class="course-card">
-                <div class="course-cover" [style.background]="course.color + '15'">
-                    <span class="course-cover-icon">📚</span>
-
-                    <span class="course-category">
-                        {{ course.category }}
-                    </span>
-                </div>
-
-                <div class="course-body">
-                    <h4>{{ course.name }}</h4>
-
-                    <p class="instructor">Giảng viên: {{ course.instructor }}</p>
-
-                    <div class="progress-header">
-                        <span>Tiến độ học tập</span>
-                        <strong>{{ course.progress }}%</strong>
-                    </div>
-
-                    <div class="progress-track">
-                        <div class="progress-bar" [style.width.%]="course.progress" [style.background]="course.color">
-                        </div>
-                    </div>
-
-                    <button class="continue-button">
-                        Tiếp tục học
-                        <span>→</span>
-                    </button>
-                </div>
-            </div>
-            }
-        </div>
+      <div class="section-header"><div><h2>Khóa học của tôi</h2><p>Tiến độ học tập theo từng khóa</p></div><a class="view-all" routerLink="/student/courses">Xem danh sách →</a></div>
+      <div class="course-grid">
+        @for (item of courses; track item._id) {
+          <article class="course-card"><div class="course-body"><h4>{{ item.courseId.courseName }}</h4><p class="instructor">{{ item.courseId.courseCode }} · Giảng viên: {{ item.courseId.teacherName || 'Chưa cập nhật' }}</p><div class="progress-header"><span>Tiến độ</span><strong>{{ item.progress }}%</strong></div><div class="progress-track"><div class="progress-bar" [style.width.%]="item.progress"></div></div><a class="continue-button" routerLink="/student/progress">Xem kết quả →</a></div></article>
+        } @empty { <p>Bạn chưa đăng ký khóa học nào. <a routerLink="/student/courses">Xem khóa học đang tuyển sinh</a>.</p> }
+      </div>
     </section>
 
     <section class="bottom-grid">
-        <div class="content-card">
-            <div class="section-header">
-                <div>
-                    <h3>Lịch học sắp tới</h3>
-                    <p>Các buổi học gần nhất của bạn</p>
-                </div>
-                <a class="view-all">Xem tất cả →</a>
-            </div>
-
-            <div class="schedule-list">
-                @for (item of schedules; track item.id) {
-                <div class="schedule-item">
-                    <div class="schedule-date">
-                        <strong>{{ item.date.slice(0, 2) }}</strong>
-                        <span>THÁNG 11</span>
-                    </div>
-                    <div class="schedule-info">
-                        <h4>{{ item.subject }}</h4>
-                        <p>{{ item.instructor }}</p>
-                        <span class="schedule-time"> ◷ {{ item.time }} </span>
-                    </div>
-                    <span class="method-badge" [class.online]="item.method === 'Online'">
-                        {{ item.method === "Online" ? "Trực tuyến" : "Trực tiếp" }}
-                    </span>
-                </div>
-                }
-            </div>
-        </div>
-
-        <div class="content-card">
-            <div class="section-header">
-                <div>
-                    <h3>Bài tập của tôi</h3>
-                    <p>Bạn có {{ pendingAssignments }} bài tập chưa hoàn thành</p>
-                </div>
-
-                <a class="view-all">Xem tất cả →</a>
-            </div>
-            <div class="assignment-list">
-                @for (item of assignments; track item.id) {
-                <div class="assignment-item">
-                    <div class="assignment-icon">📝</div>
-                    <div class="assignment-info">
-                        <h4>{{ item.title }}</h4>
-                        <p>{{ item.subject }}</p>
-                        <span>Hạn nộp: {{ item.deadline }}</span>
-                    </div>
-                    <span class="status-badge" [class.submitted]="item.status === 'Submitted'">
-                        {{ item.status === "Pending" ? "Chưa nộp" : "Đã nộp" }}
-                    </span>
-                </div>
-                }
-            </div>
-        </div>
+      <div class="content-card"><div class="section-header"><div><h3>Lịch học sắp tới</h3><p>Lịch do trung tâm thông báo</p></div><a class="view-all" routerLink="/student/schedule">Xem tất cả →</a></div>
+        @for (item of schedules.slice(0, 3); track item._id) { <div class="schedule-item"><div class="schedule-info"><h4>{{ item.title }}</h4><p>{{ item.courseId.courseName }} · {{ item.location || 'Chưa cập nhật phòng học' }}</p><span>{{ item.startsAt | date:'dd/MM/yyyy HH:mm' }}</span></div></div> }
+        @if (!schedules.length) { <p>Chưa có lịch học được cập nhật.</p> }
+      </div>
+      <div class="content-card"><div class="section-header"><div><h3>Bài tập gần đây</h3><p>{{ pendingCount }} bài chưa nộp</p></div><a class="view-all" routerLink="/student/assignments">Xem tất cả →</a></div>
+        @for (item of assignments.slice(0, 3); track item._id) { <div class="assignment-item"><div class="assignment-info"><h4>{{ item.title }}</h4><p>{{ item.courseId.courseName }}</p><span>Hạn nộp: {{ item.dueAt ? (item.dueAt | date:'dd/MM/yyyy HH:mm') : 'Không có hạn' }}</span></div><span class="status-badge" [class.submitted]="!!item.submission">{{ item.submission ? 'Đã nộp' : 'Chưa nộp' }}</span></div> }
+        @if (!assignments.length) { <p>Chưa có bài tập được giao.</p> }
+      </div>
     </section>
+  }
 </div>

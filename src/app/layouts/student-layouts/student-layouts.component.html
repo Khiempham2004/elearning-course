@@ -1,6 +1,6 @@
 <div class="student-shell">
   <header class="topbar">
-    <a class="brand" routerLink="/student/learning" aria-label="EduLearn trang chủ">
+    <a class="brand" routerLink="/student" aria-label="EduLearn trang chủ">
       <span class="brand-mark">E</span>
       <span>Edu<span class="brand-accent">Learn</span></span>
     </a>
@@ -42,7 +42,7 @@
         <button class="profile-trigger" type="button" (click)="toggleProfileMenu()"
           [attr.aria-expanded]="profileMenuOpen()" aria-label="Menu tài khoản">
           <span class="avatar"><span nz-icon nzType="user"></span></span>
-          <span class="account-name">Học viên</span>
+          <span class="account-name">{{ studentName }}</span>
           <span nz-icon nzType="down" class="profile-chevron"></span>
         </button>
         @if (profileMenuOpen()) {
@@ -61,18 +61,9 @@
     <aside class="sidebar">
       <div class="sidebar-label">MENU HỌC TẬP</div>
       <nav class="main-tabs" aria-label="Điều hướng học viên">
-        <!-- <a routerLink="/student/overview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <span class="tab-icon" nz-icon nzType="home"></span><span>Tổng quan</span>
-        </a>
-        <a routerLink="/student/courses" routerLinkActive="active">
-          <span class="tab-icon" nz-icon nzType="book"></span><span>Khóa học của tôi</span>
-        </a>
-        <a routerLink="/student/progress" routerLinkActive="active">
-          <span class="tab-icon" nz-icon nzType="bar-chart"></span><span>Tiến độ học tập</span>
-        </a> -->
         @for (item of menuItems; track item.label) {
         <a class="menu-item" [routerLink]="item.routerLink" routerLinkActive="active"
-          [routerLinkActiveOptions]="{exact : item.routerLink === '/student' || true}">
+          [routerLinkActiveOptions]="{exact: item.routerLink === '/student'}">
           <span class="menu-icon">{{item.icon}}</span>
           <span>{{item.label}}</span>
         </a>

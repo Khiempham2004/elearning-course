@@ -17,6 +17,7 @@ import {
   UserOutline,
 } from '@ant-design/icons-angular/icons';
 import { AuthService } from '../../core/services/auth.service';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 interface StudentNotification {
   id: string;
@@ -49,7 +50,7 @@ interface Schedule {
 @Component({
   selector: 'app-student-layouts',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, NzIconModule],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, NzIconModule, NzButtonModule],
   templateUrl: './student-layouts.component.html',
   styleUrl: './student-layouts.component.css',
 })
@@ -78,7 +79,11 @@ export class StudentLayoutsComponent {
       UserOutline,
     );
     this.notifications.set(this.loadNotifications());
-    this.addAccessNotification();
+  }
+
+  get studentName(): string {
+    try { return JSON.parse(localStorage.getItem('user') ?? '{}').userName ?? 'Học viên'; }
+    catch { return 'Học viên'; }
   }
 
   private get storageKey(): string {

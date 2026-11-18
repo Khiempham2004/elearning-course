@@ -1,0 +1,243 @@
+<main class="manage-learning">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">QUẢN LÝ ĐÀO TẠO</p>
+      <h1>Lịch học, bài tập & kiểm tra</h1>
+      <p>Tạo hoạt động cho khóa học, theo dõi bài nộp và phản hồi kết quả.</p>
+    </div>
+  </header>
+  @if (notice()) {
+    <p class="notice" role="status">{{ notice() }}</p>
+  }
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
+
+  <section class="editor-card">
+    <div class="section-heading">
+      <div>
+        <h2>{{ editingId() ? "Chỉnh sửa hoạt động" : "Tạo hoạt động mới" }}</h2>
+        <p>
+          Hoạt động đã xuất bản sẽ hiển thị cho học viên đã đăng ký khóa học.
+        </p>
+      </div>
+    </div>
+    <form (ngSubmit)="save()">
+      <div class="form-grid">
+        <label
+          >Khóa học<select name="courseId" [(ngModel)]="form.courseId" required>
+            <option value="">Chọn khóa học</option>
+            @for (course of courses(); track course._id) {
+              <option [value]="course._id">
+                {{ course.courseCode }} · {{ course.courseName }}
+              </option>
+            }
+          </select></label
+        >
+        <label
+          >Loại hoạt động<select name="kind" [(ngModel)]="form.kind">
+            <option value="schedule">Lịch học</option>
+            <option value="assignment">Bài tập</option>
+            <option value="exam">Bài kiểm tra</option>
+          </select></label
+        >
+        <label class="wide"
+          >Tiêu đề<input
+            name="title"
+            [(ngModel)]="form.title"
+            required
+            maxlength="180"
+            placeholder="VD: Buổi học Angular căn bản"
+        /></label>
+        <label class="wide"
+          >Mô tả / hướng dẫn<textarea
+            name="description"
+            [(ngModel)]="form.description"
+            rows="3"
+            placeholder="Nội dung buổi học hoặc yêu cầu bài làm"
+          ></textarea>
+        </label>
+        <label
+          >Thời gian bắt đầu<input
+            name="startsAt"
+            type="datetime-local"
+            [(ngModel)]="form.startsAt"
+        /></label>
+        <label
+          >Hạn nộp / kết thúc<input
+            name="dueAt"
+            type="datetime-local"
+            [(ngModel)]="form.dueAt"
+        /></label>
+        @if (form.kind === "exam") {
+          <label
+            >Thời lượng (phút)<input
+              name="durationMinutes"
+              type="number"
+              min="1"
+              [(ngModel)]="form.durationMinutes"
+          /></label>
+        }
+        @if (form.kind === "schedule") {
+          <label
+            >Phòng học<input
+              name="location"
+              [(ngModel)]="form.location"
+              placeholder="Phòng hoặc địa điểm"
+          /></label>
+        }
+        <label class="wide"
+          >Liên kết lớp / tài liệu / đề thi<input
+            name="meetingUrl"
+            type="url"
+            [(ngModel)]="form.meetingUrl"
+            placeholder="https://..."
+        /></label>
+        <label
+          >Trạng thái<select name="status" [(ngModel)]="form.status">
+            <option value="published">Xuất bản</option>
+            <option value="draft">Bản nháp</option>
+          </select></label
+        >
+      </div>
+      <div class="form-actions">
+        <button type="submit" [disabled]="saving() || !courses().length">
+          {{
+            saving()
+              ? "Đang lưu..."
+              : editingId()
+                ? "Lưu thay đổi"
+                : "Tạo hoạt động"
+          }}
+        </button>
+        @if (editingId()) {
+          <button class="secondary" type="button" (click)="cancelEdit()">
+            Hủy chỉnh sửa
+          </button>
+        }
+      </div>
+      @if (!courses().length && !loading()) {
+        <p class="muted">
+          Chưa có khóa học. Hãy tạo khóa học trước khi thêm hoạt động.
+        </p>
+      }
+    </form>
+  </section>
+
+  <section class="activity-section">
+    <div class="section-heading">
+      <div>
+        <h2>Hoạt động đã tạo</h2>
+        <p>{{ activities().length }} lịch học, bài tập và bài kiểm tra</p>
+      </div>
+    </div>
+    @if (loading()) {
+      <p>Đang tải dữ liệu...</p>
+    }
+    <div class="activity-grid">
+      @for (activity of activities(); track activity._id) {
+        <article class="activity-card">
+          <div class="activity-top">
+            <span
+              class="kind"
+              [class.assignment]="activity.kind === 'assignment'"
+              [class.exam]="activity.kind === 'exam'"
+              >{{
+                activity.kind === "schedule"
+                  ? "Lịch học"
+                  : activity.kind === "assignment"
+                    ? "Bài tập"
+                    : "Kiểm tra"
+              }}</span
+            ><span class="state">{{
+              activity.status === "draft" ? "Bản nháp" : "Đã xuất bản"
+            }}</span>
+          </div>
+          <p class="course-name">
+            {{ activity.courseId.courseCode }} ·
+            {{ activity.courseId.courseName }}
+          </p>
+          <h3>{{ activity.title }}</h3>
+          <p class="description">
+            {{ activity.description || "Chưa có mô tả" }}
+          </p>
+          <p class="dates">
+            Bắt đầu:
+            {{
+              activity.startsAt
+                ? (activity.startsAt | date: "dd/MM/yyyy HH:mm")
+                : "Chưa đặt"
+            }}<br />Hạn:
+            {{
+              activity.dueAt
+                ? (activity.dueAt | date: "dd/MM/yyyy HH:mm")
+                : activity.durationMinutes
+                  ? activity.durationMinutes + " phút"
+                  : "Không giới hạn"
+            }}
+          </p>
+          <div class="card-actions">
+            <button type="button" class="secondary" (click)="edit(activity)">
+              Chỉnh sửa</button
+            ><button type="button" class="danger" (click)="remove(activity)">
+              Xóa
+            </button>
+          </div>
+          @if (activity.kind !== "schedule") {
+            <div class="submissions">
+              <h4>Bài nộp ({{ activity.submissions?.length ?? 0 }})</h4>
+              @for (submission of activity.submissions ?? []; track $index) {
+                <div class="submission">
+                  <div>
+                    <strong>{{ studentName(submission) }}</strong
+                    ><small>{{
+                      submission.submittedAt | date: "dd/MM/yyyy HH:mm"
+                    }}</small>
+                    <p class="answer">{{ submission.answer }}</p>
+                  </div>
+                  <div class="grade-fields">
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      placeholder="Điểm /100"
+                      [ngModel]="
+                        scores[submissionKey(activity, submission)] ??
+                        submission.score ??
+                        null
+                      "
+                      (ngModelChange)="
+                        scores[submissionKey(activity, submission)] = $event
+                      "
+                    /><input
+                      placeholder="Nhận xét"
+                      [ngModel]="
+                        feedback[submissionKey(activity, submission)] ||
+                        submission.feedback ||
+                        ''
+                      "
+                      (ngModelChange)="
+                        feedback[submissionKey(activity, submission)] = $event
+                      "
+                    /><button
+                      type="button"
+                      (click)="grade(activity, submission)"
+                    >
+                      Lưu điểm
+                    </button>
+                  </div>
+                </div>
+              } @empty {
+                <p class="muted">Chưa có học viên nộp bài.</p>
+              }
+            </div>
+          }
+        </article>
+      } @empty {
+        @if (!loading()) {
+          <p class="muted">Chưa có hoạt động nào.</p>
+        }
+      }
+    </div>
+  </section>
+</main>

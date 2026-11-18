@@ -13,6 +13,10 @@ body {
   margin: 0;
   min-height: 100%;
   font-family: "DM Sans", Arial, sans-serif;
+  width:  100%;
+  min-height: 100%;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 button,
@@ -21,6 +25,54 @@ select {
   font-family: inherit;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+app-root {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.student-list-page {
+  width: min(100%, 1050px);
+  margin: 0 auto;
+  color: #182230;
+}
+.student-list-page > header { margin-bottom: 24px; }
+.student-list-page h1 { margin: 0 0 8px; font-size: 28px; }
+.student-list-page header > p:last-child { color: #667085; }
+.activity-list { display: grid; gap: 16px; }
+.activity-list article {
+  padding: 22px;
+  border: 1px solid #e8edf3;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 6px 18px #15213b08;
+}
+.activity-list article h2 { margin: 7px 0; font-size: 19px; }
+.activity-list article p { color: #667085; }
+.activity-list label { display: block; margin: 16px 0 7px; font-weight: 600; }
+.activity-list textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d8dee8;
+  border-radius: 9px;
+  font: inherit;
+  resize: vertical;
+}
+.activity-list button {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+}
+.activity-list button:disabled { opacity: .65; cursor: wait; }
+.result-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-top: 12px; border-top: 1px solid #edf0f5; }
 /* Province create/edit modal is rendered in the CDK overlay, outside component styles. */
 .province-form-modal .ant-modal-content {
   /* overflow: hidden; */

@@ -47,11 +47,11 @@ export class AuthService {
         return '/admin';
       case 'directory':
         return '/directory';
-      case 'teachers':
-        return '/teachers';
+      case 'teacher':
+        return '/teacher';
       case 'student':
         return '/student';
-      case 'courses':
+      case 'course':
         return '/courses';
       default:
         return '/login';

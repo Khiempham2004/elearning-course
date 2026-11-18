@@ -1,0 +1,8 @@
+<section class="student-list-page"><header><p class="eyebrow">NHIỆM VỤ HỌC TẬP</p><h1>Bài tập</h1><p>Nộp câu trả lời hoặc đường dẫn bài làm trước hạn.</p></header>
+  @if (loading()) { <p>Đang tải bài tập...</p> } @if (message()) { <p role="status">{{ message() }}</p> } @if (error()) { <p role="alert">{{ error() }}</p> }
+  <div class="activity-list">@for (item of items(); track item._id) { <article><p>{{ item.courseId.courseName }}</p><h2>{{ item.title }}</h2><p>{{ item.description }}</p><p>Hạn nộp: {{ item.dueAt ? (item.dueAt | date:'dd/MM/yyyy HH:mm') : 'Không giới hạn' }}</p>
+    @if (item.submission) { <p>Đã nộp lúc {{ item.submission.submittedAt | date:'dd/MM/yyyy HH:mm' }}.@if (item.submission.score !== undefined) { Điểm: {{ item.submission.score }}/100. }@if (item.submission.feedback) { Nhận xét: {{ item.submission.feedback }} }</p> }
+    <label [for]="'answer-' + item._id">Câu trả lời / đường dẫn bài làm</label><textarea [id]="'answer-' + item._id" rows="4" [value]="answers[item._id] || item.submission?.answer || ''" (input)="setAnswer(item._id, $event)" [disabled]="isClosed(item) || item.submission?.score !== undefined"></textarea>
+    @if (item.submission?.score !== undefined) { <p>Bài đã được chấm điểm và khóa chỉnh sửa.</p> } @else if (isClosed(item)) { <p>Bài tập đã đóng nhận bài.</p> } @else { <button type="button" (click)="submit(item)" [disabled]="submitting() === item._id">{{ submitting() === item._id ? 'Đang nộp...' : (item.submission ? 'Cập nhật bài nộp' : 'Nộp bài') }}</button> }
+  </article> } @empty { @if (!loading()) { <p>Chưa có bài tập nào được giao cho các khóa học của bạn.</p> } }</div>
+</section>
