@@ -229,3 +229,16 @@ tr:not(.ant-table-measure-row) td {
   margin-left: 20px;
   border-radius: 8px !important;
 }
+.roster-section { margin-top: 24px; padding: 20px; border: 1px solid #e5ebf2; border-radius: 15px; background: #fff; }
+.roster-section .section-heading { margin-bottom: 8px; }
+.roster-list { display: grid; gap: 8px; }
+.roster-row { display: grid; grid-template-columns: minmax(150px,1fr) 120px 120px auto; align-items: end; gap: 12px; padding: 12px 0; border-top: 1px solid #eff2f6; }
+.roster-person strong,.roster-person small { display: block; }
+.roster-person small { margin-top: 5px; color: #778499; font-size: 11px; }
+.roster-row label { display: grid; gap: 5px; color: #718095; font-size: 10px; font-weight: 700; }
+.roster-row input { width: 100%; min-height: 36px; box-sizing: border-box; padding: 8px; border: 1px solid #d9e1eb; border-radius: 8px; font: inherit; }
+.roster-row button { min-height: 36px; padding: 7px 11px; border: 0; border-radius: 8px; background: #2563eb; color: #fff; font-weight: 700; cursor: pointer; }
+.roster-row button:disabled { opacity: .55; cursor: wait; }
+.course-learning-link { display: inline-block; margin-top: 14px; color: #175cd3; font-weight: 650; text-decoration: none; }
+.course-learning-link:hover { text-decoration: underline; }
+@media(max-width:760px) { .roster-row { grid-template-columns: 1fr 1fr; } .roster-person { grid-column: 1/-1; } .roster-row button { align-self: end; } }

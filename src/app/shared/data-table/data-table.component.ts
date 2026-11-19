@@ -59,6 +59,13 @@ export class DataTableComponent<T = Record<string, unknown>> {
     this.actionClick.emit({ action: action.key, row });
   }
 
+  isActionVisible(action: DataTableAction<T>, row: T): boolean {
+    const configured = action.visible;
+    if (typeof configured === 'function') return configured(row);
+    if (typeof configured === 'boolean') return configured;
+    return action.show ? action.show(row) : true;
+  }
+
   get scrollConfig(): { x?: string; y?: string } {
     return {
       ...(this.scrollX ? { x: this.scrollX } : {}),

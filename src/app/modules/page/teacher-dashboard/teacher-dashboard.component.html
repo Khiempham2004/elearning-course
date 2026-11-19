@@ -1,0 +1,71 @@
+<main class="teacher-dashboard">
+  <header class="welcome">
+    <div>
+      <p class="eyebrow">KHÔNG GIAN GIẢNG VIÊN</p>
+      <h1>Bảng điều khiển</h1>
+      <p>Quản lý buổi học, giao bài và theo dõi kết quả học viên.</p>
+    </div>
+    <a routerLink="/teacher/learning-activities">Mở quản lý giảng dạy →</a>
+  </header>
+  @if (loading()) {
+  <p class="message">Đang tải dữ liệu...</p>
+  }
+  @if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+  }
+  @if (!loading() && !error()) {
+  <section class="stats">
+    <article>
+      <span>Khóa học</span><strong>{{ courseCount() }}</strong><small>Khóa có thể quản lý</small>
+    </article>
+    <article>
+      <span>Buổi học</span><strong>{{ count("schedule") }}</strong><small>Lịch học đã tạo</small>
+    </article>
+    <article>
+      <span>Bài tập & kiểm tra</span><strong>{{ count("assignment") + count("exam") }}</strong><small>{{
+        count("assignment") }} bài tập · {{ count("exam") }} bài kiểm
+        tra</small>
+    </article>
+    <article>
+      <span>Bài chờ chấm</span><strong>{{ pendingSubmissions }}</strong><small>Bài học viên đã nộp</small>
+    </article>
+  </section>
+  @if (courseCount() === 0) {
+  <p class="assignment-note">
+    Chưa có khóa học được phân công. Admin cần gắn đúng mã giảng viên hoặc
+    ID tài khoản của bạn vào trường Mã giáo viên trong khóa học.
+  </p>
+  }
+  <section class="quick-actions">
+    <div>
+      <p class="eyebrow">CÔNG CỤ GIẢNG DẠY</p>
+      <h2>Bắt đầu công việc</h2>
+    </div>
+    <a routerLink="/teacher/learning-activities">＋ Tạo lịch, bài tập hoặc kiểm tra</a>
+  </section>
+  <section class="latest">
+    <div>
+      <h2>Hoạt động gần đây</h2>
+      <a routerLink="/teacher/learning-activities">Xem toàn bộ →</a>
+    </div>
+    @for (activity of activities().slice(0, 5); track activity._id) {
+    <article>
+      <span class="kind">{{
+        activity.kind === "schedule"
+        ? "Lịch học"
+        : activity.kind === "assignment"
+        ? "Bài tập"
+        : "Kiểm tra"
+        }}</span><strong>{{ activity.title }}</strong><small>{{ activity.courseId.courseName }} ·
+        {{
+        activity.status === "published" ? "Đã xuất bản" : "Bản nháp"
+        }}</small>
+    </article>
+    } @empty {
+    <p class="message">
+      Chưa có hoạt động. Tạo lịch hoặc bài tập đầu tiên để bắt đầu.
+    </p>
+    }
+  </section>
+  }
+</main>

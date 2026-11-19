@@ -1,0 +1,188 @@
+:host {
+    display: block;
+    color: #182230;
+}
+
+.enrollments-page {
+    max-width: 1400px;
+    margin: auto;
+    padding: 26px 30px;
+}
+
+.eyebrow {
+    margin: 0 0 5px;
+    color: #3472c7;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+header p:last-child {
+    color: #778499;
+    font-size: 13px;
+}
+
+.filters {
+    display: flex;
+    gap: 9px;
+    margin: 18px 0 14px;
+}
+
+.filters input {
+    flex: 1;
+}
+
+.filters input,
+.filters select,
+.table-wrap select,
+.progress-cell input,
+.lessons {
+    min-height: 36px;
+    padding: 7px 9px;
+    border: 1px solid #d8e0ea;
+    border-radius: 7px;
+    background: #fff;
+}
+
+.filters button,
+.save {
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 7px;
+    background: #2563eb;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.table-wrap {
+    overflow: auto;
+    border: 1px solid #e5eaf0;
+    border-radius: 12px;
+    background: #fff;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #eff2f6;
+    font-size: 12px;
+}
+
+th {
+    background: #f8fafc;
+    color: #667085;
+    font-size: 10px;
+    text-align: center;
+}
+
+td small {
+    display: block;
+    margin-top: 4px;
+    color: #778499;
+    font-size: 10px;
+}
+
+.progress-cell {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.progress-cell input {
+    width: 70px;
+}
+
+.lessons {
+    width: 75px;
+}
+
+.save {
+    display: block;
+    margin-top: 5px;
+    padding: 6px 8px;
+    font-size: 10px;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    font-size: 12px;
+}
+
+footer div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+footer button {
+    padding: 5px 10px;
+    border: 1px solid #d0d5dd;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+}
+
+footer button:disabled {
+    opacity: 0.4;
+}
+
+.error {
+    padding: 10px;
+    border-radius: 8px;
+    background: #fff1f0;
+    color: #b42318;
+}
+
+@media (max-width: 800px) {
+    .enrollments-page {
+        padding: 18px 10px;
+    }
+
+    .filters {
+        flex-wrap: wrap;
+    }
+
+    .filters input {
+        flex-basis: 100%;
+    }
+}
+
+.enrollment-footer{
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.users-pagination {
+    flex: 1;
+    justify-content: flex-end;
+    min-width: max-content;
+}
+
+.users-pagination nz-pagination {
+    display: block;
+}
+
+::ng-deep .ant-pagination-item{
+    border-radius: 8px !important;
+}
+
+:host ::ng-deep .select-footer{
+    width: 65px;
+}
+::ng-deep .ant-select-selector{
+    border-radius: 8px !important;
+}

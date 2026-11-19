@@ -36,6 +36,24 @@ export class AuthService {
     }
     localStorage.setItem('token', res.token);
     localStorage.setItem('user', JSON.stringify(res.user));
+    const identity = String(res.user?.id ?? res.user?._id ?? res.user?.userName ?? 'account');
+    const roleLabels: Record<string, string> = {
+      admin: 'Quản trị viên', teacher: 'Giảng viên', student: 'Học viên',
+      directory: 'Quản lý danh mục', course: 'Quản lý khóa học',
+    };
+    const key = `notifications-${identity}`;
+    let notifications: Array<{ id: string; message: string; createdAt: string; read: boolean }> = [];
+    try {
+      notifications = JSON.parse(localStorage.getItem(key) ?? '[]');
+      if (!Array.isArray(notifications)) notifications = [];
+    } catch { notifications = []; }
+    notifications.unshift({
+      id: `login-${Date.now()}`,
+      message: `Đăng nhập thành công với vai trò ${roleLabels[res.user?.role] ?? res.user?.role ?? 'người dùng'}.`,
+      createdAt: new Date().toISOString(),
+      read: false,
+    });
+    localStorage.setItem(key, JSON.stringify(notifications.slice(0, 30)));
   }
   getToken(): string | null {
     return localStorage.getItem('token');

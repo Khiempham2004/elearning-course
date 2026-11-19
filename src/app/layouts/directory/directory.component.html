@@ -8,7 +8,7 @@
     <nav>
       <a routerLink="/directory/portfolio-management" routerLinkActive="active">Quản lý danh mục các cấp</a>
       <a routerLink="/directory/multi-level-management" routerLinkActive="active">Quản lý danh mục các phòng</a>
-      <a routerLink="/directory/user-management" routerLinkActive="active">Quản lý người dùng</a>
+      <a routerLink="/directory/user-management" routerLinkActive="active">Danh bạ người dùng</a>
       <a routerLink="/directory/role-management" routerLinkActive="active">Quản lý vai trò / phân quyền</a>
       <a routerLink="/directory/system-management" routerLinkActive="active"> Quản lý chức năng hệ thống</a>
       <a routerLink="/directory/user-group-management" routerLinkActive="active">Quản lý nhóm người dùng</a>
@@ -25,7 +25,7 @@
   <main class="main-content">
     <header class="topbar">
       <span>Hệ thống quản lí danh mục </span>
-      <div class="mini-avatar">MA</div>
+      <div class="topbar-account"><app-notifications-center /><div class="mini-avatar">MA</div></div>
     </header>
     <br>
     <router-outlet></router-outlet>

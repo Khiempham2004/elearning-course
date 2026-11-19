@@ -88,6 +88,7 @@
             @if (course.enrollmentStatus) {
               <div class="progress-heading"><span>Tiến độ học</span><strong>{{ course.progress }}%</strong></div>
               <div class="progress-track"><span [style.width.%]="course.progress"></span></div>
+              <a class="course-learning-link" routerLink="/student/schedule">Xem lịch & vào buổi học →</a>
             } @else {
               <button type="button" (click)="enroll(course)" [disabled]="!!enrolling()">
                 {{ enrolling() === course.id ? 'Đang đăng ký...' : 'Đăng ký khóa học' }}

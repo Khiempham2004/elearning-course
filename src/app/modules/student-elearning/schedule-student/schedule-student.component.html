@@ -1,10 +1,21 @@
-<section class="student-list-page">
-  <header><p class="eyebrow">THỜI KHÓA BIỂU</p><h1>Lịch học của tôi</h1><p>Các buổi học thuộc những khóa bạn đang tham gia.</p></header>
-  @if (loading()) { <p>Đang tải lịch học...</p> }
-  @if (error()) { <p role="alert">{{ error() }}</p> }
-  <div class="activity-list">
+<section class="schedule-page">
+  <header class="student-heading"><div><p class="eyebrow">KẾ HOẠCH HỌC TẬP</p><h1>Lịch học của tôi</h1><p>Theo dõi buổi học và mở lớp trực tuyến ngay tại đây.</p></div><span class="heading-icon">▦</span></header>
+  <div class="schedule-summary"><article><small>Tổng buổi học</small><strong>{{ activities().length }}</strong></article><article><small>Sắp diễn ra</small><strong>{{ upcomingCount }}</strong></article><article><small>Khóa đang tham gia</small><strong>{{ hasCourses() ? 'Đã đăng ký' : 'Chưa có' }}</strong></article></div>
+  @if (loading()) { <div class="loading-state">Đang tải lịch học...</div> }
+  @if (error()) { <p class="error-state" role="alert">{{ error() }}</p> }
+  <div class="schedule-list">
     @for (item of activities(); track item._id) {
-      <article><time>{{ item.startsAt ? (item.startsAt | date:'EEEE, dd/MM/yyyy · HH:mm':'':'vi') : 'Thời gian chưa cập nhật' }}</time><span class="activity-status" [class.past]="!isUpcoming(item)">{{ isUpcoming(item) ? 'Sắp diễn ra' : 'Đã diễn ra' }}</span><h2>{{ item.title }}</h2><p>{{ item.courseId.courseName }}</p><p>{{ item.location || 'Phòng học chưa được cập nhật' }}</p>@if (item.meetingUrl) { <a [href]="item.meetingUrl" target="_blank" rel="noopener">Vào lớp trực tuyến</a> }</article>
-    } @empty { @if (!loading()) { <p>Chưa có lịch học. Trung tâm sẽ cập nhật lịch tại đây.</p> } }
+      <article class="schedule-card" [class.past-event]="!!item.startsAt && !isUpcoming(item)">
+        <div class="date-block"><strong>{{ item.startsAt ? (item.startsAt | date:'dd') : '—' }}</strong><span>{{ item.startsAt ? (item.startsAt | date:'MMM':'':'vi') : 'Chưa hẹn' }}</span></div>
+        <div class="event-content"><div class="event-top"><span class="course-label">{{ item.courseId.courseCode }} · {{ item.courseId.courseName }}</span><span class="event-status" [class.past]="!!item.startsAt && !isUpcoming(item)">{{ timeStatus(item) }}</span></div>
+          <h2>{{ item.title }}</h2><p class="event-time">{{ item.startsAt ? (item.startsAt | date:'EEEE, dd/MM/yyyy · HH:mm':'':'vi') : 'Thời gian sẽ được cập nhật' }}</p>
+          @if (item.description) { <p class="event-description">{{ item.description }}</p> }
+          <div class="event-footer"><span>⌖ {{ item.location || 'Lớp trực tuyến' }}</span>@if (item.meetingUrl) { <a [href]="item.meetingUrl" target="_blank" rel="noopener">Vào lớp / bắt đầu học ↗</a> }</div>
+        </div>
+      </article>
+    } @empty {
+      @if (!loading() && !hasCourses()) { <div class="empty-state"><span>▤</span><h2>Đăng ký khóa học để bắt đầu</h2><p>Lịch học sẽ xuất hiện sau khi bạn tham gia khóa học.</p><a routerLink="/student/courses">Khám phá khóa học</a></div> }
+      @else if (!loading()) { <div class="empty-state"><span>▦</span><h2>Chưa có lịch học</h2><p>Chưa có buổi học nào được xuất bản cho các khóa bạn đã đăng ký.</p></div> }
+    }
   </div>
 </section>

@@ -1,0 +1,22 @@
+<div class="notification-center">
+  <button class="bell-button" type="button" aria-label="Thông báo" [attr.aria-expanded]="open()" (click)="toggle()">
+    <span aria-hidden="true">🔔</span>
+    @if (unreadCount() > 0) { <span class="badge">{{ unreadCount() }}</span> }
+  </button>
+  @if (open()) {
+    <section class="panel" aria-label="Danh sách thông báo">
+      <header><div><strong>Thông báo</strong><small>{{ unreadCount() }} chưa đọc</small></div>
+        <button type="button" class="mark-all" (click)="markAllAsRead()" [disabled]="unreadCount() === 0">Đánh dấu đã đọc</button>
+      </header>
+      @if (notifications().length) {
+        <ul>
+          @for (item of notifications(); track item.id) {
+            <li [class.unread]="!item.read" (click)="markAsRead(item.id)">
+              <span class="status-dot"></span><div><p>{{ item.message }}</p><time>{{ formatDate(item.createdAt) }}</time><small>{{ item.read ? 'Đã đọc' : 'Chưa đọc' }}</small></div>
+            </li>
+          }
+        </ul>
+      } @else { <p class="empty">Chưa có thông báo.</p> }
+    </section>
+  }
+</div>

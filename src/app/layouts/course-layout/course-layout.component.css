@@ -1,0 +1,7 @@
+:host { display: block; min-height: 100vh; background: #f7f8fc; color: #182230; font-family: Inter, "Segoe UI", sans-serif; }
+.course-shell>header { height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; border-bottom: 1px solid #e8edf3; background: #fff; }
+.course-shell>header strong { color: #172b4d; font-size: 19px; }
+.course-shell>header strong span { margin-left: 10px; color: #667085; font-size: 13px; font-weight: 500; }
+.course-shell>header>div { display: flex; align-items: center; gap: 12px; }
+.course-shell button { padding: 9px 14px; border: 1px solid #d0d5dd; border-radius: 8px; background: #fff; color: #344054; cursor: pointer; }
+.course-shell main { padding: 18px; }

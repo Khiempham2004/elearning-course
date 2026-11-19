@@ -44,18 +44,20 @@
         <ng-template #actionOrDefaultCell>
           <ng-container *ngIf="column.actions?.length; else defaultCell">
             <div class="table-actions">
-              <button
-                *ngFor="let action of column.actions"
-                nz-button
-                [nzType]="action.type || 'default'"
-                [nzDanger]="action.danger || false"
-                [disabled]="action.disabled?.(row) || false"
-                [attr.aria-label]="action.label || action.key"
-                (click)="onActionClick(action, row, $event)"
-              >
-                <span *ngIf="action.icon" nz-icon [nzType]="action.icon"></span>
-                <span *ngIf="action.label">{{ action.label }}</span>
-              </button>
+              <ng-container *ngFor="let action of column.actions">
+                <button
+                  *ngIf="isActionVisible(action, row)"
+                  nz-button
+                  [nzType]="action.type || 'default'"
+                  [nzDanger]="action.danger || false"
+                  [disabled]="action.disabled?.(row) || false"
+                  [attr.aria-label]="action.label || action.key"
+                  (click)="onActionClick(action, row, $event)"
+                >
+                  <span *ngIf="action.icon" nz-icon [nzType]="action.icon"></span>
+                  <span *ngIf="action.label">{{ action.label }}</span>
+                </button>
+              </ng-container>
             </div>
           </ng-container>
         </ng-template>

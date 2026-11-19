@@ -13,6 +13,8 @@ import { StudentsComponent } from './modules/page/students/students.component';
 import { OverviewComponent } from './modules/page/overview/overview.component';
 import { StudentLayoutsComponent } from './layouts/student-layouts/student-layouts.component';
 import { StudentElearningComponent } from './modules/student-elearning/student-elearning.component';
+import { TeacherLayoutComponent } from './layouts/teacher-layout/teacher-layout.component';
+import { CourseLayoutComponent } from './layouts/course-layout/course-layout.component';
 
 export const routes: Routes = [
   {
@@ -42,7 +44,31 @@ export const routes: Routes = [
       },
       {
         path: 'learning-activities',
-        loadComponent: () => import('./modules/page/learning-activities/learning-activities.component').then((m) => m.LearningActivitiesComponent),
+        loadComponent: () =>
+          import('./modules/page/learning-activities/learning-activities.component').then(
+            (m) => m.LearningActivitiesComponent,
+          ),
+      },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./modules/admin-users/admin-users.component').then(
+            (m) => m.AdminUsersComponent,
+          ),
+      },
+      {
+        path: 'categories',
+        loadComponent: () =>
+          import('./modules/admin-categories/admin-categories.component').then(
+            (m) => m.AdminCategoriesComponent,
+          ),
+      },
+      {
+        path: 'enrollments',
+        loadComponent: () =>
+          import('./modules/admin-enrollments/admin-enrollments.component').then(
+            (m) => m.AdminEnrollmentsComponent,
+          ),
       },
       {
         path: 'student',
@@ -212,22 +238,35 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'teacher/learning-activities',
-    canActivate: [authGuard],
-    data: { roles: ['teacher'] },
-    loadComponent: () => import('./modules/page/learning-activities/learning-activities.component').then((m) => m.LearningActivitiesComponent),
-  },
-  {
     path: 'teacher',
-    component: TeachersComponent,
+    component: TeacherLayoutComponent,
     canActivate: [authGuard],
     data: { roles: ['teacher'] },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./modules/page/teacher-dashboard/teacher-dashboard.component').then(
+            (m) => m.TeacherDashboardComponent,
+          ),
+      },
+      {
+        path: 'learning-activities',
+        loadComponent: () =>
+          import('./modules/page/learning-activities/learning-activities.component').then(
+            (m) => m.LearningActivitiesComponent,
+          ),
+      },
+      { path: 'courses', component: CourseComponent },
+    ],
   },
   {
     path: 'courses',
-    component: CourseComponent,
+    component: CourseLayoutComponent,
     canActivate: [authGuard],
     data: { roles: ['course'] },
+    children: [{ path: '', component: CourseComponent }],
   },
   {
     path: '',

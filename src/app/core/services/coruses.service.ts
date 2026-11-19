@@ -39,4 +39,12 @@ export class CorusesService {
   deleteCourse(id: any): Observable<any> {
     return this.http.delete<any>(`${this.apiCourse}/${id}`);
   }
+
+  reviewCourse(id: string, approvalStatus: 'approved' | 'rejected'): Observable<any> {
+    return this.http.patch<any>(`${this.apiCourse}/${id}/review`, { approvalStatus });
+  }
+
+  getCategories(): Observable<any> {
+    return this.http.get<any>(`${this.apiCourse}/categories?activeOnly=true`);
+  }
 }

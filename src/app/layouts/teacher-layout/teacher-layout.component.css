@@ -1,0 +1,14 @@
+:host { display: block; min-height: 100vh; background: #f5f7fb; color: #182230; font-family: Inter, "Segoe UI", sans-serif; }
+.teacher-shell { min-height: 100vh; }
+.teacher-topbar { height: 68px; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; background: #fff; border-bottom: 1px solid #e8edf3; }
+.teacher-brand { color: #172b4d; font-size: 20px; font-weight: 750; text-decoration: none; }
+.teacher-brand span { margin-left: 10px; color: #667085; font-size: 14px; font-weight: 500; }
+.teacher-topbar button { padding: 9px 14px; border: 1px solid #d0d5dd; border-radius: 8px; background: #fff; color: #344054; cursor: pointer; }
+.teacher-account { display: flex; align-items: center; gap: 12px; }
+.teacher-workspace { display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: calc(100vh - 68px); }
+.teacher-sidebar { padding: 24px 16px; background: #fff; border-right: 1px solid #e8edf3; }
+.teacher-sidebar p { margin: 0 10px 16px; color: #667085; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+.teacher-sidebar a { display: block; padding: 11px 12px; border-radius: 8px; color: #344054; text-decoration: none; }
+.teacher-sidebar a.active { background: #eff6ff; color: #175cd3; font-weight: 650; }
+.teacher-content { min-width: 0; padding: 24px; }
+@media (max-width: 700px) { .teacher-workspace { grid-template-columns: 1fr; } .teacher-sidebar { padding: 12px 16px; border-right: 0; border-bottom: 1px solid #e8edf3; } .teacher-content { padding: 16px; } }

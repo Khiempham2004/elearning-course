@@ -1,69 +1,37 @@
-<div class="overview">
-  <div class="page-header">
-    <div>
-      <h1>Tổng quan</h1>
-      <p>
-        Chào mừng bạn quay lại hệ thống quản lý đào tạo
-      </p>
-    </div>
-  </div>
-
-
-  <div class="statistics">
-    <div class="stat-card">
-      <div class="stat-icon">
-        👨‍🎓
+<main class="admin-dashboard">
+  <header class="page-header"><div><p class="eyebrow">QUẢN TRỊ HỆ THỐNG</p><h1>Dashboard</h1><p>Tổng quan hoạt động đào tạo.</p></div><a routerLink="/admin/users">Quản lý tài khoản →</a></header>
+  @if (loading()) { <p class="state-message">Đang tải số liệu...</p> }
+  @if (error()) { <p class="error-message" role="alert">{{ error() }}</p> }
+  @if (dashboard(); as data) {
+    <section class="stat-grid">
+      <article><span class="stat-icon">👨‍🎓</span><div><small>Tổng học viên</small><strong>{{ data.totals.students }}</strong></div></article>
+      <article><span class="stat-icon">👩‍🏫</span><div><small>Tổng giảng viên</small><strong>{{ data.totals.teachers }}</strong></div></article>
+      <article><span class="stat-icon">📚</span><div><small>Tổng khóa học</small><strong>{{ data.totals.courses }}</strong></div></article>
+      <article><span class="stat-icon">📝</span><div><small>Lượt đăng ký khóa học</small><strong>{{ data.totals.enrollments }}</strong></div></article>
+    </section>
+    @if (data.totals.pendingCourses) { <a class="pending-banner" routerLink="/admin/courses">Có {{ data.totals.pendingCourses }} khóa học đang chờ duyệt · Xem ngay →</a> }
+    <section class="dashboard-grid">
+      <article class="panel student-chart"><div class="panel-heading"><div><h2>Thống kê học viên</h2><p>Số tài khoản học viên tạo mới trong 6 tháng</p></div></div>
+        <div class="chart" role="img" aria-label="Biểu đồ số học viên mới theo tháng">
+          @for (month of data.studentTrend; track month.year + '-' + month.month) {
+            <div class="chart-column"><strong>{{ month.count }}</strong><div class="bar-track"><span [style.height.%]="barHeight(month.count)"></span></div><small>{{ month.label }}</small></div>
+          }
+        </div>
+      </article>
+      <article class="panel enroll-status"><div class="panel-heading"><div><h2>Trạng thái đăng ký</h2><p>Phân bổ các lượt ghi danh</p></div></div>
+        <div class="status-row"><span>Đang học</span><strong>{{ data.enrollmentStatuses['active'] || 0 }}</strong></div>
+        <div class="status-row"><span>Hoàn thành</span><strong>{{ data.enrollmentStatuses['completed'] || 0 }}</strong></div>
+        <div class="status-row"><span>Đã hủy</span><strong>{{ data.enrollmentStatuses['cancelled'] || 0 }}</strong></div>
+        <a routerLink="/admin/enrollments">Quản lý đăng ký →</a>
+      </article>
+    </section>
+    <section class="panel latest-panel"><div class="panel-heading"><div><h2>Khóa học mới nhất</h2><p>6 khóa được tạo gần đây</p></div><a routerLink="/admin/courses">Tất cả khóa học →</a></div>
+      <div class="latest-list">
+        @for (course of data.latestCourses; track course._id) {
+          <article><span class="course-mark">▣</span><div><strong>{{ course.courseName }}</strong><small>{{ course.courseCode }} · {{ course.teacherName || 'Chưa có giảng viên' }}</small></div><span class="approval" [class.pending]="course.approvalStatus === 'pending'">{{ course.approvalStatus === 'pending' ? 'Chờ duyệt' : course.approvalStatus === 'rejected' ? 'Từ chối' : course.status ? 'Đang mở' : 'Đã tắt' }}</span></article>
+        } @empty { <p class="state-message">Chưa có khóa học.</p> }
       </div>
-      <div class="stat-content">
-        <span class="stat-title">
-          Tổng học viên
-        </span>
-        <h2>
-          {{ totalStudents.length }}
-        </h2>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">
-        📚
-      </div>
-      <div class="stat-content">
-        <span class="stat-title">
-          Tổng khóa học
-        </span>
-        <h2>
-          {{ totalCourses.length }}
-        </h2>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">
-        👨‍🏫
-      </div>
-      <div class="stat-content">
-        <span class="stat-title">
-          Tổng giảng viên
-        </span>
-        <h2>
-          {{ totalTeachers.length }}
-        </h2>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">
-        🏫
-      </div>
-      <div class="stat-content">
-        <span class="stat-title">
-          Lớp đang học
-        </span>
-        <h2>
-          {{ totalActiveClasses.length }}
-        </h2>
-      </div>
-    </div>
-  </div>
-</div>
+    </section>
+    @if (data.revenue === null) { <p class="revenue-note">Hệ thống chưa có chức năng thanh toán nên chưa có số liệu doanh thu.</p> }
+  }
+</main>

@@ -105,6 +105,8 @@ nav a.active,
     font-size: 23px;
 }
 
+.topbar-account { display: flex; align-items: center; gap: 14px; }
+
 .mini-avatar {
     width: 31px;
     height: 31px;

@@ -29,6 +29,7 @@ import {
   DataTableColumn,
   DataTableComponent,
 } from '../../../shared/data-table/data-table.component';
+import { AuthService } from '../../../core/services/auth.service';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
@@ -57,6 +58,7 @@ export class CourseComponent implements OnInit {
   tableColumn: DataTableColumn<any>[] = [];
   form: FormGroup;
   courses: any[] = [];
+  categoryNames: string[] = [];
   listOfCourse: any[] = [];
   searchKeyword: any = [];
   filterSearch: string = '';
@@ -69,18 +71,20 @@ export class CourseComponent implements OnInit {
   page = 1;
   pageSize = 5;
   total = 0;
+  get isAdmin(): boolean { return this.authService.getUserRole() === 'admin'; }
 
   constructor(
     private fb: FormBuilder,
     private courseService: CorusesService,
     private nzModal: NzModalService,
     private nzMessage: NzMessageService,
+    private readonly authService: AuthService,
   ) {
     this.form = this.fb.group({
       courseCode: [''],
       courseName: ['', Validators.required],
       category: [''],
-      teacherId: [null],
+      teacherId: [null, Validators.required],
       teacherName: [null, Validators.required],
       duration: [null, Validators.required],
       maxStudents: [null, Validators.required],
@@ -88,12 +92,14 @@ export class CourseComponent implements OnInit {
       startDate: [null],
       endDate: [null],
       status: [null],
+      approvalStatus: ['approved'],
     });
   }
 
   ngOnInit() {
     this.initialDatatable();
     this.getAllCourses();
+    this.courseService.getCategories().subscribe({ next: (res: any) => this.categoryNames = (res?.data ?? []).map((item: any) => item.name) });
   }
 
   initialDatatable() {
@@ -155,6 +161,7 @@ export class CourseComponent implements OnInit {
         key: 'status',
         width: '100px',
       },
+      { title: 'Duyệt khóa học', key: 'approvalStatus', width: '110px' },
       {
         title: 'Hành động',
         key: 'action',
@@ -173,6 +180,16 @@ export class CourseComponent implements OnInit {
             danger: true,
             callback: (item: any) => this.handleDelete(item),
           },
+          {
+            key: 'approve', label: 'Duyệt', type: 'primary',
+            visible: (item: any) => this.authService.getUserRole() === 'admin' && item.approvalStatus === 'pending',
+            callback: (item: any) => this.review(item, 'approved'),
+          },
+          {
+            key: 'reject', label: 'Từ chối', type: 'default', danger: true,
+            visible: (item: any) => this.authService.getUserRole() === 'admin' && item.approvalStatus === 'pending',
+            callback: (item: any) => this.review(item, 'rejected'),
+          },
         ],
       },
     ];
@@ -186,6 +203,11 @@ export class CourseComponent implements OnInit {
     this.isCourse = true;
     this.form.enable();
     this.form.reset();
+    this.form.patchValue({ status: true, approvalStatus: 'approved' });
+    if (this.authService.getUserRole() === 'teacher') {
+      const user = JSON.parse(localStorage.getItem('user') ?? '{}');
+      this.form.patchValue({ teacherId: user.id ?? user._id ?? user.userName, teacherName: user.userName, status: false, approvalStatus: 'pending' });
+    }
   }
   cancelModalCourse() {
     this.isCourse = false;
@@ -329,6 +351,7 @@ export class CourseComponent implements OnInit {
             startDate: courseData.startDate,
             endDate: courseData.endDate,
             status: courseData.status,
+            approvalStatus: courseData.approvalStatus ?? 'approved',
           });
         }
       },
@@ -363,6 +386,13 @@ export class CourseComponent implements OnInit {
     });
     this.form.reset();
     this.isCourse = false;
+  }
+
+  review(item: any, approvalStatus: 'approved' | 'rejected'): void {
+    this.courseService.reviewCourse(item._id, approvalStatus).subscribe({
+      next: (response) => { this.nzMessage.success(response?.message ?? 'Đã cập nhật duyệt khóa học'); this.getAllCourses(); },
+      error: (error) => this.nzMessage.error(error?.error?.message ?? 'Không cập nhật được duyệt khóa học'),
+    });
   }
 
   handleRowClick(item: any) {

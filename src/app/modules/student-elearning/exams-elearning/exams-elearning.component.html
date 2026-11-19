@@ -1,10 +1,67 @@
-<section class="student-list-page"><header><p class="eyebrow">ĐÁNH GIÁ KẾT QUẢ</p><h1>Bài kiểm tra</h1><p>Kiểm tra thời gian, hướng dẫn và gửi bài trong thời hạn.</p></header>
-  @if (loading()) { <p>Đang tải bài kiểm tra...</p> } @if (message()) { <p role="status">{{ message() }}</p> } @if (error()) { <p role="alert">{{ error() }}</p> }
-  <div class="activity-list">@for (item of items(); track item._id) { <article><p>{{ item.courseId.courseName }}</p><h2>{{ item.title }}</h2><p>{{ item.description }}</p><p>Thời lượng: {{ item.durationMinutes || 'Chưa cập nhật' }} phút · Hạn: {{ item.dueAt ? (item.dueAt | date:'dd/MM/yyyy HH:mm') : 'Theo lịch thi' }}</p>
-    @if (item.meetingUrl) { <p><a [href]="item.meetingUrl" target="_blank" rel="noopener">Mở bài kiểm tra</a></p> }
-    @if (item.submission) { <p>Đã gửi lúc {{ item.submission.submittedAt | date:'dd/MM/yyyy HH:mm' }}@if (item.submission.score !== undefined) { · Điểm: {{ item.submission.score }}/100 }@if (item.submission.feedback) { · Nhận xét: {{ item.submission.feedback }}}</p> }
-    <p>@if (canSubmit(item)) { Bài kiểm tra đang mở. } @else if (isBeforeOpen(item)) { Mở lúc {{ item.startsAt | date:'dd/MM/yyyy HH:mm' }}. } @else { Bài kiểm tra đã đóng. }</p>
-    <label [for]="'exam-' + item._id">Câu trả lời / đường dẫn bài làm</label><textarea [id]="'exam-' + item._id" rows="4" [value]="answers[item._id] || item.submission?.answer || ''" (input)="setAnswer(item._id, $event)" [disabled]="!canSubmit(item) || item.submission?.score !== undefined"></textarea>
-    @if (item.submission?.score !== undefined) { <p>Bài kiểm tra đã được chấm điểm và khóa chỉnh sửa.</p> } @else if (canSubmit(item)) { <button type="button" (click)="submit(item)" [disabled]="submitting() === item._id">{{ submitting() === item._id ? 'Đang gửi...' : (item.submission ? 'Cập nhật bài làm' : 'Gửi bài kiểm tra') }}</button> }
-  </article> } @empty { @if (!loading()) { <p>Chưa có bài kiểm tra nào được xếp lịch.</p> } }</div>
+<section class="exams-page">
+  <header class="student-heading">
+    <div>
+      <p class="eyebrow">ĐÁNH GIÁ KẾT QUẢ</p>
+      <h1>Bài kiểm tra</h1>
+      <p>Xem lịch thi, hướng dẫn và gửi bài trong thời gian quy định.</p>
+    </div><span class="heading-icon">✓</span>
+  </header>
+  <div class="exam-summary">
+    <article><small>Tổng bài kiểm tra</small><strong>{{ items().length }}</strong></article>
+    <article><small>Đang mở</small><strong>{{ openCount }}</strong></article>
+    <article><small>Đã gửi bài</small><strong>{{ submittedCount }}</strong></article>
+  </div>
+  @if (loading()) { <p class="loading-state">Đang tải bài kiểm tra...</p> }
+  @if (message()) { <p class="notice-state" role="status">✓ {{ message() }}</p> }
+  @if (error()) { <p class="error-state" role="alert">{{ error() }}</p> }
+  <div class="exam-list">
+    @for (item of items(); track item._id) {
+    <article class="exam-card">
+      <div class="exam-banner"><span>KIỂM TRA</span><span class="exam-state" [class.open]="canSubmit(item)"
+          [class.closed]="!canSubmit(item) && !isBeforeOpen(item)">{{ canSubmit(item) ? 'Đang mở' : isBeforeOpen(item) ?
+          'Sắp mở' : 'Đã đóng' }}</span></div>
+      <div class="exam-content">
+        <p class="course-label">{{ item.courseId.courseCode }} · {{ item.courseId.courseName }}</p>
+        <h2>{{ item.title }}</h2>
+        <p class="instructions">{{ item.description || 'Giảng viên chưa thêm hướng dẫn.' }}</p>
+        <div class="exam-details">
+          <div><small>Thời gian bắt đầu</small><strong>{{ item.startsAt ? (item.startsAt | date:'dd/MM/yyyy HH:mm') :
+              'Theo lịch thi' }}</strong></div>
+          <div><small>Thời lượng</small><strong>{{ item.durationMinutes ? item.durationMinutes + ' phút' : 'Không giới
+              hạn' }}</strong></div>
+          <div><small>Hạn kết thúc</small><strong>{{ closesAt(item) ? (closesAt(item) | date:'dd/MM/yyyy HH:mm') : 'Chưa đặt' }}</strong></div>
+          @if (item.location) { <div class="exam-location"><small>Địa điểm thi</small><strong>⌖ {{ item.location }}</strong></div> }
+        </div>
+        @if (item.meetingUrl) { <p class="exam-mode-note online-note">Thi trực tuyến: mở liên kết bên dưới để vào đề/phòng thi. Hoàn tất rồi gửi câu trả lời hoặc liên kết bài làm trong trang này trước giờ đóng.</p> }
+        @else if (item.location) { <p class="exam-mode-note offline-note">Thi trực tiếp tại {{ item.location }}. Có mặt đúng giờ; nếu giảng viên yêu cầu nộp trên hệ thống, nhập câu trả lời vào khung bên dưới trước giờ đóng.</p> }
+        @if (item.meetingUrl) { <a class="exam-link" [href]="item.meetingUrl" target="_blank" rel="noopener">Mở đề / vào
+          phòng thi trực tuyến ↗</a> }
+        @if (item.submission) { <div class="exam-result"><span>Đã gửi lúc {{ item.submission.submittedAt |
+            date:'dd/MM/yyyy HH:mm' }}</span>@if (item.submission.score !== undefined) { <strong>{{
+            item.submission.score }}/100</strong> }@if (item.submission.feedback) { <p>{{ item.submission.feedback }}
+          </p> }</div> }
+        <label class="answer-label" [for]="'exam-' + item._id">{{ item.submission ? 'Bài làm đã gửi' : 'Câu trả lời /
+          đường dẫn bài làm' }}</label><textarea [id]="'exam-' + item._id" rows="4"
+          [placeholder]="item.submission ? '' : 'Nhập câu trả lời hoặc link bài làm...'"
+          [value]="answers[item._id] || item.submission?.answer || ''" (input)="setAnswer(item._id, $event)"
+          [disabled]="!canSubmit(item) || item.submission?.score !== undefined"></textarea>
+        @if (item.submission?.score !== undefined) { <p class="locked-note">Bài kiểm tra đã được chấm và khóa chỉnh sửa.
+        </p> } @else if (canSubmit(item)) { <button class="submit-button" type="button" (click)="submit(item)"
+          [disabled]="submitting() === item._id">{{ submitting() === item._id ? 'Đang gửi...' : item.submission ? 'Cập
+          nhật bài làm' : 'Nộp bài kiểm tra' }}</button> } @else if (isBeforeOpen(item)) { <p class="locked-note">Bài
+          kiểm tra mở lúc {{ item.startsAt | date:'dd/MM/yyyy HH:mm' }}.</p> } @else { <p class="locked-note">Bài kiểm
+          tra đã đóng, hệ thống không nhận bài.</p> }
+      </div>
+    </article>
+    } @empty {
+    @if (!loading() && !hasCourses()) { <div class="empty-state"><span>✓</span>
+      <h2>Đăng ký khóa học để xem lịch kiểm tra</h2>
+      <p>Bài kiểm tra sẽ hiển thị theo các khóa bạn tham gia.</p><a routerLink="/student/courses">Xem khóa học</a>
+    </div> }
+    @else if (!loading()) { <div class="empty-state"><span>✓</span>
+      <h2>Chưa có bài kiểm tra</h2>
+      <p>Chưa có bài kiểm tra nào được xuất bản cho các khóa học của bạn.</p>
+    </div> }
+    }
+  </div>
 </section>

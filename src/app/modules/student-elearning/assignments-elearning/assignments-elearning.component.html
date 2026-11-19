@@ -1,8 +1,142 @@
-<section class="student-list-page"><header><p class="eyebrow">NHIỆM VỤ HỌC TẬP</p><h1>Bài tập</h1><p>Nộp câu trả lời hoặc đường dẫn bài làm trước hạn.</p></header>
-  @if (loading()) { <p>Đang tải bài tập...</p> } @if (message()) { <p role="status">{{ message() }}</p> } @if (error()) { <p role="alert">{{ error() }}</p> }
-  <div class="activity-list">@for (item of items(); track item._id) { <article><p>{{ item.courseId.courseName }}</p><h2>{{ item.title }}</h2><p>{{ item.description }}</p><p>Hạn nộp: {{ item.dueAt ? (item.dueAt | date:'dd/MM/yyyy HH:mm') : 'Không giới hạn' }}</p>
-    @if (item.submission) { <p>Đã nộp lúc {{ item.submission.submittedAt | date:'dd/MM/yyyy HH:mm' }}.@if (item.submission.score !== undefined) { Điểm: {{ item.submission.score }}/100. }@if (item.submission.feedback) { Nhận xét: {{ item.submission.feedback }} }</p> }
-    <label [for]="'answer-' + item._id">Câu trả lời / đường dẫn bài làm</label><textarea [id]="'answer-' + item._id" rows="4" [value]="answers[item._id] || item.submission?.answer || ''" (input)="setAnswer(item._id, $event)" [disabled]="isClosed(item) || item.submission?.score !== undefined"></textarea>
-    @if (item.submission?.score !== undefined) { <p>Bài đã được chấm điểm và khóa chỉnh sửa.</p> } @else if (isClosed(item)) { <p>Bài tập đã đóng nhận bài.</p> } @else { <button type="button" (click)="submit(item)" [disabled]="submitting() === item._id">{{ submitting() === item._id ? 'Đang nộp...' : (item.submission ? 'Cập nhật bài nộp' : 'Nộp bài') }}</button> }
-  </article> } @empty { @if (!loading()) { <p>Chưa có bài tập nào được giao cho các khóa học của bạn.</p> } }</div>
+<section class="tasks-page">
+  <header class="student-heading">
+    <div>
+      <p class="eyebrow">NHIỆM VỤ HỌC TẬP</p>
+      <h1>Bài tập của tôi</h1>
+      <p>Đọc hướng dẫn, hoàn thành bài và nộp trước hạn.</p>
+    </div>
+    <span class="heading-icon">✎</span>
+  </header>
+  <div class="task-summary">
+    <article>
+      <small>Tổng bài tập</small><strong>{{ items().length }}</strong>
+    </article>
+    <article>
+      <small>Chưa nộp</small
+      ><strong>{{ pendingCount }}</strong>
+    </article>
+    <article>
+      <small>Đã có kết quả</small
+      ><strong
+        >{{ gradedCount }}</strong
+      >
+    </article>
+  </div>
+  @if (loading()) {
+    <p class="loading-state">Đang tải bài tập...</p>
+  }
+  @if (message()) {
+    <p class="notice-state" role="status">✓ {{ message() }}</p>
+  }
+  @if (error()) {
+    <p class="error-state" role="alert">{{ error() }}</p>
+  }
+  <div class="task-list">
+    @for (item of items(); track item._id) {
+      <article class="task-card" [class.task-done]="!!item.submission">
+        <div class="task-accent"></div>
+        <div class="task-card-content">
+          <div class="task-top">
+            <span class="course-label"
+              >{{ item.courseId.courseCode }} ·
+              {{ item.courseId.courseName }}</span
+            ><span
+              class="task-status"
+              [class.submitted]="!!item.submission"
+              [class.closed]="isClosed(item)"
+              >{{
+                item.submission?.score !== undefined
+                  ? "Đã chấm"
+                  : item.submission
+                    ? "Đã nộp"
+                    : isClosed(item)
+                      ? "Quá hạn"
+                      : "Chưa nộp"
+              }}</span
+            >
+          </div>
+          <h2>{{ item.title }}</h2>
+          <p class="instructions">
+            {{ item.description || "Giảng viên chưa thêm hướng dẫn." }}
+          </p>
+          <div class="deadline-row">
+            <span>◷ Hạn nộp</span
+            ><strong>{{
+              item.dueAt
+                ? (item.dueAt | date: "EEEE, dd/MM/yyyy · HH:mm" : "" : "vi")
+                : "Không giới hạn"
+            }}</strong>
+          </div>
+          @if (item.submission) {
+            <div class="submission-result">
+              <span
+                >Đã nộp
+                {{
+                  item.submission.submittedAt | date: "dd/MM/yyyy HH:mm"
+                }}</span
+              >
+              @if (item.submission.score !== undefined) {
+                <strong class="score"
+                  >{{ item.submission.score }}<small>/100</small></strong
+                >
+              }
+              @if (item.submission.feedback) {
+                <p>{{ item.submission.feedback }}</p>
+              }
+            </div>
+          }
+          <label class="answer-label" [for]="'answer-' + item._id">{{
+            item.submission ? "Bài làm của bạn" : "Câu trả lời / link bài làm"
+          }}</label>
+          <textarea
+            [id]="'answer-' + item._id"
+            rows="4"
+            [placeholder]="
+              item.submission ? '' : 'Nhập câu trả lời hoặc dán link bài làm...'
+            "
+            [value]="answers[item._id] || item.submission?.answer || ''"
+            (input)="setAnswer(item._id, $event)"
+            [disabled]="isClosed(item) || item.submission?.score !== undefined"
+          ></textarea>
+          @if (item.submission?.score !== undefined) {
+            <p class="locked-note">Bài đã được chấm, nội dung nộp đã khóa.</p>
+          } @else if (isClosed(item)) {
+            <p class="locked-note">
+              Đã quá hạn, hệ thống không nhận bài nộp mới.
+            </p>
+          } @else {
+            <button
+              class="submit-button"
+              type="button"
+              (click)="submit(item)"
+              [disabled]="submitting() === item._id"
+            >
+              {{
+                submitting() === item._id
+                  ? "Đang nộp..."
+                  : item.submission
+                    ? "Cập nhật bài nộp"
+                    : "Nộp bài tập"
+              }}
+            </button>
+          }
+        </div>
+      </article>
+    } @empty {
+      @if (!loading() && !hasCourses()) {
+        <div class="empty-state">
+          <span>✎</span>
+          <h2>Đăng ký khóa học để nhận bài tập</h2>
+          <p>Bài tập sẽ hiển thị theo các khóa bạn tham gia.</p>
+          <a routerLink="/student/courses">Xem khóa học</a>
+        </div>
+      } @else if (!loading()) {
+        <div class="empty-state">
+          <span>✓</span>
+          <h2>Chưa có bài tập mới</h2>
+          <p>Hiện chưa có bài tập được giao cho các khóa học của bạn.</p>
+        </div>
+      }
+    }
+  </div>
 </section>

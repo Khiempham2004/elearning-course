@@ -15,6 +15,7 @@ export interface LearningCourse {
   maxStudents?: number;
   enrollmentStatus?: 'active' | 'completed' | null;
   progress?: number;
+  enrolledCount?: number;
 }
 
 export interface LearningActivity {
@@ -54,6 +55,15 @@ export interface MyLearning {
     courseId: LearningCourse;
   }>;
   activities: LearningActivity[];
+}
+
+export interface ManagedEnrollment {
+  _id: string;
+  status: string;
+  progress: number;
+  completedLessons: number;
+  studentId: { _id: string; userName: string; email: string } | string;
+  courseId: LearningCourse;
 }
 
 export interface LearningActivityPayload {
@@ -96,8 +106,8 @@ export class StudentLearningService {
     );
   }
 
-  getManageActivities(): Observable<{ data: { activities: LearningActivity[]; courses: LearningCourse[] } }> {
-    return this.http.get<{ data: { activities: LearningActivity[]; courses: LearningCourse[] } }>(`${this.api}/activities/manage`);
+  getManageActivities(): Observable<{ data: { activities: LearningActivity[]; courses: LearningCourse[]; enrollments: ManagedEnrollment[] } }> {
+    return this.http.get<{ data: { activities: LearningActivity[]; courses: LearningCourse[]; enrollments: ManagedEnrollment[] } }>(`${this.api}/activities/manage`);
   }
 
   createActivity(activity: LearningActivityPayload): Observable<{ message: string }> {
@@ -114,5 +124,9 @@ export class StudentLearningService {
 
   grade(activityId: string, studentId: string, score: number, feedback: string): Observable<{ message: string }> {
     return this.http.put<{ message: string }>(`${this.api}/activities/${activityId}/submissions/${studentId}/grade`, { score, feedback });
+  }
+
+  updateProgress(enrollmentId: string, progress: number, completedLessons: number): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.api}/enrollments/${enrollmentId}/progress`, { progress, completedLessons });
   }
 }

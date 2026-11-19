@@ -18,6 +18,7 @@ import {
 } from '@ant-design/icons-angular/icons';
 import { AuthService } from '../../core/services/auth.service';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NotificationsCenterComponent } from '../../shared/notifications-center/notifications-center.component';
 
 interface StudentNotification {
   id: string;
@@ -50,7 +51,7 @@ interface Schedule {
 @Component({
   selector: 'app-student-layouts',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, NzIconModule, NzButtonModule],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, NzIconModule, NzButtonModule, NotificationsCenterComponent],
   templateUrl: './student-layouts.component.html',
   styleUrl: './student-layouts.component.css',
 })

@@ -52,17 +52,20 @@
             <nz-form-label>Danh mục</nz-form-label>
 
             <nz-form-control>
-              <input nz-input formControlName="category" placeholder="Frontend / Backend / Database" />
+              <nz-select class="w-100" formControlName="category" nzPlaceHolder="Chọn danh mục">
+                @if (form.get('category')?.value && !categoryNames.includes(form.get('category')?.value)) { <nz-option [nzValue]="form.get('category')?.value" [nzLabel]="form.get('category')?.value" /> }
+                @for (category of categoryNames; track category) { <nz-option [nzValue]="category" [nzLabel]="category" /> }
+              </nz-select>
             </nz-form-control>
           </nz-form-item>
         </div>
 
         <div nz-col [nzSpan]="12">
           <nz-form-item>
-            <nz-form-label>Mã giáo viên</nz-form-label>
+            <nz-form-label nzRequired>Mã giáo viên</nz-form-label>
 
             <nz-form-control>
-              <input nz-input formControlName="teacherId" placeholder="Nhập mã giáo viên" />
+              <input nz-input formControlName="teacherId" placeholder="Nhập teacherCode hoặc ID tài khoản" [readonly]="!isAdmin" />
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -72,7 +75,7 @@
             <nz-form-label>Giáo viên</nz-form-label>
 
             <nz-form-control nzErrorTip="Tên giáo viên là bắt buộc">
-              <input nz-input formControlName="teacherName" placeholder="Nhập tên giáo viên" />
+              <input nz-input formControlName="teacherName" placeholder="Nhập tên giáo viên" [readonly]="!isAdmin" />
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -141,6 +144,13 @@
             </nz-form-control>
           </nz-form-item>
         </div>
+        @if (isAdmin) {
+          <div nz-col [nzSpan]="12">
+            <nz-form-item><nz-form-label>Trạng thái duyệt</nz-form-label><nz-form-control>
+              <nz-select class="w-100" formControlName="approvalStatus"><nz-option nzValue="pending" nzLabel="Chờ duyệt"/><nz-option nzValue="approved" nzLabel="Đã duyệt"/><nz-option nzValue="rejected" nzLabel="Từ chối"/></nz-select>
+            </nz-form-control></nz-form-item>
+          </div>
+        }
       </div>
 
       <div class="form-actions" *ngIf="status !== 'DETAIL'">

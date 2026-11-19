@@ -1,5 +1,6 @@
 import { Component, computed, OnInit, signal } from '@angular/core';
 import { StudentLearningService } from '../../../core/services/student-learning.service';
+import { RouterLink } from '@angular/router';
 
 interface StudentCourse {
   id: string;
@@ -19,7 +20,7 @@ interface StudentCourse {
 @Component({
   selector: 'app-course-student',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './course-student.component.html',
   styleUrl: './course-student.component.css',
 })

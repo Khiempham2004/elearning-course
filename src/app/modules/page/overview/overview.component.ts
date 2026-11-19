@@ -1,59 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { StudentsService } from '../../../core/services/students.service';
-import { CorusesService } from '../../../core/services/coruses.service';
-import { TeachersService } from '../../../core/services/teachers.service';
+import { Component, OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { AdminDashboardData, DashboardService } from '../../../core/services/Dashboard.service';
 
 @Component({
   selector: 'app-overview',
+  standalone: true,
+  imports: [RouterLink],
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.css'],
 })
 export class OverviewComponent implements OnInit {
-  totalStudents: any[] = [];
-  totalCourses: any[] = [];
-  totalTeachers: any[] = [];
-  totalActiveClasses: any[] = [];
+  readonly dashboard = signal<AdminDashboardData | null>(null);
+  readonly loading = signal(true);
+  readonly error = signal('');
 
-  filterSearch: string = '';
-  page = 1;
-  pageSize = 10;
-  toal = 0;
-  constructor(
-    private studentService: StudentsService,
-    private courseService: CorusesService,
-    private teacherService: TeachersService,
-  ) {}
+  constructor(private readonly dashboardService: DashboardService) {}
 
-  ngOnInit() {
-    this.getAllCourse();
-    this.getAllStudent();
-    this.getAllTeacher();
-  }
-
-  getAllCourse() {
-    this.courseService
-      .getAllCourses(this.filterSearch, this.page, this.pageSize)
-      .subscribe({
-        next: (res: any) => {
-          this.totalCourses = res || [];
-          console.log('Tong cac khoa hoc :', this.totalCourses.length);
-        },
-      });
-  }
-  getAllStudent() {
-    this.studentService.getAllStudents().subscribe({
-      next: (res: any) => {
-        this.totalStudents = res || [];
-        console.log('Tong cac khoa hoc :', this.totalStudents.length);
-      },
+  ngOnInit(): void {
+    this.dashboardService.getDashboard().subscribe({
+      next: ({ data }) => { this.dashboard.set(data); this.loading.set(false); },
+      error: (error) => { this.error.set(error?.error?.message ?? 'Không tải được dashboard.'); this.loading.set(false); },
     });
   }
-  getAllTeacher() {
-    this.teacherService.getAllTeachers().subscribe({
-      next: (res: any) => {
-        this.totalTeachers = res || [];
-        console.log('Tong cac khoa hoc :', this.totalTeachers.length);
-      },
-    });
+
+  get maxStudents(): number {
+    return Math.max(1, ...(this.dashboard()?.studentTrend.map((item) => item.count) ?? [0]));
+  }
+
+  barHeight(value: number): number {
+    return value === 0 ? 3 : Math.max(8, Math.round((value / this.maxStudents) * 100));
   }
 }

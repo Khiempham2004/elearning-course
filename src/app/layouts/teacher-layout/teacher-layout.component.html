@@ -1,0 +1,15 @@
+<div class="teacher-shell">
+  <header class="teacher-topbar">
+    <a class="teacher-brand" routerLink="/teacher">EduLearn <span>Giảng viên</span></a>
+    <div class="teacher-account"><app-notifications-center /><button type="button" (click)="logout()">Đăng xuất</button></div>
+  </header>
+  <div class="teacher-workspace">
+    <aside class="teacher-sidebar">
+      <p>KHÔNG GIAN GIẢNG VIÊN</p>
+      <a routerLink="/teacher" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Tổng quan</a>
+      <a routerLink="/teacher/courses" routerLinkActive="active">Khóa học của tôi</a>
+      <a routerLink="/teacher/learning-activities" routerLinkActive="active">Dạy học, học viên & chấm bài</a>
+    </aside>
+    <main class="teacher-content"><router-outlet /></main>
+  </div>
+</div>
